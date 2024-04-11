@@ -1,30 +1,11 @@
 const Work = require('./../models/workModel');
+const ApiFeatures = require('./../utils/apiFeatures');
 
-exports.getWorks = async (req, res, next) => {
+exports.getAllWorks = async (req, res, next) => {
   try {
-    const { page, sort, limit, fields, ...queryParams } = req.query;
+    const features = new ApiFeatures(Work.find({}), req.query);
 
-    let queryStr = JSON.stringify(queryParams);
-
-    queryStr = JSON.parse(
-      queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`)
-    );
-
-    let query = Work.find(queryStr);
-
-    if (sort) {
-      const sortBy = sort.replaceAll(',', ' ');
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort('-createdAt');
-    }
-
-    if (fields) {
-      const fieldsLimit = fields.replaceAll(',', ' ');
-      query = query.select(fieldsLimit);
-    } else {
-      query = query.select('-__v');
-    }
+    const query = features.filter().sort().selectFields().paginate().mongoQuery;
 
     const works = await query;
 
@@ -136,6 +117,13 @@ exports.deleteWork = async (req, res, next) => {
       message: err.message,
     });
   }
+};
+
+exports.aliasRouteExample = (req, res, next) => {
+  req.query.title = 'O Coliseu';
+  req.query.fields = 'title,description';
+  //Populate the queries for the Client! So he does not need to do that.
+  next();
 };
 
 exports.handleIdParam = (req, res, next, param) => {

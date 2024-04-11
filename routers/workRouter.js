@@ -5,7 +5,14 @@ const router = express.Router();
 
 router.param('id', workController.handleIdParam);
 
-router.route('/').get(workController.getWorks).post(workController.createWork);
+router
+  .route('/route-alias-example')
+  .get(workController.aliasRouteExample, workController.getAllWorks);
+
+router
+  .route('/')
+  .get(workController.getAllWorks)
+  .post(workController.createWork);
 
 router
   .route('/:id')
