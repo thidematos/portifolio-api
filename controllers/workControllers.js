@@ -2,7 +2,31 @@ const Work = require('./../models/workModel');
 
 exports.getWorks = async (req, res, next) => {
   try {
-    const works = await Work.find({});
+    const { page, sort, limit, fields, ...queryParams } = req.query;
+
+    let queryStr = JSON.stringify(queryParams);
+
+    queryStr = JSON.parse(
+      queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`)
+    );
+
+    let query = Work.find(queryStr);
+
+    if (sort) {
+      const sortBy = sort.replaceAll(',', ' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    if (fields) {
+      const fieldsLimit = fields.replaceAll(',', ' ');
+      query = query.select(fieldsLimit);
+    } else {
+      query = query.select('-__v');
+    }
+
+    const works = await query;
 
     res.status(200).json({
       status: 'sucess',
