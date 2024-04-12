@@ -5,6 +5,7 @@ const xssClean = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const workRouter = require('./routers/workRouter');
 const projectRequestRouter = require('./routers/projectRequestRouter');
@@ -33,7 +34,7 @@ app.use(mongoSanitize());
 
 app.use(xssClean());
 
-app.use(express.static('./public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

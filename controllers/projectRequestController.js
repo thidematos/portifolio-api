@@ -2,6 +2,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const ProjectRequest = require('./../models/projectRequestModel');
 const ApiFeatures = require('./../utils/apiFeatures');
+const SendMail = require('./../utils/email');
 
 exports.getAllProjectsRequests = catchAsync(async (req, res, next) => {
   const features = new ApiFeatures(ProjectRequest.find({}), req.query);
@@ -51,6 +52,9 @@ exports.createProjectRequest = catchAsync(async (req, res, next) => {
   delete projectObj.isAnswered;
   delete projectObj.createdAt;
   delete projectObj.__v;
+
+  //Send Confirmation Email
+  await new SendMail(projectObj).sendProjectRequestConfirmation();
 
   res.status(201).json({
     status: 'sucess',
