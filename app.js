@@ -50,7 +50,7 @@ app.use('/api/v1/project-requests', projectRequestRouter);
 
 app.use('/api/v1/users', userRouter);
 
-app.get('/api/v1/active-server', () => {
+app.get('/api/v1/active-server', (req, res, next) => {
   res.status(200).json({
     status: 'sucess',
   });

@@ -11,10 +11,7 @@ const schedule = require('node-schedule');
 const axios = require('axios');
 
 schedule.scheduleJob('* * * * *', () => {
-  axios
-    .get('https://portifolio-api-c3lr.onrender.com/api/v1/active-server')
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+  axios.get('https://portifolio-api-c3lr.onrender.com/api/v1/active-server');
 });
 
 dotenv.config({ path: './config.env' });
