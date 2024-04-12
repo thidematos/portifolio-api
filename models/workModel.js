@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const workSchema = new mongoose.Schema({
   src: {
@@ -66,6 +67,13 @@ const workSchema = new mongoose.Schema({
     default: Date.now,
     select: false,
   },
+  slug: String,
+});
+
+workSchema.pre('save', function (next) {
+  this.slug = slugify(this.title, { lower: true });
+
+  next();
 });
 
 const Work = mongoose.model('Work', workSchema);

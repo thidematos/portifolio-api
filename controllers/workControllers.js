@@ -1,123 +1,90 @@
+const AppError = require('../utils/appError');
 const Work = require('./../models/workModel');
 const ApiFeatures = require('./../utils/apiFeatures');
+const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllWorks = async (req, res, next) => {
-  try {
-    const features = new ApiFeatures(Work.find({}), req.query);
+exports.getAllWorks = catchAsync(async (req, res, next) => {
+  const features = new ApiFeatures(Work.find({}), req.query);
 
-    const query = features.filter().sort().selectFields().paginate().mongoQuery;
+  const query = features.filter().sort().selectFields().paginate().mongoQuery;
 
-    const works = await query;
+  const works = await query;
 
-    res.status(200).json({
-      status: 'sucess',
-      results: works.length,
-      data: {
-        works,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: 'Could not find any work',
-    });
-  }
-};
+  res.status(200).json({
+    status: 'sucess',
+    results: works.length,
+    data: {
+      works,
+    },
+  });
+});
 
-exports.getWork = async (req, res, next) => {
-  try {
-    const work = await Work.findById(req.params.id);
+exports.getWork = catchAsync(async (req, res, next) => {
+  const work = await Work.findById(req.params.id);
 
-    if (!work) throw new Error('Could not find this work.');
+  if (!work) return next(new AppError('Could not find this work', 404));
 
-    res.status(200).json({
-      status: 'sucess',
-      data: { work },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'sucess',
+    data: { work },
+  });
+});
 
-exports.createWork = async (req, res, next) => {
-  try {
-    const {
-      src,
-      title,
-      description,
-      mainImg,
-      subTitle,
-      sections,
-      finalDetails,
-      colors,
-      link,
-    } = req.body;
+exports.createWork = catchAsync(async (req, res, next) => {
+  const {
+    src,
+    title,
+    description,
+    mainImg,
+    subTitle,
+    sections,
+    finalDetails,
+    colors,
+    link,
+  } = req.body;
 
-    const newWork = await Work.create({
-      src,
-      title,
-      description,
-      mainImg,
-      subTitle,
-      sections,
-      finalDetails,
-      colors,
-      link,
-    });
+  const newWork = await Work.create({
+    src,
+    title,
+    description,
+    mainImg,
+    subTitle,
+    sections,
+    finalDetails,
+    colors,
+    link,
+  });
 
-    res.status(201).json({
-      status: 'sucess',
-      data: newWork,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
+  res.status(201).json({
+    status: 'sucess',
+    data: newWork,
+  });
+});
 
-exports.patchWork = async (req, res, next) => {
-  try {
-    const updatedWork = await Work.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+exports.patchWork = catchAsync(async (req, res, next) => {
+  const updatedWork = await Work.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    if (!updatedWork) throw new Error('Could not find this work');
+  if (!updatedWork) return new AppError('Could not find this work', 404);
 
-    res.status(200).json({
-      status: 'sucess',
-      data: {
-        work: updatedWork,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'sucess',
+    data: {
+      work: updatedWork,
+    },
+  });
+});
 
-exports.deleteWork = async (req, res, next) => {
-  try {
-    await Work.findByIdAndDelete(req.params.id);
+exports.deleteWork = catchAsync(async (req, res, next) => {
+  await Work.findByIdAndDelete(req.params.id);
 
-    res.status(204).json({
-      status: 'sucess',
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
+  res.status(204).json({
+    status: 'sucess',
+    data: null,
+  });
+});
 
 exports.aliasRouteExample = (req, res, next) => {
   req.query.title = 'O Coliseu';
