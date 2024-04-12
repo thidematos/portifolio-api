@@ -50,12 +50,6 @@ app.use('/api/v1/project-requests', projectRequestRouter);
 
 app.use('/api/v1/users', userRouter);
 
-app.get('/api/v1/active-server', (req, res, next) => {
-  res.status(200).json({
-    status: 'sucess',
-  });
-});
-
 app.all('*', (req, res, next) => {
   next(new AppError(`Could not find ${req.originalUrl} in this server`, 404));
 });
