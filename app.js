@@ -41,6 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
+//Posso criar um limiter para receber project requests. Anti spam.
 app.use('/api', limiter);
 
 app.use('/api/v1/works', workRouter);
@@ -48,6 +49,12 @@ app.use('/api/v1/works', workRouter);
 app.use('/api/v1/project-requests', projectRequestRouter);
 
 app.use('/api/v1/users', userRouter);
+
+app.get('/api/v1/active-server', () => {
+  res.status(200).json({
+    status: 'sucess',
+  });
+});
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Could not find ${req.originalUrl} in this server`, 404));

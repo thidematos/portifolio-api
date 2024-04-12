@@ -45,10 +45,17 @@ exports.createProjectRequest = catchAsync(async (req, res, next) => {
     budget,
   });
 
+  //We can transfor Mongo Docs. in plain Objects. That way, we can delete its properties.
+  const projectObj = newProjectRequest.toObject();
+
+  delete projectObj.isAnswered;
+  delete projectObj.createdAt;
+  delete projectObj.__v;
+
   res.status(201).json({
     status: 'sucess',
     data: {
-      projectRequest: newProjectRequest,
+      projectRequest: projectObj,
     },
   });
 });
@@ -76,6 +83,19 @@ exports.updateProjectRequest = catchAsync(async (req, res, next) => {
 
 exports.deleteProjectRequest = catchAsync(async (req, res, next) => {
   await ProjectRequest.findByIdAndDelete(req.params.id);
+
+  res.status(204).json({
+    status: 'sucess',
+    data: null,
+  });
+});
+
+exports.deleteAllProjectsRequests = catchAsync(async (req, res, next) => {
+  const projects = await ProjectRequest.find({});
+
+  projects.forEach(async (project) => {
+    await ProjectRequest.findByIdAndDelete(project._id);
+  });
 
   res.status(204).json({
     status: 'sucess',

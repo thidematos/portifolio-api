@@ -7,6 +7,15 @@ process.on('uncaughtException', (err) => {
 const app = require('./app');
 const dotenv = require('dotenv');
 const connectionDB = require('./utils/connectDB');
+const schedule = require('node-schedule');
+const axios = require('axios');
+
+schedule.scheduleJob('* * * * *', () => {
+  axios
+    .get('https://portifolio-api-c3lr.onrender.com/api/v1/active-server')
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+});
 
 dotenv.config({ path: './config.env' });
 

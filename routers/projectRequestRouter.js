@@ -11,7 +11,8 @@ router
     authController.restrictTo('admin'),
     projectRequestController.getAllProjectsRequests
   )
-  .post(projectRequestController.createProjectRequest);
+  .post(projectRequestController.createProjectRequest)
+  .delete(projectRequestController.deleteAllProjectsRequests);
 
 router
   .route('/:id')
