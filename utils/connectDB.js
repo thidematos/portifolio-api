@@ -6,12 +6,7 @@ module.exports = async () => {
     process.env.DB_PASSWORD
   );
 
-  await mongoose.connect(string, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(string);
 
   console.log('Mongo connected! 🦊');
 };
