@@ -18,7 +18,8 @@ const createSendCookie = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES * 60 * 60 * 1000
     ),
     httpOnly: process.env.NODE_ENV === 'development' ? false : true,
-    secure: process.env.NODE_ENV === 'development' ? false : true,
+    secure: process.env.NODE_ENV === 'development' ? true : true,
+    sameSite: 'Strict',
   };
 
   user.password = undefined;
@@ -102,4 +103,15 @@ exports.restrictTo = (...role) => {
 
     next();
   };
+};
+
+exports.verify = (req, res, next) => {
+  const currentUser = req.user;
+
+  res.status(200).json({
+    status: 'sucess',
+    data: {
+      user: currentUser,
+    },
+  });
 };
