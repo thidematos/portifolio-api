@@ -16,8 +16,6 @@ const sendErrorProd = (err, res) => {
       message: err.message,
     });
   } else {
-    console.log('Error!', err);
-
     res.status(500).json({
       status: 'error',
       message: 'Something went very wrong...',
@@ -32,8 +30,10 @@ const handleCastErrorDb = (err) => {
 };
 
 const handleDuplicateDb = (err) => {
-  const message = `Duplicate field: ${err.keyValue.name}`;
-  return new AppError(message, 400);
+  const message = `Duplicate field: ${err.keyValue.email}`;
+  const errorObj = new AppError(message, 400);
+
+  return errorObj;
 };
 
 const handleJwtError = (err) => new AppError('Invalid token.', 401);
@@ -56,16 +56,17 @@ module.exports = (err, req, res, next) => {
 
   if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
+
     if (err.name === 'CastType') error = handleCastErrorDb(err);
 
     if (err.code === 11000) error = handleDuplicateDb(err);
 
     if (err.name === 'ValidationError') error = handleValidationDb(err);
 
-    if (err.name === 'JsonWebTokenError') error = handleJwtError(error);
+    if (err.name === 'JsonWebTokenError') error = handleJwtError(err);
 
-    if (err.name === 'TokenExpiredError') error = handleJwtExpired(error);
+    if (err.name === 'TokenExpiredError') error = handleJwtExpired(err);
 
-    sendErrorProd(err, res);
+    sendErrorProd(error, res);
   }
 };
