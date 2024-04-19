@@ -19,6 +19,7 @@ const createSendCookie = (user, statusCode, res) => {
     ),
     httpOnly: process.env.NODE_ENV === 'development' ? false : true,
     secure: process.env.NODE_ENV === 'development' ? false : true,
+    sameSite: 'none',
   };
 
   user.password = undefined;
