@@ -49,7 +49,7 @@ app.use((req, res, next) => {
 });
 
 //Posso criar um limiter para receber project requests. Anti spam.
-app.use('/api', limiter);
+if (process.env.NODE_ENV === 'production') app.use('/api', limiter);
 
 app.use('/api/v1/works', workRouter);
 

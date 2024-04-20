@@ -60,7 +60,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: email }).select('+password');
 
   if (!user || !(await user.correctPassword(password, user.password)))
-    return next(new AppError('Incorrect email or password', 401));
+    return next(new AppError('Usuário ou senha incorretos!', 401));
 
   createSendCookie(user, 200, res);
 });
@@ -99,7 +99,9 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = (...role) => {
   return (req, res, next) => {
     if (!role.includes(req.user.role))
-      return next(new AppError('User is not authorized to get this.', 403));
+      return next(
+        new AppError('Você não está autorizado a acessar essa página.', 403)
+      );
 
     next();
   };
