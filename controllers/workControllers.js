@@ -43,6 +43,8 @@ exports.createWork = catchAsync(async (req, res, next) => {
     link,
   } = req.body;
 
+  const viewOrder = await Work.countDocuments();
+
   const newWork = await Work.create({
     src,
     title,
@@ -53,6 +55,7 @@ exports.createWork = catchAsync(async (req, res, next) => {
     finalDetails,
     colors,
     link,
+    viewOrder: viewOrder + 1,
   });
 
   res.status(201).json({

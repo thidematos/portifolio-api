@@ -78,7 +78,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookies.jwt;
   }
 
-  if (!token) return next(new AppError('Token not found', 401));
+  if (!token) return next(new AppError('Usuário não está autenticado.', 401));
 
   //Decode Token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
@@ -86,11 +86,10 @@ exports.protect = catchAsync(async (req, res, next) => {
   //Verifies is the User exists
   const currentUser = await User.findById(decoded.id).select('+role');
 
-  if (!currentUser)
-    return next(new AppError('User does not exist anymore', 401));
+  if (!currentUser) return next(new AppError('Usuário não encontrado!', 401));
 
   if (currentUser.changedPasswordAfter(decoded.iat))
-    return next(new AppError('Invalid token', 401));
+    return next(new AppError('Usuário não está autenticado.', 401));
 
   req.user = currentUser;
   next();

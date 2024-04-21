@@ -68,6 +68,10 @@ const workSchema = new mongoose.Schema({
     select: false,
   },
   slug: String,
+  viewOrder: {
+    type: Number,
+    required: Number,
+  },
 });
 
 workSchema.pre('save', function (next) {
