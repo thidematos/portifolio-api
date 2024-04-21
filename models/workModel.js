@@ -70,7 +70,10 @@ const workSchema = new mongoose.Schema({
   slug: String,
   viewOrder: {
     type: Number,
-    required: Number,
+  },
+  projectLogo: {
+    type: String,
+    required: true,
   },
 });
 
