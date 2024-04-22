@@ -1,5 +1,6 @@
 const express = require('express');
 const workController = require('./../controllers/workControllers');
+const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
@@ -17,7 +18,11 @@ router
 router
   .route('/:id')
   .get(workController.getWork)
-  .patch(workController.patchWork)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    workController.patchWork
+  )
   .delete(workController.deleteWork);
 
 module.exports = router;

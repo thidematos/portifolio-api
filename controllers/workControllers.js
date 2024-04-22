@@ -65,6 +65,7 @@ exports.createWork = catchAsync(async (req, res, next) => {
 });
 
 exports.patchWork = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const updatedWork = await Work.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -75,7 +76,7 @@ exports.patchWork = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'sucess',
     data: {
-      work: updatedWork,
+      works: updatedWork,
     },
   });
 });
