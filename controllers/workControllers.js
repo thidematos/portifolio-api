@@ -3,6 +3,10 @@ const AppError = require('../utils/appError');
 const Work = require('./../models/workModel');
 const ApiFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
+const Bucket = require('./../utils/bucket');
+
+const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
 exports.getAllWorks = catchAsync(async (req, res, next) => {
   const features = new ApiFeatures(Work.find({}), req.query);
@@ -10,12 +14,27 @@ exports.getAllWorks = catchAsync(async (req, res, next) => {
   const query = features.filter().sort().selectFields().paginate().mongoQuery;
 
   const works = await query;
+  const worksObj = works.map((work) => work.toObject());
+
+  for (const work of worksObj) {
+    const s3 = Bucket.getClient();
+
+    const params = {
+      Bucket: Bucket.getName(),
+      Key: work.src,
+    };
+
+    const command = new GetObjectCommand(params);
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+
+    work.src = url;
+  }
 
   res.status(200).json({
     status: 'sucess',
-    results: works.length,
+    results: worksObj.length,
     data: {
-      works,
+      works: worksObj,
     },
   });
 });
@@ -73,6 +92,19 @@ exports.patchWork = catchAsync(async (req, res, next) => {
     update = {
       [`${req.body.fieldToPatch}`]: req.body.fileName,
     };
+
+    const params = {
+      Bucket: process.env.BUCKET_NAME,
+      Key: req.file.filename,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+
+    const s3 = Bucket.getClient();
+
+    const command = new PutObjectCommand(params);
+
+    await s3.send(command);
   }
 
   const updatedWork = await Work.findByIdAndUpdate(req.params.id, update, {
@@ -89,8 +121,6 @@ exports.patchWork = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-exports.patchWorkImage = catchAsync(async (req, res, next) => {});
 
 exports.deleteWork = catchAsync(async (req, res, next) => {
   await Work.findByIdAndDelete(req.params.id);
@@ -109,18 +139,19 @@ exports.aliasRouteExample = (req, res, next) => {
 };
 
 exports.resizeImage = async (req, res, next) => {
-  console.log(req.file);
   if (!req.file) return next();
 
   req.file.filename = `${req.file.originalname
     .split('.')
     .at(0)}-${Date.now()}.jpeg`;
 
-  await sharp(req.file.buffer)
+  const newBuffer = await sharp(req.file.buffer)
     .resize(786, 409)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/uploads/${req.file.filename}`);
+    .toBuffer();
+
+  req.file.buffer = newBuffer;
 
   next();
 };
