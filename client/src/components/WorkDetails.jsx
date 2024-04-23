@@ -109,6 +109,7 @@ function WorkDetails() {
                       src={section.img}
                       fieldName={'Imagem'}
                       content={`src-${ind + 1}`}
+                      section={String(ind)}
                     />
                   </div>
                 ))}
@@ -128,9 +129,13 @@ function Container({ children }) {
   );
 }
 
-function Image({ src, fieldName, content }) {
+function Image({ src, fieldName, content, section = '' }) {
   return (
-    <Link to={`editar-img?field=${content}`}>
+    <Link
+      to={`editar-img?field=${content}${
+        section !== '' ? `&section=${section}` : ''
+      }`}
+    >
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <Field>{fieldName}</Field>
         <img src={`/${src}`} alt="" className="w-full" />

@@ -24,21 +24,26 @@ function EditField({ work, isMobile = true, onUpdateResource }) {
 
   const field = searchParams.get('field');
   const section = searchParams.get('section');
+  const sectionValue = work.sections[section][field];
+  const sectionId = work.sections[section]._id;
 
   const { id } = useParams();
 
   const inputRef = useRef(null);
-  const originalField = useRef(work[field]);
+  const originalField = useRef(section ? sectionValue : work[field]);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [actualValue, setActualValue] = useState(work[field]);
+  const [actualValue, setActualValue] = useState(
+    section ? sectionValue : work[field]
+  );
   const [changesMade, setChangesMade] = useState(false);
 
   const { handler: handleSave, ...states } = usePatch({
     resource: 'works',
     id,
     field,
+    isSectionField: section ? sectionId : false,
     newValue: actualValue,
     setter: onUpdateResource,
   });
@@ -59,7 +64,7 @@ function EditField({ work, isMobile = true, onUpdateResource }) {
   }
 
   function handleReset() {
-    setActualValue(work[field]);
+    setActualValue(section ? sectionValue : work[field]);
   }
 
   function dispatchSave() {

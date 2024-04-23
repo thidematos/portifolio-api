@@ -36,4 +36,11 @@ router
   )
   .delete(workController.deleteWork);
 
+router
+  .route('/:id/:sectionId')
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    workController.patchSection
+  );
 module.exports = router;

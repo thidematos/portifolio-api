@@ -9,6 +9,7 @@ export default function usePatch(patchOptions) {
     resource,
     id,
     field,
+    isSectionField,
     newValue,
     setter,
     isImage = false,
@@ -20,16 +21,16 @@ export default function usePatch(patchOptions) {
         [`${field}`]: newValue,
       };
 
+  const patchPath = isSectionField
+    ? `/api/v1/${resource}/${id}/${isSectionField}`
+    : `/api/v1/${resource}/${id}`;
+
   async function handleSave() {
     try {
       setIsLoading(true);
-      const res = await axios.patch(
-        `http://127.0.0.1:3000/api/v1/${resource}/${id}`,
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.patch(patchPath, data, {
+        withCredentials: true,
+      });
       console.log(res);
       setter(res.data.data[resource]);
     } catch (err) {

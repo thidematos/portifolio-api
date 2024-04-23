@@ -102,6 +102,40 @@ exports.patchWork = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.patchSection = catchAsync(async (req, res, next) => {
+  console.log(req.params);
+  const { id: workId, sectionId } = req.params;
+  const field = Object.keys(req.body).at(0);
+
+  const updatedWork = await Work.findOneAndUpdate(
+    {
+      _id: workId,
+      'sections._id': sectionId,
+    },
+    {
+      $set: {
+        [`sections.$.${field}`]: req.body[field],
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!updatedWork)
+    return next(
+      new AppError('Não foi encontrado nenhum projeto com esse ID', 404)
+    );
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      works: updatedWork,
+    },
+  });
+});
+
 exports.deleteWork = catchAsync(async (req, res, next) => {
   await Work.findByIdAndDelete(req.params.id);
 
