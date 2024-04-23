@@ -169,7 +169,7 @@ function Work({ work, ind }) {
                 {work.title}
               </h1>
               <img
-                src={`${work.src}`}
+                src={`/${work.src}`}
                 className=" absolute z-[40] top-0 opacity-60 brightness-[.85] grayscale-[25%] duration-150"
               />
             </Link>

@@ -124,7 +124,7 @@ function ImageUploader({ multiple, guide, field, setForm }) {
               onAction={() => {
                 const form = new FormData();
 
-                form.append(field, states.imageSelected.at(0).file);
+                form.append('image', states.imageSelected.at(0).file);
                 form.append('fieldToPatch', field);
                 setForm(form);
 

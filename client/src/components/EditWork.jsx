@@ -11,7 +11,7 @@ function EditWork() {
 
   return (
     <RouterModal path={-1}>
-      <div className="w-full h-full bg-gray-200 rounded-xl flex flex-col justify-center items-center">
+      <div className="w-full h-full bg-gray-200 rounded-xl flex flex-col justify-center items-center overflow-y-scroll py-6">
         <ProjecLogo work={work} padding={'pt-6'} width={'w-[65%]'} />
         <EditField work={work} onUpdateResource={setWork} />
       </div>

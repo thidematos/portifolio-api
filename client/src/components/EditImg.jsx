@@ -1,6 +1,6 @@
 import { useOutletContext, useParams, useSearchParams } from 'react-router-dom';
 import RouterModal from './RouterModal';
-import ImageUploader from './ImageUploader';
+
 import { useEffect, useState } from 'react';
 import TestUploader from './TestUploader';
 import usePatch from '../hooks/usePatch';

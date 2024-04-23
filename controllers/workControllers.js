@@ -3,6 +3,7 @@ const AppError = require('../utils/appError');
 const Work = require('./../models/workModel');
 const ApiFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
+const fs = require('fs');
 
 exports.getAllWorks = catchAsync(async (req, res, next) => {
   const features = new ApiFeatures(Work.find({}), req.query);
@@ -67,11 +68,15 @@ exports.createWork = catchAsync(async (req, res, next) => {
 
 exports.patchWork = catchAsync(async (req, res, next) => {
   let update = req.body;
+  let previousFile = null;
 
   if (req.file) {
     update = {
       [`${req.body.fieldToPatch}`]: req.file.filename,
     };
+
+    const work = await Work.findById(req.params.id);
+    previousFile = work[req.body.fieldToPatch];
   }
 
   const updatedWork = await Work.findByIdAndUpdate(req.params.id, update, {
@@ -79,7 +84,15 @@ exports.patchWork = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
 
-  if (!updatedWork) return new AppError('Could not find this work', 404);
+  if (!updatedWork) return next(new AppError('Could not find this work', 404));
+
+  fs.unlink(`client/public/${previousFile}`, (err) => {
+    if (err)
+      return next(
+        new AppError('Não foi encontrado um arquivo antigo para excluir.')
+      );
+    console.log('Sucess deleted!');
+  });
 
   res.status(200).json({
     status: 'sucess',
@@ -112,8 +125,30 @@ exports.resizeImage = async (req, res, next) => {
     .split('.')
     .at(0)}-${Date.now()}.jpeg`;
 
+  const sizes = {
+    src: {
+      width: 786,
+      height: 409,
+    },
+    mainImg: {
+      widht: 369,
+      height: 680,
+    },
+    projectLogo: {
+      width: 300,
+      height: 300,
+    },
+  };
+
+  console.log(sizes);
+
+  console.log(req.body.fieldToPatch);
+
   await sharp(req.file.buffer)
-    .resize(786, 409)
+    .resize(
+      sizes[req.body.fieldToPatch].width,
+      sizes[req.body.fieldToPatch].height
+    )
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
     .toFile(`client/public/${req.file.filename}`);

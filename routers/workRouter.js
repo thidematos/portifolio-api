@@ -30,7 +30,7 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
-    upload.single('src'),
+    upload.single('image'),
     workController.resizeImage,
     workController.patchWork
   )

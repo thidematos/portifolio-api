@@ -54,6 +54,62 @@ function WorkDetails() {
                 content={'subTitle'}
               />
               <Image src={work.src} fieldName={'Capa'} content={'src'} />
+              <Title
+                fieldName={'Descrição'}
+                title={work.description}
+                fontColor={'text-gray-700'}
+                fontSize={'text-base'}
+                toUpperCase={true}
+                content={'description'}
+                textAlign="text-left"
+                width={'w-[90%]'}
+                underline=""
+              />
+              <Image
+                src={work.mainImg}
+                fieldName={'Hero'}
+                content={'mainImg'}
+              />
+
+              {!isLoading &&
+                !error &&
+                work.sections?.map((section, ind) => (
+                  <div
+                    key={ind + 1}
+                    className={`${
+                      (ind + 1) % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200'
+                    } w-full flex flex-col justify-center items-center gap-5`}
+                  >
+                    <Field fontSize="text-2xl" width="w-full">
+                      SEÇÃO - {ind + 1}
+                    </Field>
+                    <Title
+                      fieldName={'Heading'}
+                      title={section.title}
+                      fontColor={'text-gray-700'}
+                      fontSize={'text-lg'}
+                      toUpperCase={true}
+                      content={`title-${ind + 1}`}
+                      width={'w-[90%]'}
+                    />
+                    <Title
+                      fieldName={'Detalhes'}
+                      title={section.description}
+                      fontColor={'text-gray-700'}
+                      fontSize={'text-base'}
+                      toUpperCase={true}
+                      content={`description-${ind + 1}`}
+                      textAlign="text-left"
+                      width={'w-[90%]'}
+                      underline=""
+                    />
+                    <Image
+                      src={section.img}
+                      fieldName={'Imagem'}
+                      content={`src-${ind + 1}`}
+                    />
+                  </div>
+                ))}
             </EditArea>
           </Container>
         </>
@@ -107,13 +163,15 @@ function Title({
   toUpperCase = false,
   content,
   fieldName,
+  underline = 'underline',
+  textAlign = 'text-center',
 }) {
   return (
     <Link to={`editar?field=${content}`} className="w-full">
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <Field>{fieldName}</Field>
         <h2
-          className={`font-poppins ${fontColor} ${fontSize} ${padding} ${margin} ${width} drop-shadow text-center hover:text-blue-500 underline underline-offset-2 `}
+          className={`font-poppins ${fontColor} ${fontSize} ${padding} ${margin} ${width} drop-shadow ${textAlign} hover:text-blue-500 ${underline} underline-offset-2 `}
         >
           🔧 {toUpperCase ? title?.toUpperCase() : title}
         </h2>
@@ -122,9 +180,17 @@ function Title({
   );
 }
 
-function Field({ children }) {
+function Field({
+  children,
+  width = 'w-[60%]',
+  fontSize = 'text-xl',
+  bgColor = 'bg-blue-500',
+  textColor = 'text-gray-100',
+}) {
   return (
-    <p className="font-poppins text-xl w-[60%] text-gray-100 text-center px-6 py-3 bg-blue-500">
+    <p
+      className={`font-poppins ${fontSize} ${width} ${textColor} text-center px-6 py-3 ${bgColor}`}
+    >
       {children}
     </p>
   );
