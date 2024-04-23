@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 function Button({
   type = 'action',
   onAction,
@@ -9,6 +11,9 @@ function Button({
   textColor = 'text-gray-50',
   padding = 'px-6 py-3',
 }) {
+  const navigate = useNavigate();
+
+  if (!onAction) onAction = navigate;
   //type === 'action' || 'back'
 
   function handleAction(e) {

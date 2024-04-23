@@ -4,6 +4,7 @@ import Error from './Error';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
 function WorkDetails() {
   const { id } = useParams();
@@ -71,49 +72,94 @@ function WorkDetails() {
                 content={'mainImg'}
               />
 
-              {!isLoading &&
-                !error &&
-                work.sections?.map((section, ind) => (
-                  <div
-                    key={ind + 1}
-                    className={`${
-                      (ind + 1) % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200'
-                    } w-full flex flex-col justify-center items-center gap-5`}
-                  >
-                    <Field fontSize="text-2xl" width="w-full">
-                      SEÇÃO - {ind + 1}
-                    </Field>
-                    <Title
-                      fieldName={'Heading'}
-                      title={section.title}
-                      fontColor={'text-gray-700'}
-                      fontSize={'text-lg'}
-                      toUpperCase={true}
-                      content={`title`}
-                      width={'w-[90%]'}
-                      section={String(ind)}
-                    />
-                    <Title
-                      fieldName={'Detalhes'}
-                      title={section.description}
-                      fontColor={'text-gray-700'}
-                      fontSize={'text-base'}
-                      toUpperCase={true}
-                      content={`description`}
-                      textAlign="text-left"
-                      width={'w-[90%]'}
-                      underline=""
-                      section={String(ind)}
-                    />
-                    <Image
-                      src={section.img}
-                      fieldName={'Imagem'}
-                      content={`img`}
-                      section={String(ind)}
-                    />
-                  </div>
-                ))}
+              {work.sections?.map((section, ind) => (
+                <div
+                  key={ind + 1}
+                  className={`${
+                    (ind + 1) % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200'
+                  } w-full flex flex-col justify-center items-center gap-5`}
+                >
+                  <Field fontSize="text-2xl" width="w-full">
+                    SEÇÃO - {ind + 1}
+                  </Field>
+                  <Title
+                    fieldName={'Heading'}
+                    title={section.title}
+                    fontColor={'text-gray-700'}
+                    fontSize={'text-lg'}
+                    toUpperCase={true}
+                    content={`title`}
+                    width={'w-[90%]'}
+                    section={String(ind)}
+                  />
+                  <Title
+                    fieldName={'Detalhes'}
+                    title={section.description}
+                    fontColor={'text-gray-700'}
+                    fontSize={'text-base'}
+                    toUpperCase={true}
+                    content={`description`}
+                    textAlign="text-left"
+                    width={'w-[90%]'}
+                    underline=""
+                    section={String(ind)}
+                  />
+                  <Image
+                    src={section.img}
+                    fieldName={'Imagem'}
+                    content={`img`}
+                    section={String(ind)}
+                  />
+                </div>
+              ))}
+              <Field fontSize="text-2xl" width="w-full">
+                PRODUÇÃO
+              </Field>
+              <Title
+                fieldName={'Ano'}
+                title={work.year}
+                fontColor={'text-gray-700'}
+                fontSize={'text-xl'}
+                toUpperCase={true}
+                content={`year`}
+                textAlign="text-center"
+                width={'w-[90%]'}
+              />
+              <Title
+                fieldName={'Habilidades'}
+                title={work.abilities}
+                fontColor={'text-gray-700'}
+                fontSize={'text-lg'}
+                toUpperCase={true}
+                content={`abilities`}
+                textAlign="text-left"
+                width={'w-[90%]'}
+              />
+              <Title
+                fieldName={'Deploy'}
+                title={work.link}
+                fontColor={'text-gray-700'}
+                fontSize={'text-lg'}
+                toUpperCase={true}
+                content={`link`}
+                textAlign="text-center"
+                width={'w-[90%]'}
+              />
+              <Image
+                fieldWidth={'w-[100%]'}
+                src={work.projectLogo}
+                fieldName={'Logo do projeto'}
+                content={`projectLogo`}
+              />
             </EditArea>
+            <Button
+              fontSize={'text-2xl'}
+              bgColor="bg-orange-500"
+              type="back"
+              path={'/admin/dashboard/works'}
+            >
+              VOLTAR
+            </Button>
           </Container>
         </>
       )}
@@ -129,7 +175,7 @@ function Container({ children }) {
   );
 }
 
-function Image({ src, fieldName, content, section = '' }) {
+function Image({ src, fieldName, content, section = '', fieldWidth }) {
   return (
     <Link
       to={`editar-img?field=${content}${
@@ -137,7 +183,7 @@ function Image({ src, fieldName, content, section = '' }) {
       }`}
     >
       <div className="w-full flex flex-col justify-center items-center gap-5">
-        <Field>{fieldName}</Field>
+        <Field width={fieldWidth}>{fieldName}</Field>
         <img src={`/${src}`} alt="" className="w-full" />
       </div>
     </Link>

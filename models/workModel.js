@@ -38,16 +38,16 @@ const workSchema = new mongoose.Schema({
       },
     },
   ],
-  finalDetails: {
-    year: {
-      type: String,
-      required: true,
-    },
-    abilities: {
-      type: String,
-      required: true,
-    },
+
+  year: {
+    type: String,
+    required: true,
   },
+  abilities: {
+    type: String,
+    required: true,
+  },
+
   colors: {
     from: {
       type: String,

@@ -89,7 +89,7 @@ function ProjectDetails({ project, onCloseProject }) {
               {project.title}
             </Title>
             <span className="font-poppins text-gray-600 md:text-lg lg:text-base 2xl:text-lg">
-              {project.finalDetails.year}
+              {project.year}
             </span>
           </div>
           <TextBlock
@@ -98,7 +98,7 @@ function ProjectDetails({ project, onCloseProject }) {
             color="text-gray-700"
             width="w-[90%]"
           >
-            {project.finalDetails.abilities}
+            {project.abilities}
           </TextBlock>
         </FinalDetails>
         <div className="flex flex-col justify-center items-center md:items-end pb-16 pt-6 md:pb-0 md:pt-16 md:pr-8 gap-4 w-full md:w-[50%] h-full">

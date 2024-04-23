@@ -102,6 +102,15 @@ function WorksPage() {
               )}
             </DialogueBox>
           )}
+          <Button
+            fontSize={'text-2xl'}
+            bgColor="bg-orange-500"
+            type="back"
+            path={'/admin/dashboard'}
+            margin={'mt-10'}
+          >
+            VOLTAR
+          </Button>
         </>
       )}
     </div>

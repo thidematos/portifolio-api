@@ -24,8 +24,8 @@ function EditField({ work, isMobile = true, onUpdateResource }) {
 
   const field = searchParams.get('field');
   const section = searchParams.get('section');
-  const sectionValue = work.sections[section][field];
-  const sectionId = work.sections[section]._id;
+  const sectionValue = work.sections[section]?.[field];
+  const sectionId = work.sections[section]?._id;
 
   const { id } = useParams();
 

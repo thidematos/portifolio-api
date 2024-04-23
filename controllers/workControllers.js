@@ -114,8 +114,6 @@ exports.patchSection = catchAsync(async (req, res, next) => {
     const work = await Work.findById(workId);
     previousFile = work.sections.id(sectionId)[field];
 
-    console.log('This is the field:', field);
-
     console.log('This is previousFile', previousFile);
   }
 
