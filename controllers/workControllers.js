@@ -1,3 +1,4 @@
+const sharp = require('sharp');
 const AppError = require('../utils/appError');
 const Work = require('./../models/workModel');
 const ApiFeatures = require('./../utils/apiFeatures');
@@ -65,8 +66,16 @@ exports.createWork = catchAsync(async (req, res, next) => {
 });
 
 exports.patchWork = catchAsync(async (req, res, next) => {
-  console.log(req.body);
-  const updatedWork = await Work.findByIdAndUpdate(req.params.id, req.body, {
+  let update = req.body;
+
+  if (req.file) {
+    req.body.fileName = req.file.filename;
+    update = {
+      [`${req.body.fieldToPatch}`]: req.body.fileName,
+    };
+  }
+
+  const updatedWork = await Work.findByIdAndUpdate(req.params.id, update, {
     new: true,
     runValidators: true,
   });
@@ -80,6 +89,8 @@ exports.patchWork = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.patchWorkImage = catchAsync(async (req, res, next) => {});
 
 exports.deleteWork = catchAsync(async (req, res, next) => {
   await Work.findByIdAndDelete(req.params.id);
@@ -97,7 +108,19 @@ exports.aliasRouteExample = (req, res, next) => {
   next();
 };
 
-exports.handleIdParam = (req, res, next, param) => {
-  console.log(`Hello from the Router Param Middleware! Param: ${param}`);
+exports.resizeImage = async (req, res, next) => {
+  console.log(req.file);
+  if (!req.file) return next();
+
+  req.file.filename = `${req.file.originalname
+    .split('.')
+    .at(0)}-${Date.now()}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize(786, 409)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/uploads/${req.file.filename}`);
+
   next();
 };
