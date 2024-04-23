@@ -14,11 +14,14 @@ function EditImg() {
 
   const { id } = useParams();
   const field = searchParams.get('field');
+  const section = searchParams.get('section');
+  const sectionValue = work.sections[section][field];
 
   const { handler, isLoading, error } = usePatch({
     resource: 'works',
     id: id,
     field: field,
+    isSectionField: work.sections[section]._id,
     newValue: formToPatch,
     setter: setWork,
     isImage: true,
@@ -44,7 +47,7 @@ function EditImg() {
             </h1>
             <Content>
               <Label>Imagem atual:</Label>
-              <img src={`/${work[field]}`} />
+              <img src={`/${section ? sectionValue : work[field]}`} />
             </Content>
             <Content>
               <Label>Clique para alterar a imagem:</Label>

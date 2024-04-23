@@ -41,6 +41,8 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
+    upload.single('image'),
+    workController.resizeImage,
     workController.patchSection
   );
 module.exports = router;

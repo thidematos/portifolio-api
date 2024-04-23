@@ -86,13 +86,15 @@ exports.patchWork = catchAsync(async (req, res, next) => {
 
   if (!updatedWork) return next(new AppError('Could not find this work', 404));
 
-  fs.unlink(`client/public/${previousFile}`, (err) => {
-    if (err)
-      return next(
-        new AppError('Não foi encontrado um arquivo antigo para excluir.')
-      );
-    console.log('Sucess deleted!');
-  });
+  if (req.file) {
+    fs.unlink(`client/public/${previousFile}`, (err) => {
+      if (err)
+        return next(
+          new AppError('Não foi encontrado um arquivo antigo para excluir.')
+        );
+      console.log('Sucess deleted!');
+    });
+  }
 
   res.status(200).json({
     status: 'sucess',
@@ -103,9 +105,19 @@ exports.patchWork = catchAsync(async (req, res, next) => {
 });
 
 exports.patchSection = catchAsync(async (req, res, next) => {
-  console.log(req.params);
+  let previousFile = null;
+
   const { id: workId, sectionId } = req.params;
-  const field = Object.keys(req.body).at(0);
+  const field = req.body.fieldToPatch;
+
+  if (req.file) {
+    const work = await Work.findById(workId);
+    previousFile = work.sections.id(sectionId)[field];
+
+    console.log('This is the field:', field);
+
+    console.log('This is previousFile', previousFile);
+  }
 
   const updatedWork = await Work.findOneAndUpdate(
     {
@@ -114,7 +126,7 @@ exports.patchSection = catchAsync(async (req, res, next) => {
     },
     {
       $set: {
-        [`sections.$.${field}`]: req.body[field],
+        [`sections.$.${field}`]: req.file.filename,
       },
     },
     {
@@ -127,6 +139,16 @@ exports.patchSection = catchAsync(async (req, res, next) => {
     return next(
       new AppError('Não foi encontrado nenhum projeto com esse ID', 404)
     );
+
+  if (req.file) {
+    fs.unlink(`client/public/${previousFile}`, (err) => {
+      if (err)
+        return next(
+          new AppError('Não foi encontrado um arquivo antigo para excluir.')
+        );
+      console.log('Sucess deleted!');
+    });
+  }
 
   res.status(200).json({
     status: 'success',
@@ -171,6 +193,10 @@ exports.resizeImage = async (req, res, next) => {
     projectLogo: {
       width: 300,
       height: 300,
+    },
+    img: {
+      width: 1000,
+      height: 600,
     },
   };
 

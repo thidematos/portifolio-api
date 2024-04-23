@@ -108,7 +108,7 @@ function WorkDetails() {
                     <Image
                       src={section.img}
                       fieldName={'Imagem'}
-                      content={`src-${ind + 1}`}
+                      content={`img`}
                       section={String(ind)}
                     />
                   </div>
