@@ -89,8 +89,9 @@ function WorkDetails() {
                       fontColor={'text-gray-700'}
                       fontSize={'text-lg'}
                       toUpperCase={true}
-                      content={`title-${ind + 1}`}
+                      content={`title`}
                       width={'w-[90%]'}
+                      section={String(ind)}
                     />
                     <Title
                       fieldName={'Detalhes'}
@@ -98,10 +99,11 @@ function WorkDetails() {
                       fontColor={'text-gray-700'}
                       fontSize={'text-base'}
                       toUpperCase={true}
-                      content={`description-${ind + 1}`}
+                      content={`description`}
                       textAlign="text-left"
                       width={'w-[90%]'}
                       underline=""
+                      section={String(ind)}
                     />
                     <Image
                       src={section.img}
@@ -165,9 +167,15 @@ function Title({
   fieldName,
   underline = 'underline',
   textAlign = 'text-center',
+  section = '',
 }) {
   return (
-    <Link to={`editar?field=${content}`} className="w-full">
+    <Link
+      to={`editar?field=${content}${
+        section !== '' ? `&section=${section}` : ''
+      }`}
+      className="w-full"
+    >
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <Field>{fieldName}</Field>
         <h2

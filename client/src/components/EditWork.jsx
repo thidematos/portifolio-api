@@ -21,7 +21,10 @@ function EditWork() {
 
 function EditField({ work, isMobile = true, onUpdateResource }) {
   const [searchParams] = useSearchParams();
+
   const field = searchParams.get('field');
+  const section = searchParams.get('section');
+
   const { id } = useParams();
 
   const inputRef = useRef(null);
