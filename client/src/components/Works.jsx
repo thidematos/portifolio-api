@@ -104,7 +104,7 @@ function Project({ project, onOpenProject }) {
 
   return (
     <div
-      className={`bg-gradient-to-r ${project.colors.from} ${project.colors.to} rounded-2xl flex flex-row justify-center items-end shadow-xl relative md:max-w-none lg:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] 3xl:max-w-[600px]`}
+      className={` ${project.colors.to} ${project.colors.from} bg-gradient-to-r rounded-2xl flex flex-row justify-center items-end shadow-xl relative md:max-w-none lg:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] 3xl:max-w-[600px]`}
       onMouseOver={toggleIsScalled}
       onMouseOut={toggleIsScalled}
       onClick={() => onOpenProject(project)}

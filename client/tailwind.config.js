@@ -9,9 +9,6 @@ export default {
         noto: 'Noto Serif',
         lato: 'Lato',
       },
-      colors: {
-        kindBlack: '#151718',
-      },
       screens: {
         '3xl': '1920px',
       },

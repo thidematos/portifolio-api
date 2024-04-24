@@ -16,7 +16,7 @@ function WorkDetails() {
     const getWork = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`http://127.0.0.1:3000/api/v1/works/${id}`);
+        const res = await axios.get(`/api/v1/works/${id}`);
 
         setWork(res.data.data.work);
       } catch (err) {
@@ -151,15 +151,26 @@ function WorkDetails() {
                 fieldName={'Logo do projeto'}
                 content={`projectLogo`}
               />
+              <Color from={work.colors?.from} to={work.colors?.to} />
             </EditArea>
-            <Button
-              fontSize={'text-2xl'}
-              bgColor="bg-orange-500"
-              type="back"
-              path={'/admin/dashboard/works'}
-            >
-              VOLTAR
-            </Button>
+            <div className="w-full flex flex-row justify-around items-center">
+              <Button
+                fontSize={'text-2xl'}
+                bgColor="bg-orange-500"
+                type="back"
+                path={'/admin/dashboard/works'}
+              >
+                VOLTAR
+              </Button>
+              <Button
+                fontSize={'text-xl'}
+                bgColor="bg-gray-300"
+                type="back"
+                path={'delete'}
+              >
+                🗑️
+              </Button>
+            </div>
           </Container>
         </>
       )}
@@ -194,6 +205,27 @@ function EditArea({ children }) {
   return (
     <div className="py-10 w-full flex flex-col justify-center items-center gap-8">
       {children}
+    </div>
+  );
+}
+
+function Color({ from, to }) {
+  return (
+    <div className="w-full flex flex-col justify-center items-center">
+      <p>Clique para o gradiente</p>
+      <div
+        className={`markup h-[100px] w-full bg-gradient-to-r ${from} ${to}`}
+      ></div>
+    </div>
+  );
+}
+
+function ColorPicker() {
+  return (
+    <div>
+      <h3>From</h3>
+      <label></label>
+      <input type="color" />
     </div>
   );
 }

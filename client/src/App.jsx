@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Portifolio from './pages/Portifolio';
 import CodiceDesvelado from './pages/CodiceDesvelado';
@@ -9,6 +8,7 @@ import DashboardOverview from './components/DashboardOverview';
 import WorkDetails from './components/WorkDetails';
 import EditWork from './components/EditWork';
 import EditImg from './components/EditImg';
+import DeleteWork from './components/DeleteWork';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -27,6 +27,7 @@ function App() {
           <Route path="works/:id" element={<WorkDetails />}>
             <Route path="editar" element={<EditWork />} />
             <Route path="editar-img" element={<EditImg />} />
+            <Route path="delete" element={<DeleteWork />} />
           </Route>
         </Route>
       </Routes>
