@@ -17,12 +17,13 @@ function ErrorNotification({
   children,
   width,
   height,
+  opacityProp = 'opacity-70',
 }) {
   const [opacity, setOpacity] = useState('opacity-0');
 
   useEffect(() => {
     setTimeout(() => {
-      setOpacity('opacity-70');
+      setOpacity(opacityProp);
     }, times.toFadeInAfter);
   }, []);
 

@@ -202,10 +202,6 @@ exports.resizeImage = async (req, res, next) => {
     },
   };
 
-  console.log(sizes);
-
-  console.log(req.body.fieldToPatch);
-
   await sharp(req.file.buffer)
     .resize(
       sizes[req.body.fieldToPatch].width,
@@ -217,3 +213,23 @@ exports.resizeImage = async (req, res, next) => {
 
   next();
 };
+
+exports.patchAddSection = catchAsync(async (req, res, next) => {
+  const { sectionIndex } = req.query;
+  const { id } = req.params;
+
+  console.log('This is the sectionIndex:', sectionIndex);
+
+  console.log('This is the ID:', id);
+
+  console.log(`File:`, req.file);
+
+  console.log(`Body:`, req.body);
+
+  res.status(200).json({
+    status: 'sucess',
+    data: {
+      works: 'oi',
+    },
+  });
+});

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Portifolio from './pages/Portifolio';
 import CodiceDesvelado from './pages/CodiceDesvelado';
-import Admin from './pages/Admin';
+import Admin from './components/Admin';
 import Dashboard from './pages/Dashboard';
 import WorksPage from './components/WorksPage';
 import DashboardOverview from './components/DashboardOverview';
@@ -10,6 +10,8 @@ import EditWork from './components/EditWork';
 import EditImg from './components/EditImg';
 import DeleteWork from './components/DeleteWork';
 import ColorPicker from './components/ColorPicker';
+import DeleteSection from './components/DeleteSection';
+import AddSection from './components/AddSection';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -29,6 +31,8 @@ function App() {
             <Route path="editar" element={<EditWork />} />
             <Route path="editar-img" element={<EditImg />} />
             <Route path="delete" element={<DeleteWork />} />
+            <Route path="delete-section" element={<DeleteSection />} />
+            <Route path="add-section" element={<AddSection />} />
             <Route path="colors" element={<ColorPicker />} />
           </Route>
         </Route>

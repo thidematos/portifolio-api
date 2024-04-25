@@ -24,6 +24,15 @@ router
   .get(workController.getAllWorks)
   .post(workController.createWork);
 
+router.patch(
+  '/add-section/:id',
+  authController.protect,
+  authController.restrictTo('admin'),
+  upload.single('image'),
+  workController.resizeImage,
+  workController.patchAddSection
+);
+
 router
   .route('/:id')
   .get(workController.getWork)
@@ -45,4 +54,5 @@ router
     workController.resizeImage,
     workController.patchSection
   );
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useReducer, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCreative } from 'swiper/modules';
 import 'swiper/css';
@@ -44,7 +44,14 @@ function reducer(state, action) {
   }
 }
 
-function ImageUploader({ multiple, guide, field, setForm }) {
+function ImageUploader({
+  multiple,
+  guide,
+  field,
+  setForm,
+  dialogueWidth = 'w-[60%]',
+  appendMoreData = () => null,
+}) {
   const [states, dispatch] = useReducer(reducer, initialState);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -107,7 +114,7 @@ function ImageUploader({ multiple, guide, field, setForm }) {
           notification={'Deseja salvar a mudança?'}
           bgColor={'bg-blue-500/85'}
           textColor={'text-gray-50'}
-          width={'w-[70%]'}
+          width={dialogueWidth}
           margin={'mt-4'}
         >
           <div className="flex flex-row justify-around items-center w-full mt-4">
@@ -126,6 +133,9 @@ function ImageUploader({ multiple, guide, field, setForm }) {
 
                 form.append('image', states.imageSelected.at(0).file);
                 form.append('fieldToPatch', field);
+
+                appendMoreData(form);
+
                 setForm(form);
 
                 dispatch({ type: 'reset' });
@@ -192,7 +202,11 @@ function DropLabelArea({ dependencies, guide, multiple }) {
       onDragEnter={dependencies.stopDefaultBehavior}
       onDragOver={dependencies.stopDefaultBehavior}
     >
-      {src ? <img src={src} className="w-full" /> : <span>{guide}</span>}
+      {src ? (
+        <img src={src} className="w-full" />
+      ) : (
+        <span className="font-poppins text-gray-400 text-xs">{guide}</span>
+      )}
     </label>
   );
 }

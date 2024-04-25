@@ -30,7 +30,9 @@ function EditField({ work, isMobile = true, onUpdateResource }) {
   const { id } = useParams();
 
   const inputRef = useRef(null);
-  const originalField = useRef(section ? sectionValue : work[field]);
+  const [originalField, setOriginalField] = useState(
+    section ? sectionValue : work[field]
+  );
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -49,8 +51,8 @@ function EditField({ work, isMobile = true, onUpdateResource }) {
   });
 
   useEffect(() => {
-    if (actualValue !== originalField.current) setChangesMade(true);
-    if (actualValue === originalField.current) setChangesMade(false);
+    if (actualValue !== originalField) setChangesMade(true);
+    if (actualValue === originalField) setChangesMade(false);
   }, [actualValue]);
 
   useEffect(() => {
@@ -70,6 +72,7 @@ function EditField({ work, isMobile = true, onUpdateResource }) {
   function dispatchSave() {
     handleSave();
     setChangesMade(false);
+    setOriginalField(actualValue);
   }
 
   return (

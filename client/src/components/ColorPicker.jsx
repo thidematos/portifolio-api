@@ -54,10 +54,6 @@ function ColorPicker() {
     setActualColors(originalColor.current);
   }
 
-  console.log('Work:', work);
-  console.log('Actual Colors:', actualColors);
-  console.log('Original color:', originalColor.current);
-
   return (
     <RouterModal path={-1}>
       <div className="flex flex-col justify-center items-center w-full h-full">

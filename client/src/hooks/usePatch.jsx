@@ -13,6 +13,7 @@ export default function usePatch(patchOptions) {
     newValue,
     setter,
     isImage = false,
+    usePath = false,
   } = patchOptions;
 
   const data = isImage
@@ -21,9 +22,15 @@ export default function usePatch(patchOptions) {
         [`${field}`]: newValue,
       };
 
-  const patchPath = isSectionField
-    ? `/api/v1/${resource}/${id}/${isSectionField}`
-    : `/api/v1/${resource}/${id}`;
+  let patchPath;
+
+  if (usePath) {
+    patchPath = usePath;
+  } else {
+    patchPath = isSectionField
+      ? `/api/v1/${resource}/${id}/${isSectionField}`
+      : `/api/v1/${resource}/${id}`;
+  }
 
   async function handleSave() {
     try {
