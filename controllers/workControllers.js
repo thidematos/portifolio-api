@@ -112,7 +112,9 @@ exports.patchSection = catchAsync(async (req, res, next) => {
   let previousFile = null;
 
   const { id: workId, sectionId } = req.params;
-  const field = req.body.fieldToPatch;
+  const field = req.body.fieldToPatch || Object.keys(req.body).at(0);
+
+  console.log(field);
 
   if (req.file) {
     const work = await Work.findById(workId);
@@ -128,7 +130,7 @@ exports.patchSection = catchAsync(async (req, res, next) => {
     },
     {
       $set: {
-        [`sections.$.${field}`]: req.file.filename,
+        [`sections.$.${field}`]: req.file?.filename || req.body[field],
       },
     },
     {

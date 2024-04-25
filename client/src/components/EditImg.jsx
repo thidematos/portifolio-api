@@ -56,6 +56,7 @@ function EditImg() {
                 guide={'Selecione uma imagem!'}
                 field={field}
                 setForm={setFormToPatch}
+                dialogueWidth="w-[70%]"
               />
             </Content>
           </div>
