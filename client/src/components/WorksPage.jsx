@@ -38,7 +38,7 @@ function WorksPage() {
 
         const updatePromises = changedIds.map((id, ind) =>
           axios.patch(
-            `http://127.0.0.1:3000/api/v1/works/${id}`,
+            `/api/v1/works/${id}`,
             {
               viewOrder: Number(newIndexes[ind]),
             },
@@ -168,7 +168,7 @@ function Work({ work, ind }) {
       {(provided) => {
         return (
           <li
-            className={`border border-orange-500 w-[80%] rounded-lg  min-h-[160px] shadow-lg relative overflow-hidden`}
+            className={`border border-orange-300 w-[80%] rounded-lg  min-h-[160px] shadow-lg relative overflow-hidden`}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}

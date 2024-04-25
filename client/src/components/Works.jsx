@@ -104,13 +104,16 @@ function Project({ project, onOpenProject }) {
 
   return (
     <div
-      className={` ${project.colors.to} ${project.colors.from} bg-gradient-to-r rounded-2xl flex flex-row justify-center items-end shadow-xl relative md:max-w-none lg:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] 3xl:max-w-[600px]`}
+      style={{
+        backgroundImage: `linear-gradient(to right, ${project.colors.from},${project.colors.to})`,
+      }}
+      className={`rounded-2xl flex flex-row justify-center items-end shadow-xl relative md:max-w-none lg:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] 3xl:max-w-[600px]`}
       onMouseOver={toggleIsScalled}
       onMouseOut={toggleIsScalled}
       onClick={() => onOpenProject(project)}
     >
       <button
-        className={`duration-300 font-roboto bg-gray-400 text-2xl md:text-3xl lg:text-xl xl:text-2xl 2xl:text-3xl 3xl:text-4xl w-[30px] h-[30px] md:w-[50px] md:h-[50px] lg:w-[20px] lg:h-[20px] xl:w-[30px] xl:h-[30px] 2xl:w-[40px] 2xl:h-[40px] 3xl:w-[50px] 3xl:h-[50px] flex flex-col items-center justify-center text-gray-100 p-3 rounded-full absolute left-auto bottom-auto top-[5%] right-[3%] md:top-[30px] md:right-[30px] z-20 ${
+        className={` duration-300 font-roboto bg-gray-400 text-2xl md:text-3xl lg:text-xl xl:text-2xl 2xl:text-3xl 3xl:text-4xl w-[30px] h-[30px] md:w-[50px] md:h-[50px] lg:w-[20px] lg:h-[20px] xl:w-[30px] xl:h-[30px] 2xl:w-[40px] 2xl:h-[40px] 3xl:w-[50px] 3xl:h-[50px] flex flex-col items-center justify-center text-gray-100 p-3 rounded-full absolute left-auto bottom-auto top-[5%] right-[3%] md:top-[30px] md:right-[30px] z-20 ${
           isScalled ? 'opacity-85' : 'opacity-0'
         }`}
       >

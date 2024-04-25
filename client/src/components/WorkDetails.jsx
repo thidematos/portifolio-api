@@ -145,13 +145,13 @@ function WorkDetails() {
                 textAlign="text-center"
                 width={'w-[90%]'}
               />
+              <Color colors={work.colors} />
               <Image
                 fieldWidth={'w-[100%]'}
                 src={work.projectLogo}
                 fieldName={'Logo do projeto'}
                 content={`projectLogo`}
               />
-              <Color from={work.colors?.from} to={work.colors?.to} />
             </EditArea>
             <div className="w-full flex flex-row justify-around items-center">
               <Button
@@ -209,23 +209,23 @@ function EditArea({ children }) {
   );
 }
 
-function Color({ from, to }) {
+function Color({ colors }) {
   return (
-    <div className="w-full flex flex-col justify-center items-center">
-      <p>Clique para o gradiente</p>
-      <div
-        className={`markup h-[100px] w-full bg-gradient-to-r ${from} ${to}`}
-      ></div>
-    </div>
-  );
-}
-
-function ColorPicker() {
-  return (
-    <div>
-      <h3>From</h3>
-      <label></label>
-      <input type="color" />
+    <div className="w-full flex flex-col justify-center items-center gap-5">
+      <Field>Cores</Field>
+      <Link className="w-full" to={`colors`}>
+        <div className="flex flex-col justify-center items-center w-full">
+          <p className="font-poppins text-lg text-gray-400">
+            Clique para alterar o gradiente
+          </p>
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to right, ${colors?.from}, ${colors?.to})`,
+            }}
+            className={`h-[100px] w-full `}
+          ></div>
+        </div>
+      </Link>
     </div>
   );
 }

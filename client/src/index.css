@@ -188,3 +188,21 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.inputColor {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  @apply w-[70px] h-[70px] border-none outline-none cursor-pointer;
+}
+
+.inputColor::-webkit-color-swatch {
+  border-radius: 50%;
+  border: none;
+}
+
+.inputColor::-moz-color-swatch {
+  border-radius: 50%;
+  border: none;
+}

@@ -9,6 +9,7 @@ import WorkDetails from './components/WorkDetails';
 import EditWork from './components/EditWork';
 import EditImg from './components/EditImg';
 import DeleteWork from './components/DeleteWork';
+import ColorPicker from './components/ColorPicker';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -28,6 +29,7 @@ function App() {
             <Route path="editar" element={<EditWork />} />
             <Route path="editar-img" element={<EditImg />} />
             <Route path="delete" element={<DeleteWork />} />
+            <Route path="colors" element={<ColorPicker />} />
           </Route>
         </Route>
       </Routes>
