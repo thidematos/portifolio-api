@@ -163,7 +163,26 @@ exports.patchSection = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteWork = catchAsync(async (req, res, next) => {
-  await Work.findByIdAndDelete(req.params.id);
+  const work = await Work.findById(req.params.id);
+
+  const imagesToDelete = [
+    work.src,
+    work.mainImg,
+    work.projectLogo,
+    ...work.sections.map((section) => section.img),
+  ];
+
+  imagesToDelete.forEach((image) => {
+    fs.unlink(`client/public/${image}`, (err) => {
+      if (err)
+        return next(
+          new AppError('Não foi encontrado um arquivo antigo para excluir.')
+        );
+      console.log('Sucess deleted!');
+    });
+  });
+
+  await work.deleteOne();
 
   res.status(204).json({
     status: 'sucess',
@@ -245,7 +264,17 @@ exports.deleteSection = catchAsync(async (req, res, next) => {
 
   const work = await Work.findById(workId);
 
-  work.sections.id(sectionId).deleteOne();
+  const selectedSection = work.sections.id(sectionId);
+
+  fs.unlink(`client/public/${selectedSection.img}`, (err) => {
+    if (err)
+      return next(
+        new AppError('Não foi encontrado um arquivo antigo para excluir.')
+      );
+    console.log('Sucess deleted!');
+  });
+
+  selectedSection.deleteOne();
 
   await work.save();
 

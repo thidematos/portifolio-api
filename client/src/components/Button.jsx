@@ -10,6 +10,7 @@ function Button({
   bgColor = 'bg-blue-500',
   textColor = 'text-gray-50',
   padding = 'px-6 py-3',
+  width,
 }) {
   const navigate = useNavigate();
 
@@ -24,7 +25,7 @@ function Button({
 
   return (
     <button
-      className={`font-poppins ${fontSize} ${padding} ${textColor} ${bgColor} rounded-md shadow-lg drop-shadow-sm ${margin}`}
+      className={`${width} font-poppins ${fontSize} ${padding} ${textColor} ${bgColor} rounded-md shadow-lg drop-shadow-sm ${margin}`}
       onClick={handleAction}
     >
       {children}

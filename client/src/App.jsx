@@ -12,6 +12,7 @@ import DeleteWork from './components/DeleteWork';
 import ColorPicker from './components/ColorPicker';
 import DeleteSection from './components/DeleteSection';
 import AddSection from './components/AddSection';
+import CreateWork from './components/CreateWork';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -27,6 +28,7 @@ function App() {
           <Route index element={<Navigate replace to={'overview'} />} />
           <Route path="overview" element={<DashboardOverview />} />
           <Route path="works" element={<WorksPage />} />
+          <Route path="create-work" element={<CreateWork />} />
           <Route path="works/:id" element={<WorkDetails />}>
             <Route path="editar" element={<EditWork />} />
             <Route path="editar-img" element={<EditImg />} />

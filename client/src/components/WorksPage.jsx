@@ -65,7 +65,7 @@ function WorksPage() {
       {error && <Error message={error} />}
       {!isLoading && !error && (
         <>
-          <h3 className="bg-gray-200 w-full text-center font-poppins text-gray-500 text-lg pt-6">
+          <h3 className="bg-gray-200 w-full text-center font-poppins text-gray-500 text-base pt-6">
             🧵 Arraste para reordenar!
           </h3>
           <WorksList
@@ -102,15 +102,30 @@ function WorksPage() {
               )}
             </DialogueBox>
           )}
-          <Button
-            fontSize={'text-2xl'}
-            bgColor="bg-orange-500"
-            type="back"
-            path={'/admin/dashboard'}
-            margin={'mt-10'}
-          >
-            VOLTAR
-          </Button>
+          <div className="w-full flex flex-row justify-around items-center">
+            <Button
+              fontSize={'text-lg'}
+              bgColor="bg-gray-400"
+              type="back"
+              path={'/admin/dashboard'}
+              margin={'mt-10'}
+              width={'w-[40%]'}
+              padding="py-3"
+            >
+              &larr; Voltar
+            </Button>
+            <Button
+              fontSize={'text-lg'}
+              bgColor="bg-blue-500"
+              type="back"
+              path={'/admin/dashboard/create-work'}
+              margin={'mt-10'}
+              width={'w-[40%]'}
+              padding="py-3"
+            >
+              Novo projeto
+            </Button>
+          </div>
         </>
       )}
     </div>
