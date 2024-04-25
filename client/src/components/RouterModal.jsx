@@ -5,7 +5,7 @@ function RouterModal({ path, isModalScrollable = false, children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.body.style.height = '100svh';
+    document.body.style.height = '100vh';
     document.body.style.overflow = 'hidden';
 
     return () => (document.body.style = '');

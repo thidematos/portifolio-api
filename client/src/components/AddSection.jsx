@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useNavigate,
+  useOutletContext,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import RouterModal from './RouterModal';
 import ProjectLogo from './ProjectLogo';
 import TestUploader from './TestUploader';
@@ -19,11 +24,14 @@ function AddSection() {
   const [form, setForm] = useState(null);
   const [formMissing, setFormMissing] = useState('');
 
+  const navigate = useNavigate();
+
   const {
     handler: patchSection,
     isLoading,
     error,
   } = usePatch({
+    resource: 'works',
     newValue: form,
     setter: setWork,
     isImage: true,
@@ -38,11 +46,16 @@ function AddSection() {
     if (!description) return setFormMissing('Insira uma descrição!');
 
     patchSection();
+
+    navigate(`/admin/dashboard/works/${id}`);
   }, [form, title, description]);
 
   function appendMoreData(form) {
+    if (!title || !description) return false;
     form.append('title', title);
     form.append('description', description);
+
+    return true;
   }
 
   return (
@@ -112,11 +125,11 @@ function InputText({ state, setter, id, label, placeholder }) {
       <label htmlFor={`${id}`} className="text-gray-700 drop-shadow text-lg">
         {label?.toUpperCase()}
       </label>
-      <input
+      <textarea
         value={state}
         onChange={(e) => setter(e.target.value)}
-        type="text"
         id={id}
+        rows={id === 'title' ? 1 : 5}
         className={`text-gray-700 text-base p-2 w-full border border-orange-300 shadow rounded placeholder:text-sm placeholder:text-center`}
         placeholder={placeholder}
       />

@@ -220,18 +220,28 @@ exports.patchAddSection = catchAsync(async (req, res, next) => {
   const { sectionIndex } = req.query;
   const { id } = req.params;
 
+  const updateData = {
+    title: req.body.title,
+    description: req.body.description,
+    img: req.file.filename,
+  };
+
+  const work = await Work.findById(id);
+
+  work.sections.splice(Number(sectionIndex) + 1, 0, updateData);
+
+  const updatedWork = await work.save();
+
   console.log('This is the sectionIndex:', sectionIndex);
 
   console.log('This is the ID:', id);
 
-  console.log(`File:`, req.file);
-
-  console.log(`Body:`, req.body);
+  console.log('Updated Work:', updatedWork);
 
   res.status(200).json({
     status: 'sucess',
     data: {
-      works: 'oi',
+      works: updatedWork,
     },
   });
 });

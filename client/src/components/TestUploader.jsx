@@ -134,11 +134,11 @@ function ImageUploader({
                 form.append('image', states.imageSelected.at(0).file);
                 form.append('fieldToPatch', field);
 
-                appendMoreData(form);
+                const hasData = appendMoreData(form);
 
                 setForm(form);
 
-                dispatch({ type: 'reset' });
+                hasData ? dispatch({ type: 'reset' }) : null;
               }}
               bgColor="bg-orange-400"
               textColor="text-gray-50"
