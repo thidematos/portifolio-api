@@ -53,6 +53,11 @@ router
     upload.single('image'),
     workController.resizeImage,
     workController.patchSection
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    workController.deleteSection
   );
 
 module.exports = router;

@@ -139,7 +139,7 @@ function InputText({ state, setter, id, label, placeholder }) {
 
 function FooterInfo({ prevSection }) {
   return (
-    <footer className="font-poppins text-gray-400 text-xs pt-10 pb-6 text-center w-[80%]">
+    <footer className="font-poppins text-gray-400 text-xs py-6 text-center w-[80%]">
       <p>
         A nova seção será adicionada depois da seção{' '}
         <strong>{prevSection}</strong>

@@ -232,16 +232,25 @@ exports.patchAddSection = catchAsync(async (req, res, next) => {
 
   const updatedWork = await work.save();
 
-  console.log('This is the sectionIndex:', sectionIndex);
-
-  console.log('This is the ID:', id);
-
-  console.log('Updated Work:', updatedWork);
-
   res.status(200).json({
     status: 'sucess',
     data: {
       works: updatedWork,
     },
+  });
+});
+
+exports.deleteSection = catchAsync(async (req, res, next) => {
+  const { id: workId, sectionId } = req.params;
+
+  const work = await Work.findById(workId);
+
+  work.sections.id(sectionId).deleteOne();
+
+  await work.save();
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 });

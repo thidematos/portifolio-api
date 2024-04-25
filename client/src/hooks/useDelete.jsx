@@ -8,13 +8,13 @@ function useDelete(deleteOptions) {
 
   const navigate = useNavigate();
 
-  const { redirectTo, id } = deleteOptions;
+  const { redirectTo, id, path = `/api/v1/works/${id}` } = deleteOptions;
 
   async function deleteResource() {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/v1/works/${id}`, {
+      await axios.delete(path, {
         withCredentials: true,
       });
 
