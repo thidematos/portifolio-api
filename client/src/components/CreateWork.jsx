@@ -29,11 +29,6 @@ function CreateWork() {
       img: '',
     },
   ]);
-  const [sectionPlaceholder, setSectionPlaceholder] = useState({
-    title: '',
-    description: '',
-    img: '',
-  });
 
   const slides = [
     <FirstInfo
@@ -71,7 +66,8 @@ function CreateWork() {
         key={ind}
         onNext={handleNext}
         setter={setSections}
-        statePlaceholder={[sectionPlaceholder, setSectionPlaceholder]}
+        section={section}
+        index={ind}
       />
     ))
   );
@@ -113,6 +109,89 @@ function CreateWork() {
         />
       </div>
     </RouterModal>
+  );
+}
+
+function SectionInfo({ onNext, setter, section, index }) {
+  return (
+    <div
+      className={`flex flex-col justify-center items-center w-full h-full font-poppins`}
+    >
+      <h2 className="text-gray-700 text-lg drop my-3">SEÇÃO</h2>
+      <InputText
+        label={'Título'}
+        state={section.title}
+        setter={(value) =>
+          setter((sections) => {
+            return sections.map((section, ind) =>
+              index === ind
+                ? {
+                    ...section,
+                    title: value,
+                  }
+                : section
+            );
+          })
+        }
+      />
+      <Textarea
+        label={'Descrição'}
+        state={section.description}
+        setter={(value) =>
+          setter((sections) => {
+            return sections.map((section, ind) =>
+              index === ind
+                ? {
+                    ...section,
+                    description: value,
+                  }
+                : section
+            );
+          })
+        }
+      />
+      <div className="flex flex-col justify-center items-center gap-3 w-full py-3">
+        <p className="font-poppins text-gray-600 text-lg">Imagem</p>
+        <TestUploader
+          multiple={false}
+          guide={'Clique para adicionar uma imagem'}
+          setter={(value) =>
+            setter((sections) => {
+              return sections.map((section, ind) =>
+                index === ind
+                  ? {
+                      ...section,
+                      img: value,
+                    }
+                  : section
+              );
+            })
+          }
+          withDialogueBox={false}
+        />
+      </div>
+      {section.title && section.description && section.img && (
+        <div className="w-full flex flex-row justify-around items-center">
+          <Button>Finalizar</Button>
+          <Button
+            type="action"
+            onAction={() => {
+              onNext();
+              setter((sections) => [
+                ...sections,
+                {
+                  title: '',
+                  description: '',
+                  img: '',
+                },
+              ]);
+            }}
+          >
+            Nova seção
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -268,77 +347,6 @@ function ThirdInfo({ states }) {
           >
             Próximo &rarr;
           </Button>
-        )}
-    </div>
-  );
-}
-
-function SectionInfo({ onNext, setter, statePlaceholder }) {
-  return (
-    <div
-      className={`flex flex-col justify-center items-center w-full h-full font-poppins`}
-    >
-      <h2 className="text-gray-700 text-lg drop my-3">SEÇÃO</h2>
-      <InputText
-        label={'Título'}
-        state={statePlaceholder[0].title}
-        setter={(value) =>
-          statePlaceholder[1]((state) => {
-            return {
-              ...state,
-              title: value,
-            };
-          })
-        }
-      />
-      <Textarea
-        label={'Descrição'}
-        state={statePlaceholder[0].description}
-        setter={(value) =>
-          statePlaceholder[1]((state) => {
-            return {
-              ...state,
-              description: value,
-            };
-          })
-        }
-      />
-      <div className="flex flex-col justify-center items-center gap-3 w-full py-3">
-        <p className="font-poppins text-gray-600 text-lg">Imagem</p>
-        <TestUploader
-          multiple={false}
-          guide={'Clique para adicionar uma imagem'}
-          setter={(file) =>
-            statePlaceholder[1]((state) => {
-              return {
-                ...state,
-                img: file,
-              };
-            })
-          }
-          withDialogueBox={false}
-        />
-      </div>
-      {statePlaceholder[0].title &&
-        statePlaceholder[0].description &&
-        statePlaceholder[0].img && (
-          <div className="w-full flex flex-row justify-around items-center">
-            <Button>Finalizar</Button>
-            <Button
-              type="action"
-              onAction={() => {
-                onNext();
-                setter((state) => [statePlaceholder[0], ...state]);
-                statePlaceholder[1]({
-                  title: '',
-                  description: '',
-                  img: '',
-                });
-              }}
-            >
-              Nova seção
-            </Button>
-          </div>
         )}
     </div>
   );
