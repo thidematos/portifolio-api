@@ -103,6 +103,7 @@ function ColorPicker() {
                     type="action"
                     onAction={() => {
                       onSave();
+                      originalColor.current = actualColors;
                       setIsChanged(false);
                     }}
                   >
