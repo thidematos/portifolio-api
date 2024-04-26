@@ -7,6 +7,7 @@ import Button from './Button';
 import usePatch from '../hooks/usePatch';
 import Loader from './Loader';
 import Error from './Error';
+import ColorInput from './ColorInput';
 
 function ColorPicker() {
   const [work, setWork] = useOutletContext();
@@ -114,21 +115,6 @@ function ColorPicker() {
         )}
       </div>
     </RouterModal>
-  );
-}
-
-function ColorInput({ label, color, direction, onChangeColor }) {
-  return (
-    <div className="flex flex-col justify-center items-center relative gap-2">
-      <p>{label}</p>
-      <input
-        type="color"
-        id="picker"
-        value={color[direction]}
-        onChange={(e) => onChangeColor(e, direction)}
-        className="inputColor"
-      />
-    </div>
   );
 }
 

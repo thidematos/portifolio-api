@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 
 import { EffectCreative, Navigation } from 'swiper/modules';
 import { useState } from 'react';
+import ProgressBar from './ProgressBar';
 
 function WorkFlow({ isMobile }) {
   const [progress, setProgress] = useState(1);
@@ -50,7 +51,7 @@ function WorkFlow({ isMobile }) {
         steps={steps}
         isMobile={isMobile}
       />
-      <ProgressBar steps={steps} progress={progress} />
+      <ProgressBar steps={steps.length} progress={progress} />
     </section>
   );
 }
@@ -102,24 +103,6 @@ function CoverflowSwiper({ setProgress, steps, isMobile }) {
           ></img>
         </>
       )}
-    </div>
-  );
-}
-
-function ProgressBar({ progress, steps }) {
-  const progressPercentage = (100 / steps.length) * progress;
-
-  let widthStr = `w-[${progressPercentage}%]`;
-
-  if (widthStr === 'w-[80%]') widthStr = 'width80';
-
-  if (widthStr === 'w-[100%]') widthStr = 'w-full';
-
-  return (
-    <div className="w-[60%] md:w-[40%] lg:w-[30%] bg-gray-300 h-[10px] lg:h-[7px] xl:h-[10px] rounded-xl shadow-xl mt-12">
-      <div
-        className={`${widthStr} bg-blue-500 h-[10px] lg:h-[7px] xl:h-[10px] rounded-xl duration-500 origin-left`}
-      ></div>
     </div>
   );
 }

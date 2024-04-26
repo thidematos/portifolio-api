@@ -16,6 +16,7 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case 'imageUpload':
+      console.log('Image uploaded!');
       return {
         ...state,
         images: action.payload,
@@ -51,6 +52,9 @@ function ImageUploader({
   setForm,
   dialogueWidth = 'w-[60%]',
   appendMoreData = () => null,
+  setter = false,
+  withDialogueBox = true,
+  identifier = Math.random(),
 }) {
   const [states, dispatch] = useReducer(reducer, initialState);
 
@@ -68,6 +72,8 @@ function ImageUploader({
 
     const images = Object.values(e.target.files || e.dataTransfer.files);
 
+    if (setter) setter(...images);
+
     dispatch({
       type: 'imageUpload',
       multiple: multiple,
@@ -82,11 +88,16 @@ function ImageUploader({
 
   return (
     <>
-      <FileInput onFileUpload={handleUpload} multiple={multiple} />
+      <FileInput
+        onFileUpload={handleUpload}
+        multiple={multiple}
+        identifier={identifier}
+      />
       <DropLabelArea
         dependencies={{ stopDefaultBehavior, handleUpload, states }}
         guide={guide}
         multiple={multiple}
+        identifier={identifier}
       />
       {multiple && states.images.length > 0 && (
         <UploadedSwiper>
@@ -109,7 +120,7 @@ function ImageUploader({
           })}
         </UploadedSwiper>
       )}
-      {states.changed && (
+      {states.changed && withDialogueBox && (
         <DialogueBox
           notification={'Deseja salvar a mudança?'}
           bgColor={'bg-blue-500/85'}
@@ -178,26 +189,26 @@ function UploadedSwiper({ children }) {
   );
 }
 
-function FileInput({ onFileUpload, multiple }) {
+function FileInput({ onFileUpload, multiple, identifier }) {
   return (
     <input
       type="file"
       multiple={multiple}
       onChange={onFileUpload}
       className="hidden"
-      id="fileInput"
+      id={identifier}
       accept="image/*"
       name="fileInput"
     />
   );
 }
 
-function DropLabelArea({ dependencies, guide, multiple }) {
+function DropLabelArea({ dependencies, guide, multiple, identifier }) {
   const src = dependencies.states.imageSelected[0]?.src;
   return (
     <label
       className={`w-[90%] text-center border-dashed border h-[200px] border-blue-500 flex flex-col justify-center items-center z-[9995] overflow-hidden`}
-      htmlFor="fileInput"
+      htmlFor={identifier}
       onDrop={dependencies.handleUpload}
       onDragEnter={dependencies.stopDefaultBehavior}
       onDragOver={dependencies.stopDefaultBehavior}
