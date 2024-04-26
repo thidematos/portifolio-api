@@ -1,15 +1,21 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import Logo from './Logo';
 import RouterModal from './RouterModal';
 import ProgressBar from './ProgressBar';
 import TestUploader from './TestUploader';
 import ColorInput from './ColorInput';
+import ErrorNotification from './ErrorNotification';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Error from './Error';
+import Loader from './Loader';
 
 const flex = 'flex flex-col justify-center items-center w-full h-full';
 
 function CreateWork() {
   const [progress, setProgress] = useState(0);
+  const [src, setSrc] = useState(null);
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -29,6 +35,10 @@ function CreateWork() {
       img: '',
     },
   ]);
+  const [errorNotification, setErrorNotification] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const slides = [
     <FirstInfo
@@ -61,16 +71,25 @@ function CreateWork() {
   ];
 
   const arrayToRender = slides.concat(
-    sections.map((section, ind) => (
+    sections.map((section, ind, arr) => (
       <SectionInfo
         key={ind}
         onNext={handleNext}
         setter={setSections}
         section={section}
         index={ind}
+        entireArray={arr}
+        setProgress={setProgress}
+        handleFinish={handleFinish}
       />
     ))
   );
+
+  const [progressLength, setProgressLength] = useState(arrayToRender.length);
+
+  useEffect(() => {
+    setProgressLength(arrayToRender.length);
+  }, [arrayToRender]);
 
   function handleChangeColor(e, direction) {
     setColors((state) => {
@@ -82,41 +101,177 @@ function CreateWork() {
   }
 
   function handleNext() {
-    setProgress((currentProgress) => {
-      return currentProgress <= arrayToRender.length ? currentProgress + 1 : 0;
+    setProgress((currentProgress) => currentProgress + 1);
+  }
+
+  function handlePrev() {
+    setProgress((currentProgress) =>
+      currentProgress > 0 ? currentProgress - 1 : currentProgress
+    );
+  }
+
+  function verifyFormComplete() {
+    if (!src)
+      return [false, setErrorNotification('O projeto precisa de uma capa!')];
+
+    if (!title)
+      return [false, setErrorNotification('O projeto precisa de um título!')];
+    if (!subTitle)
+      return [
+        false,
+        setErrorNotification('O projeto precisa de um sub título!'),
+      ];
+    if (!description)
+      return [
+        false,
+        setErrorNotification('O projeto precisa de uma descrição!'),
+      ];
+    if (!mainImg)
+      return [
+        false,
+        setErrorNotification('O projeto precisa de uma imagem principal!'),
+      ];
+    if (!projectLogo)
+      return [false, setErrorNotification('O projeto precisa de uma logo!')];
+    if (!abilities)
+      return [
+        false,
+        setErrorNotification('O projeto precisa de um set de habilidades!'),
+      ];
+    if (!year)
+      return [false, setErrorNotification('O projeto precisa de um ano!')];
+    if (!link)
+      return [false, setErrorNotification('O projeto precisa de um deploy!')];
+
+    if (!Object.values(colors).length === 2)
+      return [false, setErrorNotification('O projeto precisa de cores!')];
+
+    sections.forEach((section) => {
+      if (!Object.values(section).length === 3)
+        return [
+          false,
+          setErrorNotification('As seções do projeto precisam ser completas!'),
+        ];
     });
+
+    return [true, null];
+  }
+
+  async function postWork(form) {
+    try {
+      setIsLoading(true);
+      const res = await axios.post('/api/v1/works', form, {
+        withCredentials: true,
+      });
+
+      console.log(res);
+    } catch (err) {
+      setError(err.response.data.message);
+    } finally {
+      setIsLoading(false);
+      navigate('/admin/dashboard/works');
+    }
+  }
+
+  function handleFinish() {
+    const [status, errorHandler] = verifyFormComplete();
+
+    if (!status) return errorHandler();
+
+    const newWork = new FormData();
+    newWork.append('src', src);
+    newWork.append('title', title);
+    newWork.append('description', description);
+    newWork.append('mainImg', mainImg);
+    newWork.append('subTitle', subTitle);
+    newWork.append('year', year);
+    newWork.append('abilities', abilities);
+    newWork.append('colors', JSON.stringify(colors));
+    newWork.append('projectLogo', projectLogo);
+    newWork.append('link', link);
+    newWork.append('sections', JSON.stringify(sections));
+
+    sections.forEach((section) => newWork.append('sectionImg', section.img));
+
+    console.log([...Object.entries(newWork)]);
+
+    postWork(newWork);
   }
 
   return (
     <RouterModal path={-1} isModalScrollable={true}>
       <div className="flex flex-col justify-start items-center w-full h-full relative py-6">
         <Logo fontSize={'text-4xl'} margin="mb-6" />
-        {progress ? (
-          <MySwiper>
-            {arrayToRender.map((el, ind) => (
-              <Slide index={ind + 1} progress={progress} key={ind}>
-                {el}
-              </Slide>
-            ))}
-          </MySwiper>
-        ) : (
-          <Start onNext={handleNext} />
+        {isLoading && <Loader />}
+        {error && <Error />}
+        {!isLoading && !error && (
+          <>
+            <img
+              src="/roll-back.png"
+              className={`rounded-full absolute w-[10%] bg-white p-2 top-4 left-4 ${
+                progress > 1 ? 'block' : 'hidden'
+              }`}
+              onClick={handlePrev}
+            />
+            {progress ? (
+              <MySwiper>
+                {arrayToRender.map((el, ind) => (
+                  <Slide index={ind + 1} progress={progress} key={ind}>
+                    {el}
+                  </Slide>
+                ))}
+              </MySwiper>
+            ) : (
+              <Start onNext={handleNext} srcState={[src, setSrc]} />
+            )}
+            <ProgressBar
+              progress={Number(progress)}
+              steps={progressLength}
+              position="absolute bottom-2"
+            />
+            {errorNotification && (
+              <ErrorNotification
+                error={errorNotification}
+                bgColor={'bg-orange-400/90'}
+                textColor={'text-gray-50'}
+                position={'bottom-5'}
+                width={'w-[85%]'}
+                setError={setErrorNotification}
+              />
+            )}
+          </>
         )}
-        <ProgressBar
-          progress={Number(progress)}
-          steps={Number(arrayToRender.length)}
-          position="absolute bottom-2"
-        />
       </div>
     </RouterModal>
   );
 }
 
-function SectionInfo({ onNext, setter, section, index }) {
+function SectionInfo({
+  onNext,
+  setter,
+  section,
+  index,
+  entireArray,
+  setProgress,
+  handleFinish,
+}) {
   return (
     <div
-      className={`flex flex-col justify-center items-center w-full h-full font-poppins`}
+      className={`flex flex-col justify-start items-center w-full h-full font-poppins relative`}
     >
+      <img
+        src="/thrash-can.png"
+        className={`absolute w-[12%]  top-1 bg-gray-200 shadow drop-shadow-sm right-10 border border-orange-300 rounded p-1 ${
+          entireArray.length === 1 ? 'hidden' : 'block'
+        }`}
+        onClick={() =>
+          setter((sections) => {
+            if (sections.length - 1 === index)
+              setProgress((currentProgress) => currentProgress - 1);
+            return sections.filter((section, ind) => ind !== index);
+          })
+        }
+      />
       <h2 className="text-gray-700 text-lg drop my-3">SEÇÃO</h2>
       <InputText
         label={'Título'}
@@ -172,23 +327,38 @@ function SectionInfo({ onNext, setter, section, index }) {
       </div>
       {section.title && section.description && section.img && (
         <div className="w-full flex flex-row justify-around items-center">
-          <Button>Finalizar</Button>
-          <Button
-            type="action"
-            onAction={() => {
-              onNext();
-              setter((sections) => [
-                ...sections,
-                {
-                  title: '',
-                  description: '',
-                  img: '',
-                },
-              ]);
-            }}
-          >
-            Nova seção
-          </Button>
+          {entireArray.length - 1 === index ? (
+            <>
+              <Button
+                width={'w-[40%]'}
+                bgColor="bg-orange-400"
+                onAction={() => handleFinish()}
+              >
+                Finalizar
+              </Button>
+              <Button
+                width={'w-[40%]'}
+                type="action"
+                onAction={() => {
+                  onNext();
+                  setter((sections) => [
+                    ...sections,
+                    {
+                      title: '',
+                      description: '',
+                      img: '',
+                    },
+                  ]);
+                }}
+              >
+                Nova seção
+              </Button>
+            </>
+          ) : (
+            <Button margin={'mt-3'} type="action" onAction={() => onNext()}>
+              Próximo &rarr;
+            </Button>
+          )}
         </div>
       )}
     </div>
@@ -197,7 +367,7 @@ function SectionInfo({ onNext, setter, section, index }) {
 
 function MySwiper({ children }) {
   return (
-    <div className="w-full h-[100%] markup overflow-x-hidden flex flex-row flex-nowrap justify-center items-center relative ">
+    <div className="w-full h-[100%] overflow-x-hidden flex flex-row flex-nowrap justify-center items-center relative ">
       {children}
     </div>
   );
@@ -207,7 +377,7 @@ function Slide({ index, children, progress }) {
   return (
     <div
       style={{ transform: `translate(${(index - progress) * 100}%)` }}
-      className={`${flex} markup absolute duration-500
+      className={`${flex} absolute duration-500
       `}
     >
       {children}
@@ -215,18 +385,26 @@ function Slide({ index, children, progress }) {
   );
 }
 
-function Start({ onNext }) {
+function Start({ onNext, srcState }) {
   return (
-    <div className="w-full markup h-full flex flex-col justify-center items-center font-poppins gap-10">
+    <div className="w-full  h-full flex flex-col justify-center items-center font-poppins">
       <h2 className="text-xl w-[80%] text-center text-gray-800 drop-shadow">
         Bem vindo à criação de Projetos
       </h2>
-      <p className="text-sm text-gray-500 text-center">
-        Vamos guiá-lo por cada uma das etapas.
+      <p className="text-sm text-gray-500 text-center w-[80%] mt-10">
+        Inicie com uma capa para o seu projeto!
       </p>
-      <Button type="action" onAction={() => onNext()}>
-        Começar &rarr;
-      </Button>
+      <TestUploader
+        multiple={false}
+        guide={'Selecione uma capa para seu projeto.'}
+        setter={srcState[1]}
+        withDialogueBox={false}
+      />
+      {srcState[0] && (
+        <Button margin={'mt-10'} type="action" onAction={() => onNext()}>
+          Começar &rarr;
+        </Button>
+      )}
     </div>
   );
 }
@@ -248,7 +426,7 @@ function FirstInfo({ states }) {
         setter={states.subTitle[1]}
       />
       <div className="flex flex-col justify-center items-center gap-3 w-full py-3">
-        <p className="font-poppins text-gray-600 text-lg">Imagem principal</p>
+        <p className="font-poppins text-gray-600 text-lg">Hero</p>
         <TestUploader
           multiple={false}
           guide={'Clique para adicionar uma imagem'}

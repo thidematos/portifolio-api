@@ -34,18 +34,27 @@ exports.getWork = catchAsync(async (req, res, next) => {
 
 exports.createWork = catchAsync(async (req, res, next) => {
   const {
-    src,
     title,
     description,
-    mainImg,
     subTitle,
-    sections,
     year,
     abilities,
-    projectLogo,
-    colors,
     link,
+    src,
+    mainImg,
+    projectLogo,
+    sectionImgs,
   } = req.body;
+
+  const colors = JSON.parse(req.body.colors);
+  const sections = JSON.parse(req.body.sections);
+
+  const mappedSections = sections.map((section, ind) => {
+    return {
+      ...section,
+      img: sectionImgs[ind],
+    };
+  });
 
   const viewOrder = await Work.countDocuments();
 
@@ -55,13 +64,13 @@ exports.createWork = catchAsync(async (req, res, next) => {
     description,
     mainImg,
     subTitle,
-    sections,
     year,
     abilities,
     projectLogo,
     colors,
     link,
-    viewOrder: viewOrder + 1,
+    viewOrder: viewOrder,
+    sections: mappedSections,
   });
 
   res.status(201).json({
@@ -69,6 +78,88 @@ exports.createWork = catchAsync(async (req, res, next) => {
     data: newWork,
   });
 });
+
+exports.resizeMultipleImages = async (req, res, next) => {
+  const sizes = {
+    src: {
+      width: 786,
+      height: 409,
+    },
+    mainImg: {
+      width: 369,
+      height: 680,
+    },
+    projectLogo: {
+      width: 300,
+      height: 300,
+    },
+    img: {
+      width: 1000,
+      height: 600,
+    },
+  };
+
+  const srcName = `src-${req.files.src[0].originalname
+    .split('.')
+    .at(0)}-${Date.now()}.jpg`;
+
+  await sharp(req.files.src[0].buffer)
+    .resize(sizes.src.width, sizes.src.height)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`client/public/${srcName}`);
+
+  req.body.src = srcName;
+
+  /////////////////////////////////
+
+  const mainImgName = `mainImg-${req.files.mainImg[0].originalname
+    .split('.')
+    .at(0)}-${Date.now()}.jpg`;
+
+  await sharp(req.files.mainImg[0].buffer)
+    .resize(sizes.mainImg.width, sizes.mainImg.height)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`client/public/${mainImgName}`);
+
+  req.body.mainImg = mainImgName;
+
+  ////////////////////////////////////////
+  const projectLogoName = `projectLogo-${req.files.projectLogo[0].originalname
+    .split('.')
+    .at(0)}-${Date.now()}.jpg`;
+
+  await sharp(req.files.projectLogo[0].buffer)
+    .resize(sizes.mainImg.width, sizes.mainImg.height)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`client/public/${projectLogoName}`);
+
+  req.body.projectLogo = projectLogoName;
+
+  ///////////////////////////////////////////
+
+  req.body.sectionImgs = [];
+
+  await Promise.all(
+    req.files.sectionImg.map(async (img, ind) => {
+      const imgName = `section-${ind}-${img.originalname
+        .split('.')
+        .at(0)}-${Date.now()}.jpg`;
+
+      await sharp(img.buffer)
+        .resize(sizes.img.width, sizes.img.height)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`client/public/${imgName}`);
+
+      req.body.sectionImgs.push(imgName);
+    })
+  );
+
+  next();
+};
 
 exports.patchWork = catchAsync(async (req, res, next) => {
   let update = req.body;

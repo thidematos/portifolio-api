@@ -22,7 +22,18 @@ router
 router
   .route('/')
   .get(workController.getAllWorks)
-  .post(workController.createWork);
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    upload.fields([
+      { name: 'src', maxCount: 1 },
+      { name: 'mainImg', maxCount: 1 },
+      { name: 'projectLogo', maxCount: 1 },
+      { name: 'sectionImg' },
+    ]),
+    workController.resizeMultipleImages,
+    workController.createWork
+  );
 
 router.patch(
   '/add-section/:id',
