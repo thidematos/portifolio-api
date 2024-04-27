@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -205,4 +207,31 @@ body {
 .inputColor::-moz-color-swatch {
   border-radius: 50%;
   border: none;
+}
+
+.blockquote {
+  padding-left: 2rem;
+  @apply border-l-[3px] border-gray-900/45 my-3;
+}
+
+.codeblock {
+  @apply bg-gray-800 rounded-lg text-gray-50 p-3;
+}
+
+.code {
+  background-color: rgba(#616161, 0.1);
+  border-radius: 0.25em;
+  box-decoration-break: clone;
+  color: #616161;
+  font-size: 0.9rem;
+  padding: 0.25em;
+}
+
+.tipImg {
+  height: auto;
+  max-width: 100%;
+
+  &.ProseMirror-selectednode {
+    outline: 3px solid #68cef8;
+  }
 }

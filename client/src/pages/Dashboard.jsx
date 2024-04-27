@@ -17,32 +17,32 @@ function Dashboard() {
     );
 
   return (
-    <>
+    <div className="w-full h-[100svh] bg-gray-100">
       {isLoading && <Loader position={'absolute centerDivAbsolute'} />}
       {!isLoading && !error && (
         //Pode ser que eu faça um swiper com os PreviewDashboard. Depois, viria um gráfico com n. de users, likes, best post...
         <DashMainContainer>
           <NavDashboard user={user} />
-          <div className="mt-12"></div>
+          <div className="mt-24"></div>
           <Outlet />
-          <div className="mb-16"></div>
+
           <Footer
-            bgColor={'bg-transparent'}
+            bgColor={'bg-gray-100'}
             fontSize={
               'text-sm md:text-base lg:text-xs xl:text-sm 3xl:text-base'
             }
             textColor={'text-gray-500'}
-            position={'absolute bottom-6'}
+            padding={'py-6'}
           />
         </DashMainContainer>
       )}
-    </>
+    </div>
   );
 }
 
 function DashMainContainer({ children }) {
   return (
-    <div className="w-full bg-gray-100 min-h-svh flex flex-col justify-start items-center relative gap-10">
+    <div className="w-full  h-full flex flex-col justify-between items-center relative">
       {children}
     </div>
   );

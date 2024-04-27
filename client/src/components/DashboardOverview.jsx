@@ -14,7 +14,7 @@ function DashboardOverview() {
         img={'mern-3.1'}
       />
       <PreviewDashboard
-        to={'/admin/dashboard/works'}
+        to={'/admin/dashboard/codice'}
         title={'Códice'}
         img={'mern-4.1'}
       />

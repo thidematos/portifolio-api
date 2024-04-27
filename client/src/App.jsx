@@ -13,6 +13,8 @@ import ColorPicker from './components/ColorPicker';
 import DeleteSection from './components/DeleteSection';
 import AddSection from './components/AddSection';
 import CreateWork from './components/CreateWork';
+import CodiceDashboard from './components/CodiceDashboard';
+import CreateCodice from './components/CreateCodice';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -37,6 +39,8 @@ function App() {
             <Route path="add-section" element={<AddSection />} />
             <Route path="colors" element={<ColorPicker />} />
           </Route>
+          <Route path="codice" element={<CodiceDashboard />} />
+          <Route path="codice/write" element={<CreateCodice />} />
         </Route>
       </Routes>
     </BrowserRouter>
