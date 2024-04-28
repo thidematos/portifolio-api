@@ -15,6 +15,7 @@ import AddSection from './components/AddSection';
 import CreateWork from './components/CreateWork';
 import CodiceDashboard from './components/CodiceDashboard';
 import CreateCodice from './components/CreateCodice';
+import SetTiptapImage from './components/SetTiptapImage';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -40,7 +41,9 @@ function App() {
             <Route path="colors" element={<ColorPicker />} />
           </Route>
           <Route path="codice" element={<CodiceDashboard />} />
-          <Route path="codice/write" element={<CreateCodice />} />
+          <Route path="codice/write" element={<CreateCodice />}>
+            <Route path="setImage" element={<SetTiptapImage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

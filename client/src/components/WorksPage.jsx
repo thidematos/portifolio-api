@@ -60,7 +60,7 @@ function WorksPage() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full pb-10">
       {isLoading && <Loader position={'absolute centerDivAbsolute'} />}
       {error && <Error message={error} />}
       {!isLoading && !error && (

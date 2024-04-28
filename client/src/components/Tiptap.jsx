@@ -1,5 +1,10 @@
 // src/Tiptap.jsx
-import { EditorProvider, FloatingMenu, BubbleMenu } from '@tiptap/react';
+import {
+  EditorProvider,
+  FloatingMenu,
+  BubbleMenu,
+  useCurrentEditor,
+} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TiptapMenu from './TiptapMenu';
 import Link from '@tiptap/extension-link';
@@ -63,7 +68,7 @@ const extensions = [
 
 const content = '<p>Hello World!</p>';
 
-function Tiptap() {
+function Tiptap({ images, setImages }) {
   return (
     <EditorProvider
       extensions={extensions}
@@ -74,7 +79,7 @@ function Tiptap() {
             'border-2 border-t-0 border-gray-400 rounded-b-lg shadow-lg w-[90vw] min-h-[600px] p-3 font-poppins text-gray-900 outline-none focus:border-blue-300 ',
         },
       }}
-      slotBefore={<TiptapMenu />}
+      slotBefore={<TiptapMenu setImages={setImages} images={images} />}
     >
       <FloatingMenu>This is the floating menu</FloatingMenu>
       <BubbleMenu>This is the bubble menu</BubbleMenu>

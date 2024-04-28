@@ -1,7 +1,34 @@
 import { useCurrentEditor } from '@tiptap/react';
+import RouterModal from './RouterModal';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-function TiptapMenu() {
+function TiptapMenu({ images, setImages }) {
   const { editor } = useCurrentEditor();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!images.length > 0) return;
+
+    editor
+      .chain()
+      .setImage({ src: images.at(-1).url })
+      .focus()
+      .run();
+
+    navigate(-1);
+  }, [images]);
+
+  function uploadImage(file) {
+    const url = window.URL.createObjectURL(file);
+    setImages((state) => [
+      ...state,
+      {
+        file: file,
+        url: url,
+      },
+    ]);
+  }
 
   return (
     <div className="w-[90vw] border-2 border-gray-700 p-4 rounded-t-lg flex flex-row justify-center flex-wrap items-baseline gap-3 overflow-x-scroll">
@@ -27,19 +54,19 @@ function TiptapMenu() {
         editor={editor}
         onAction={() => editor.chain().toggleLink().focus().run()}
       />
-      <Button
-        type={'image'}
-        editor={editor}
-        onAction={() =>
-          editor
-            .chain()
-            .setImage({
-              src: 'https://t.ctcdn.com.br/JlHwiRHyv0mTD7GfRkIlgO6eQX8=/640x360/smart/i257652.jpeg',
-            })
-            .focus()
-            .run()
-        }
-      />
+      <Button type={'image'} editor={editor} onAction={() => null}>
+        <Link to={'setImage'}>
+          <img
+            src={
+              editor.isActive('image')
+                ? `/${'image'}-active.png`
+                : `/${'image'}.png`
+            }
+            alt=""
+            width={''}
+          />
+        </Link>
+      </Button>
       <Button
         type={'code'}
         editor={editor}
@@ -70,6 +97,7 @@ function TiptapMenu() {
         editor={editor}
         onAction={() => editor.chain().toggleCodeBlock().focus().run()}
       />
+      <Outlet context={uploadImage} />
     </div>
   );
 }

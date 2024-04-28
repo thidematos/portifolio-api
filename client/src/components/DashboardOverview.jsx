@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function DashboardOverview() {
   return (
-    <>
+    <div className="flex flex-col justify-center items-center w-full gap-10">
       <PreviewDashboard
         to={'/admin/dashboard/works'}
         title={'Projetos'}
@@ -23,7 +23,7 @@ function DashboardOverview() {
         title={'Reviews'}
         img={'mern-5.1'}
       />
-    </>
+    </div>
   );
 }
 
