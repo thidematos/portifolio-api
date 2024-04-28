@@ -61,7 +61,7 @@ const extensions = [
   }),
   Image.configure({
     HTMLAttributes: {
-      class: 'tipImg',
+      class: 'tipImg my-4',
     },
   }),
 ];

@@ -12,20 +12,21 @@ function TiptapMenu({ images, setImages }) {
 
     editor
       .chain()
-      .setImage({ src: images.at(-1).url })
+      .setImage({ src: images.at(-1).url, title: images.at(-1).legend })
       .focus()
       .run();
 
     navigate(-1);
   }, [images]);
 
-  function uploadImage(file) {
-    const url = window.URL.createObjectURL(file);
+  function uploadImage(image) {
+    const url = window.URL.createObjectURL(image.file);
     setImages((state) => [
       ...state,
       {
-        file: file,
+        file: image.file,
         url: url,
+        legend: image.legend,
       },
     ]);
   }
