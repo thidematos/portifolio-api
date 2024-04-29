@@ -16,6 +16,7 @@ import CreateWork from './components/CreateWork';
 import CodiceDashboard from './components/CodiceDashboard';
 import CreateCodice from './components/CreateCodice';
 import SetTiptapImage from './components/SetTiptapImage';
+import Generate from './pages/Generate';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -27,6 +28,7 @@ function App() {
         <Route path="/codice-desvelado" element={<CodiceDesvelado />}>
           <Route path="admin" element={<Admin />} />
         </Route>
+        <Route path="/generate" element={<Generate />} />
         <Route path="/admin/dashboard" element={<Dashboard />}>
           <Route index element={<Navigate replace to={'overview'} />} />
           <Route path="overview" element={<DashboardOverview />} />

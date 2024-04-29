@@ -1,11 +1,20 @@
 import { useCurrentEditor } from '@tiptap/react';
 import RouterModal from './RouterModal';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+/*
+       <Button
+        type={'code'}
+        editor={editor}
+        onAction={() => editor.chain().toggleCode().focus().run()}
+      />
+*/
 
 function TiptapMenu({ images, setImages }) {
   const { editor } = useCurrentEditor();
   const navigate = useNavigate();
+  const [align, setAlign] = useState('left');
 
   useEffect(() => {
     if (!images.length > 0) return;
@@ -18,6 +27,10 @@ function TiptapMenu({ images, setImages }) {
 
     navigate(-1);
   }, [images]);
+
+  useEffect(() => {
+    editor.chain().focus().setTextAlign(align).run();
+  }, [align]);
 
   function uploadImage(image) {
     const url = window.URL.createObjectURL(image.file);
@@ -53,7 +66,32 @@ function TiptapMenu({ images, setImages }) {
       <Button
         type={'link'}
         editor={editor}
-        onAction={() => editor.chain().toggleLink().focus().run()}
+        onAction={() => {
+          if (!editor.isActive('link')) {
+            const href = !editor.isActive('link') && window.prompt('URL:');
+            editor.chain().setLink({ href: href }).focus().run();
+          } else {
+            editor.chain().unsetLink().focus().run();
+          }
+        }}
+      />
+
+      <Button
+        type={'youtube'}
+        editor={editor}
+        onAction={() => {
+          const url = prompt('URL: ');
+
+          editor
+            .chain()
+            .setYoutubeVideo({
+              src: url,
+              width: window.innerWidth * 0.85,
+              height: window.innerHeight / 3,
+            })
+            .focus()
+            .run();
+        }}
       />
       <Button type={'image'} editor={editor} onAction={() => null}>
         <Link to={'setImage'}>
@@ -69,10 +107,17 @@ function TiptapMenu({ images, setImages }) {
         </Link>
       </Button>
       <Button
-        type={'code'}
+        type={`textAlign-${align}`}
         editor={editor}
-        onAction={() => editor.chain().toggleCode().focus().run()}
-      />
+        onAction={() => {
+          const queue = ['left', 'center', 'right', 'justify'];
+          const next = queue.findIndex((position) => position === align) + 1;
+          setAlign(queue[next > queue.length - 1 ? 0 : next]);
+        }}
+      >
+        <img src={`/textAlign-${align}.png`} alt="" width={''} />
+      </Button>
+
       <Button
         type={'blockquote'}
         editor={editor}
