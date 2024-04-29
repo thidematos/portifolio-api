@@ -13,6 +13,10 @@ import TextAlign from '@tiptap/extension-text-align';
 import Youtube from '@tiptap/extension-youtube';
 import FontFamily from '@tiptap/extension-font-family';
 
+/*
+<FloatingMenu>This is the floating menu</FloatingMenu>
+<BubbleMenu>This is the bubble menu</BubbleMenu>
+*/
 // define your extension array
 const extensions = [
   StarterKit.configure({
@@ -101,10 +105,7 @@ function Tiptap({ images, setImages, setPostHTML, setJSON }) {
         setPostHTML(e.editor.getHTML());
         setJSON(e.editor.getJSON());
       }}
-    >
-      <FloatingMenu>This is the floating menu</FloatingMenu>
-      <BubbleMenu>This is the bubble menu</BubbleMenu>
-    </EditorProvider>
+    ></EditorProvider>
   );
 }
 

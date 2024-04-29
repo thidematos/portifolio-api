@@ -14,6 +14,11 @@ router
     codiceController.resizeImages,
     codiceController.replaceImgSrc,
     codiceController.createCodice
+  )
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    codiceController.getAllCodices
   );
 
 router.route('/:id').get(codiceController.getCodice);

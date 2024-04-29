@@ -1,6 +1,7 @@
 const catchAsync = require('./../utils/catchAsync');
 const Codice = require('./../models/codiceModel');
 const sharp = require('sharp');
+const ApiFeatures = require('./../utils/apiFeatures');
 
 exports.createCodice = catchAsync(async (req, res, next) => {
   const newCodice = await Codice.create({
@@ -13,9 +14,24 @@ exports.createCodice = catchAsync(async (req, res, next) => {
     usedImages: req.body.imagesNames,
   });
 
-  res.status(204).json({
-    status: 'sucess',
+  res.status(201).json({
+    status: 'success',
     data: { newCodice },
+  });
+});
+
+exports.getAllCodices = catchAsync(async (req, res, next) => {
+  const features = new ApiFeatures(Codice.find({}), req.query);
+
+  const query = features.filter().sort().selectFields().paginate().mongoQuery;
+
+  const codices = await query;
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      codices: codices,
+    },
   });
 });
 
@@ -23,7 +39,7 @@ exports.getCodice = catchAsync(async (req, res, next) => {
   const codice = await Codice.findById(req.params.id);
 
   res.status(200).json({
-    status: 'sucess',
+    status: 'success',
     data: {
       codice,
     },
