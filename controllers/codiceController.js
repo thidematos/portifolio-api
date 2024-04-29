@@ -9,6 +9,7 @@ exports.createCodice = catchAsync(async (req, res, next) => {
     summary: req.body.summary,
     author: req.user._id,
     category: JSON.parse(req.body.categories),
+    usedImages: req.body.imagesNames,
   });
 
   res.status(204).json({
@@ -40,7 +41,7 @@ exports.resizeImages = catchAsync(async (req, res, next) => {
 
   await Promise.all(
     req.files.map(async (img, ind) => {
-      const imgName = `codice-${req.body.title}-${ind}-${Date.now()}.jpg`;
+      const imgName = `codice-${ind}-${Date.now()}.jpg`;
 
       await sharp(img.buffer)
         .resize(sizes.width, sizes.height)
@@ -61,12 +62,13 @@ exports.replaceImgSrc = (req, res, next) => {
 
   let finalStr = null;
   imagesInfo.forEach((info, ind) => {
+    if (!html.includes(info.blob)) return;
     if (!finalStr)
       finalStr = html.replace(info.blob, req.body.imagesNames[ind]);
     finalStr = finalStr.replace(info.blob, req.body.imagesNames[ind]);
   });
 
-  req.body.html = finalStr;
+  req.body.html = finalStr || html;
 
   console.log(req.body.html);
   next();

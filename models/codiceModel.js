@@ -24,6 +24,7 @@ const codiceSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  usedImages: [String],
 });
 
 codiceSchema.pre('save', function (next) {

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Tiptap from './Tiptap';
-import { useCurrentEditor } from '@tiptap/react';
+import Error from './Error';
 import axios from 'axios';
+import Loader from './Loader';
+import { useNavigate } from 'react-router-dom';
 
 function CreateCodice() {
   const [images, setImages] = useState([]);
@@ -12,6 +14,8 @@ function CreateCodice() {
   const [postJSON, setPostJSON] = useState({});
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const categories = [
     'React',
@@ -32,6 +36,7 @@ function CreateCodice() {
       setIsLoading(true);
 
       const imagesInfo = images.map((image) => {
+        window.URL.revokeObjectURL(image.url);
         return {
           blob: image.url,
           legend: image.legend,
@@ -59,61 +64,67 @@ function CreateCodice() {
       const res = await axios.post('/api/v1/codice', form, {
         withCredentials: true,
       });
-
-      console.log(res);
+      navigate('/admin/dashboard/codice');
     } catch (err) {
       console.log(err);
+      setError(err.response.data.message);
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <div className="w-full flex flex-col justify-center items-center bg-gray-100 ">
-      <Textarea
-        label={'TÍTULO'}
-        setter={setTitle}
-        state={title}
-        margin={'mb-10'}
-        width={'w-[70%]'}
-        placeholder={'A temporalidade em Shingeki no Kiojin'}
-      />
-      <Tiptap
-        setImages={setImages}
-        images={images}
-        setPostHTML={setPostHTML}
-        setJSON={setPostJSON}
-      />
-      <Textarea
-        label={'RESUMO'}
-        setter={setSummary}
-        state={summary}
-        margin={'my-10'}
-        width={'w-[90%]'}
-        rows={4}
-        placeholder={
-          'A temporalidade de Shingeki é confusa. Mas, se mostra um traço fundamental da obra desde o primeiro episódio.'
-        }
-      />
-      <div className="flex flex-row flex-wrap justify-center items-center w-[90%] px-3 py-4 bg-gray-100 gap-4 h-[150px] overflow-y-scroll border-2 border-gray-400 rounded mb-10">
-        {categories.map((category) => (
-          <Category
-            category={category}
-            key={category}
-            setter={setUsedCategories}
-            usedCategories={usedCategories}
+    <>
+      {isLoading && <Loader />}
+      {error && <Error message={error} path={'/admin/dashboard/codice'} />}
+      {!isLoading && !error && (
+        <div className="w-full flex flex-col justify-center items-center bg-gray-100 ">
+          <Textarea
+            label={'TÍTULO'}
+            setter={setTitle}
+            state={title}
+            margin={'mb-10'}
+            width={'w-[70%]'}
+            placeholder={'A temporalidade em Shingeki no Kiojin'}
           />
-        ))}
-      </div>
-      {title && usedCategories.length > 0 && postHTML && (
-        <button
-          className="bg-blue-500 drop-shadow px-5 py-3 font-poppins text-xl text-gray-50 rounded mb-4 shadow"
-          onClick={() => handleCreatePost()}
-        >
-          CRIAR POST
-        </button>
+          <Tiptap
+            setImages={setImages}
+            images={images}
+            setPostHTML={setPostHTML}
+            setJSON={setPostJSON}
+          />
+          <Textarea
+            label={'RESUMO'}
+            setter={setSummary}
+            state={summary}
+            margin={'my-10'}
+            width={'w-[90%]'}
+            rows={4}
+            placeholder={
+              'A temporalidade de Shingeki é confusa. Mas, se mostra um traço fundamental da obra desde o primeiro episódio.'
+            }
+          />
+          <div className="flex flex-row flex-wrap justify-center items-center w-[90%] px-3 py-4 bg-gray-100 gap-4 h-[150px] overflow-y-scroll border-2 border-gray-400 rounded mb-10">
+            {categories.map((category) => (
+              <Category
+                category={category}
+                key={category}
+                setter={setUsedCategories}
+                usedCategories={usedCategories}
+              />
+            ))}
+          </div>
+          {title && usedCategories.length > 0 && postHTML && (
+            <button
+              className="bg-blue-500 drop-shadow px-5 py-3 font-poppins text-xl text-gray-50 rounded mb-4 shadow"
+              onClick={() => handleCreatePost()}
+            >
+              CRIAR POST
+            </button>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
