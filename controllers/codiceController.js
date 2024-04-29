@@ -8,6 +8,7 @@ exports.createCodice = catchAsync(async (req, res, next) => {
     content: req.body.html,
     summary: req.body.summary,
     author: req.user._id,
+    cover: req.body.coverName,
     category: JSON.parse(req.body.categories),
     usedImages: req.body.imagesNames,
   });
@@ -35,23 +36,35 @@ exports.resizeImages = catchAsync(async (req, res, next) => {
     height: 720,
   };
 
+  const coverName = `codice-cover-${Date.now()}.jpg`;
+
+  await sharp(req.files.cover[0].buffer)
+    .resize(sizes.width, sizes.height)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`client/public/${coverName}`);
+
+  req.body.coverName = coverName;
+
   ///////////////////////////////////////////
 
   req.body.imagesNames = [];
 
-  await Promise.all(
-    req.files.map(async (img, ind) => {
-      const imgName = `codice-${ind}-${Date.now()}.jpg`;
+  if (req.files.images) {
+    await Promise.all(
+      req.files.images.map(async (img, ind) => {
+        const imgName = `codice-${ind}-${Date.now()}.jpg`;
 
-      await sharp(img.buffer)
-        .resize(sizes.width, sizes.height)
-        .toFormat('jpeg')
-        .jpeg({ quality: 90 })
-        .toFile(`client/public/${imgName}`);
+        await sharp(img.buffer)
+          .resize(sizes.width, sizes.height)
+          .toFormat('jpeg')
+          .jpeg({ quality: 90 })
+          .toFile(`client/public/${imgName}`);
 
-      req.body.imagesNames.push(imgName);
-    })
-  );
+        req.body.imagesNames.push(imgName);
+      })
+    );
+  }
 
   next();
 });

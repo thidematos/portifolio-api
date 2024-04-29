@@ -4,12 +4,14 @@ import Error from './Error';
 import axios from 'axios';
 import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
+import ImageUploader from './TestUploader';
 
 function CreateCodice() {
   const [images, setImages] = useState([]);
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [usedCategories, setUsedCategories] = useState([]);
+  const [cover, setCover] = useState(null);
   const [postHTML, setPostHTML] = useState('');
   const [postJSON, setPostJSON] = useState({});
   const [error, setError] = useState('');
@@ -48,7 +50,7 @@ function CreateCodice() {
         json: postJSON,
       };
 
-      if (!title || !summary || !usedCategories.length > 0)
+      if (!title || !summary || !usedCategories.length > 0 || !cover)
         throw new Error('Conteúdo incompleto!');
 
       const form = new FormData();
@@ -56,12 +58,13 @@ function CreateCodice() {
       images.forEach((file) => {
         form.append('images', file.file);
       });
+      form.append('cover', cover);
       form.append('imagesInfo', JSON.stringify(imagesInfo));
       form.append('summary', summary);
       form.append('content', JSON.stringify(content));
       form.append('categories', JSON.stringify(usedCategories));
 
-      const res = await axios.post('/api/v1/codice', form, {
+      await axios.post('/api/v1/codice', form, {
         withCredentials: true,
       });
       navigate('/admin/dashboard/codice');
@@ -104,6 +107,18 @@ function CreateCodice() {
               'A temporalidade de Shingeki é confusa. Mas, se mostra um traço fundamental da obra desde o primeiro episódio.'
             }
           />
+          <div className="flex flex-col justify-center items-center gap-2 w-full mb-10">
+            <p className="font-poppins text-xl text-gray-800 drop-shadow">
+              CAPA
+            </p>
+            <ImageUploader
+              multiple={false}
+              guide={'Escolha uma capa para seu códice'}
+              withDialogueBox={false}
+              setter={setCover}
+            />
+          </div>
+
           <div className="flex flex-row flex-wrap justify-center items-center w-[90%] px-3 py-4 bg-gray-100 gap-4 h-[150px] overflow-y-scroll border-2 border-gray-400 rounded mb-10">
             {categories.map((category) => (
               <Category
@@ -114,7 +129,7 @@ function CreateCodice() {
               />
             ))}
           </div>
-          {title && usedCategories.length > 0 && postHTML && (
+          {title && usedCategories.length > 0 && postHTML && cover && (
             <button
               className="bg-blue-500 drop-shadow px-5 py-3 font-poppins text-xl text-gray-50 rounded mb-4 shadow"
               onClick={() => handleCreatePost()}

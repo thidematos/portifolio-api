@@ -7,7 +7,7 @@ function Generate() {
 
   useEffect(() => {
     const getHTML = async () => {
-      const res = await axios.get('/api/v1/codice/662f07d7beac994ca4cd3d1b');
+      const res = await axios.get('/api/v1/codice/662fdccaef01692049d2203e');
 
       setHtml(res.data.data.codice.content);
     };

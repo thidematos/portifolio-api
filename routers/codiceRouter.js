@@ -10,7 +10,7 @@ router
   .post(
     authController.protect,
     authController.restrictTo('admin'),
-    upload.array('images'),
+    upload.fields([{ name: 'images' }, { name: 'cover' }]),
     codiceController.resizeImages,
     codiceController.replaceImgSrc,
     codiceController.createCodice

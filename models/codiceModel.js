@@ -9,8 +9,13 @@ const codiceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cover: {
+    type: String,
+    required: true,
+  },
   summary: {
     type: String,
+    required: true,
   },
   slug: {
     type: String,
@@ -18,8 +23,12 @@ const codiceSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Referencia o modelo de usuário (opcional)
+    required: true,
   },
-  category: [String],
+  category: {
+    type: [String],
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
