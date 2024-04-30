@@ -28,14 +28,14 @@ const extensions = [
 
     bulletList: {
       HTMLAttributes: {
-        class: 'list-disc w-[90%] p-4',
+        class: 'list-disc w-[90%] p-4 ml-3',
       },
       keepMarks: true,
       keepAttributes: true,
     },
     orderedList: {
       HTMLAttributes: {
-        class: 'list-decimal w-[90%] p-4',
+        class: 'list-decimal w-[90%] p-4 ml-3',
       },
       keepMarks: true,
       keepAttributes: true,
@@ -47,12 +47,12 @@ const extensions = [
     },
     heading: {
       HTMLAttributes: {
-        class: 'tracking-widest text-2xl font-noto text-gray-800',
+        class: 'tracking-widest text-2xl font-noto text-gray-800 my-3',
       },
     },
     paragraph: {
       HTMLAttributes: {
-        class: 'font-noto text-gray-800 ',
+        class: 'font-noto text-gray-800 indent-6',
       },
     },
     horizontalRule: {

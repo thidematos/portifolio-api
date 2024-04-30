@@ -7,18 +7,13 @@ function Generate() {
 
   useEffect(() => {
     const getHTML = async () => {
-      const res = await axios.get('/api/v1/codice/662fdccaef01692049d2203e');
+      const res = await axios.get('/api/v1/codice/66308c0db1e353e46a4c5f05');
 
       setHtml(res.data.data.codice.content);
     };
 
     getHTML();
   }, []);
-
-  function getHTML(html) {
-    const domParsed = new DOMParser().parseFromString(html, 'text/html');
-    return domParsed.body.textContent;
-  }
 
   return (
     <>
