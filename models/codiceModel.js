@@ -29,6 +29,14 @@ const codiceSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  likes: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  toReadLater: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   date: {
     type: Date,
     default: Date.now,

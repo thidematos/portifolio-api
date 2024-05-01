@@ -5,6 +5,8 @@ const upload = require('./../utils/multerUpload');
 
 const router = express.Router();
 
+router.get('/categories', codiceController.getCategories);
+
 router
   .route('/')
   .post(

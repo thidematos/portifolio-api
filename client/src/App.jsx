@@ -17,6 +17,7 @@ import CodiceDashboard from './components/CodiceDashboard';
 import CreateCodice from './components/CreateCodice';
 import SetTiptapImage from './components/SetTiptapImage';
 import Generate from './pages/Generate';
+import CodiceFilters from './components/CodiceFilters';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -42,7 +43,9 @@ function App() {
             <Route path="add-section" element={<AddSection />} />
             <Route path="colors" element={<ColorPicker />} />
           </Route>
-          <Route path="codice" element={<CodiceDashboard />} />
+          <Route path="codice" element={<CodiceDashboard />}>
+            <Route path="at" element={<CodiceFilters />} />
+          </Route>
           <Route path="codice/write" element={<CreateCodice />}>
             <Route path="setImage" element={<SetTiptapImage />} />
           </Route>

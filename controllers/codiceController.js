@@ -29,8 +29,20 @@ exports.getAllCodices = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
+    results: codices.length,
     data: {
       codices: codices,
+    },
+  });
+});
+
+exports.getCategories = catchAsync(async (req, res, next) => {
+  const categories = await Codice.find({}).select('category -_id');
+
+  res.status(200).json({
+    status: 'sucess',
+    data: {
+      categories,
     },
   });
 });
