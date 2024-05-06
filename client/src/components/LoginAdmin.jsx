@@ -1,5 +1,5 @@
 import LoginForm from './LoginForm';
-import Logo from './Logo';
+import Logo from '../Utils/Logo';
 
 function LoginAdmin() {
   return (

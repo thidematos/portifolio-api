@@ -1,11 +1,11 @@
 import useGetData from '../hooks/useGetData';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Button from './Button';
-import DialogueBox from './DialogueBox';
+import Button from '../Utils/Button';
+import DialogueBox from '../Utils/DialogueBox';
 import axios from 'axios';
 
 function WorksPage() {

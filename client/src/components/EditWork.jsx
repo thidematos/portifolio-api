@@ -1,10 +1,10 @@
 import { useOutletContext, useParams, useSearchParams } from 'react-router-dom';
-import RouterModal from './RouterModal';
+import RouterModal from '../Utils/RouterModal';
 import ProjecLogo from './ProjectLogo';
 import { useEffect, useRef, useState } from 'react';
-import Button from './Button';
+import Button from '../Utils/Button';
 import usePatch from './../hooks/usePatch';
-import Loader from './Loader';
+import Loader from '../Utils/Loader';
 
 function EditWork() {
   const [work, setWork] = useOutletContext();

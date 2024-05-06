@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useEffect, useReducer, useState } from 'react';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 import { useNavigate } from 'react-router-dom';
-import Button from './Button';
+import Button from '../Utils/Button';
 import ErrorNotification from './ErrorNotification';
 
 function LoginForm({ pathToAfterLogin }) {

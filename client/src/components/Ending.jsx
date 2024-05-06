@@ -1,4 +1,4 @@
-import Modal from './Modal';
+import Modal from '../Utils/Modal';
 import { useState } from 'react';
 import AboutMe from './AboutMe';
 import ProjectRequestForm from './ProjectRequestForm';

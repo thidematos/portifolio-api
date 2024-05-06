@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import Button from './Button';
-import Logo from './Logo';
-import RouterModal from './RouterModal';
+import Button from '../Utils/Button';
+import Logo from '../Utils/Logo';
+import RouterModal from '../Utils/RouterModal';
 import ProgressBar from './ProgressBar';
-import TestUploader from './TestUploader';
-import ColorInput from './ColorInput';
+import TestUploader from '../Utils/TestUploader';
+import ColorInput from '../Utils/ColorInput';
 import ErrorNotification from './ErrorNotification';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Error from './Error';
-import Loader from './Loader';
+import Error from '../Utils/Error';
+import Loader from '../Utils/Loader';
 
 const flex = 'flex flex-col justify-center items-center w-full h-full';
 

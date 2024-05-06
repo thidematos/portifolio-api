@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import useGetData from '../hooks/useGetData';
 import axios from 'axios';
-import Loader from './Loader';
+import Loader from '../Utils/Loader';
 import { useSearchParams } from 'react-router-dom';
 
 function CodiceDashboard() {

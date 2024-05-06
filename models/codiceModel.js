@@ -30,11 +30,11 @@ const codiceSchema = new mongoose.Schema({
     required: true,
   },
   likes: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
   },
   toReadLater: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
   },
   date: {
@@ -46,6 +46,14 @@ const codiceSchema = new mongoose.Schema({
 
 codiceSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
+  this.readTime = this.next();
+});
+
+codiceSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'author',
+    select: 'name photo',
+  });
 
   next();
 });

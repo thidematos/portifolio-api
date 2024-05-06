@@ -1,11 +1,11 @@
 import { useOutletContext, useParams, useSearchParams } from 'react-router-dom';
-import RouterModal from './RouterModal';
+import RouterModal from '../Utils/RouterModal';
 
 import { useEffect, useState } from 'react';
-import TestUploader from './TestUploader';
+import TestUploader from '../Utils/TestUploader';
 import usePatch from '../hooks/usePatch';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 
 function EditImg() {
   const [work, setWork] = useOutletContext();

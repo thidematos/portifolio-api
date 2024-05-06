@@ -1,13 +1,13 @@
 import { useOutletContext, useParams, useSearchParams } from 'react-router-dom';
 import ProjectLogo from './ProjectLogo';
-import RouterModal from './RouterModal';
+import RouterModal from '../Utils/RouterModal';
 import { useEffect, useRef, useState } from 'react';
-import DialogueBox from './DialogueBox';
-import Button from './Button';
+import DialogueBox from '../Utils/DialogueBox';
+import Button from '../Utils/Button';
 import usePatch from '../hooks/usePatch';
-import Loader from './Loader';
-import Error from './Error';
-import ColorInput from './ColorInput';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
+import ColorInput from '../Utils/ColorInput';
 
 function ColorPicker() {
   const [work, setWork] = useOutletContext();

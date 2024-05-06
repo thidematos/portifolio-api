@@ -1,6 +1,6 @@
 import { useOutletContext } from 'react-router-dom';
-import RouterModal from './RouterModal';
-import ImageUploader from './TestUploader';
+import RouterModal from '../Utils/RouterModal';
+import ImageUploader from '../Utils/TestUploader';
 import { useState } from 'react';
 
 function SetTiptapImage() {

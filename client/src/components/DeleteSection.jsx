@@ -1,11 +1,11 @@
 import { useOutletContext, useSearchParams, useParams } from 'react-router-dom';
-import RouterModal from './RouterModal';
+import RouterModal from '../Utils/RouterModal';
 import ProjectLogo from './ProjectLogo';
-import DialogueBox from './DialogueBox';
-import Button from './Button';
+import DialogueBox from '../Utils/DialogueBox';
+import Button from '../Utils/Button';
 import useDelete from '../hooks/useDelete';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 
 function DeleteSection() {
   const [work] = useOutletContext();

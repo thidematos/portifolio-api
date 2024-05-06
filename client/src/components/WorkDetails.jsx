@@ -1,10 +1,10 @@
 import { Outlet, useParams } from 'react-router-dom';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Button from './Button';
+import Button from '../Utils/Button';
 
 function WorkDetails() {
   const { id } = useParams();

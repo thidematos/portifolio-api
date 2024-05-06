@@ -14,6 +14,7 @@ export default function usePatch(patchOptions) {
     setter,
     isImage = false,
     usePath = false,
+    onSuccessAction,
   } = patchOptions;
 
   const data = isImage
@@ -39,7 +40,10 @@ export default function usePatch(patchOptions) {
         withCredentials: true,
       });
       console.log(res);
+
       setter(res.data.data[resource]);
+
+      if (onSuccessAction) onSuccessAction();
     } catch (err) {
       console.log(err);
       setError(err.response.data.message);

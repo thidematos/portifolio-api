@@ -52,7 +52,7 @@ const extensions = [
     },
     paragraph: {
       HTMLAttributes: {
-        class: 'font-noto text-gray-800 indent-6',
+        class: 'font-noto text-gray-800 indent-6 mt-6',
       },
     },
     horizontalRule: {
@@ -70,11 +70,12 @@ const extensions = [
     protocols: ['tel', 'mailto'],
     HTMLAttributes: {
       class: 'underline bg-blue-400 text-gray-50 px-1',
+      target: '_blank',
     },
   }),
   Image.configure({
     HTMLAttributes: {
-      class: 'tipImg my-4',
+      class: 'tipImg my-8',
     },
     inline: false,
   }),

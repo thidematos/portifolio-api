@@ -5,13 +5,13 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom';
-import RouterModal from './RouterModal';
+import RouterModal from '../Utils/RouterModal';
 import ProjectLogo from './ProjectLogo';
-import TestUploader from './TestUploader';
+import TestUploader from '../Utils/TestUploader';
 import ErrorNotification from './ErrorNotification';
 import usePatch from '../hooks/usePatch';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 
 function AddSection() {
   const [work, setWork] = useOutletContext();

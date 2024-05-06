@@ -23,6 +23,13 @@ router
     codiceController.getAllCodices
   );
 
-router.route('/:id').get(codiceController.getCodice);
+router
+  .route('/:id')
+  .get(codiceController.getCodice)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    codiceController.patchCodice
+  );
 
 module.exports = router;

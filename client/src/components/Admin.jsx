@@ -1,5 +1,5 @@
 import LoginAdmin from './LoginAdmin';
-import RouterModal from './RouterModal';
+import RouterModal from '../Utils/RouterModal';
 
 function Admin() {
   return (

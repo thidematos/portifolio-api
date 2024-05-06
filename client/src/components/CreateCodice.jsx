@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Tiptap from './Tiptap';
-import Error from './Error';
+import Tiptap from '../Utils/Tiptap';
+import Error from '../Utils/Error';
 import axios from 'axios';
-import Loader from './Loader';
+import Loader from '../Utils/Loader';
 import { useNavigate } from 'react-router-dom';
-import ImageUploader from './TestUploader';
+import ImageUploader from '../Utils/TestUploader';
 
 function CreateCodice() {
   const [images, setImages] = useState([]);

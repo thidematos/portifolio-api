@@ -3,6 +3,20 @@ const Codice = require('./../models/codiceModel');
 const sharp = require('sharp');
 const ApiFeatures = require('./../utils/apiFeatures');
 
+exports.patchCodice = catchAsync(async (req, res, next) => {
+  const codice = await Codice.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    status: 'sucess',
+    data: {
+      codice,
+    },
+  });
+});
+
 exports.createCodice = catchAsync(async (req, res, next) => {
   const newCodice = await Codice.create({
     title: req.body.title,
@@ -81,13 +95,15 @@ exports.resizeImages = catchAsync(async (req, res, next) => {
   if (req.files.images) {
     await Promise.all(
       req.files.images.map(async (img, ind) => {
-        const imgName = `codice-${ind}-${Date.now()}.jpg`;
+        let imgName = `codice-${ind}-${Date.now()}.jpg`;
 
         await sharp(img.buffer)
           .resize(sizes.width, sizes.height)
           .toFormat('jpeg')
           .jpeg({ quality: 90 })
           .toFile(`client/public/${imgName}`);
+
+        imgName = `/${imgName}`;
 
         req.body.imagesNames.push(imgName);
       })

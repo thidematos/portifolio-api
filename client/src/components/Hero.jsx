@@ -1,6 +1,6 @@
 import { ProjectRequest } from './NavBar';
 import ProjectRequestForm from './ProjectRequestForm';
-import Modal from './Modal';
+import Modal from '../Utils/Modal';
 import { useState } from 'react';
 
 function Hero({ isMobile }) {

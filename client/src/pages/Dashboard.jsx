@@ -1,8 +1,8 @@
 import useCredentials from '../hooks/useCredentials';
-import RouterModal from '../components/RouterModal';
-import Error from '../components/Error';
-import Loader from '../components/Loader';
-import Logo from '../components/Logo';
+import RouterModal from '../Utils/RouterModal';
+import Error from '../Utils/Error';
+import Loader from '../Utils/Loader';
+import Logo from '../Utils/Logo';
 import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 
@@ -17,7 +17,7 @@ function Dashboard() {
     );
 
   return (
-    <div className="w-full h-[100svh] bg-gray-100">
+    <div className="w-full min-h-[100svh] bg-gray-100">
       {isLoading && <Loader position={'absolute centerDivAbsolute'} />}
       {!isLoading && !error && (
         //Pode ser que eu faça um swiper com os PreviewDashboard. Depois, viria um gráfico com n. de users, likes, best post...

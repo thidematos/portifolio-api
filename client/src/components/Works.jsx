@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { ProjectRequest } from './NavBar';
-import Modal from './Modal';
+import Modal from '../Utils/Modal';
 import ProjectDetails from './ProjectDetails';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 
 function Works() {
   const [isOpenModal, setIsOpenModal] = useState(false);

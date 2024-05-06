@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 
 function ProjectRequestForm() {
   const [started, setStarted] = useState(false);

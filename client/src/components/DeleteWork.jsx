@@ -1,11 +1,11 @@
 import { useOutletContext, useParams } from 'react-router-dom';
 import ProjectLogo from './ProjectLogo';
-import RouterModal from './RouterModal';
-import DialogueBox from './DialogueBox';
-import Button from './Button';
+import RouterModal from '../Utils/RouterModal';
+import DialogueBox from '../Utils/DialogueBox';
+import Button from '../Utils/Button';
 import useDelete from '../hooks/useDelete';
-import Loader from './Loader';
-import Error from './Error';
+import Loader from '../Utils/Loader';
+import Error from '../Utils/Error';
 
 function DeleteWork() {
   const [work] = useOutletContext();
