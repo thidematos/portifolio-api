@@ -56,6 +56,8 @@ function EditCodiceContent() {
     const imagesInfo = images.map((image) => {
       form.append('images', image.file);
 
+      window.URL.revokeObjectURL(image.url);
+
       return {
         blob: image.url,
         legend: image.leged,
