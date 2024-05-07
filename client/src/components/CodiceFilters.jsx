@@ -25,11 +25,13 @@ function CodiceFilters() {
   return (
     <>
       {isLoading && (
-        <Loader position={'absolute centerDivAbsolute'} size={100} />
+        <div className="flex flex-col justify-center items-center h-[90svh] w-full relative">
+          <Loader position={'absolute centerDivAbsolute'} size={100} />
+        </div>
       )}
       {error && <Error path={-1} message={error} />}
       {!isLoading && !error && (
-        <div className="w-full h-full flex flex-col justify-center items-center">
+        <div className="w-full min-h-full flex flex-col justify-center items-center">
           {codices.map((codice) => (
             <Codice codice={codice} key={codice._id} />
           ))}

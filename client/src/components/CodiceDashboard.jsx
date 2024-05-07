@@ -64,7 +64,7 @@ function CodiceDashboard() {
 
   return (
     <div className="relative w-full h-full ">
-      <div className="flex flex-col w-full justify-center items-center">
+      <div className="flex flex-col w-full min-h-full justify-center items-center">
         <div className="w-full flex flex-row justify-start items-center flex-nowrap relative overflow-x-scroll ">
           {categories.isLoading && (
             <Loader size={30} position={'absolute centerDivAbsolute'} />

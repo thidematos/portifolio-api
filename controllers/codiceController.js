@@ -47,6 +47,10 @@ exports.patchCodice = catchAsync(async (req, res, next) => {
     patch.cover = req.body.cover;
   }
 
+  if (req.body.category) {
+    patch.category = req.body.category;
+  }
+
   const codice = await Codice.findByIdAndUpdate(req.params.id, patch, {
     new: true,
     runValidators: true,
@@ -116,7 +120,7 @@ exports.getCodice = catchAsync(async (req, res, next) => {
 });
 
 exports.resizeImages = catchAsync(async (req, res, next) => {
-  if (!req.files) next();
+  if (!req.files) return next();
 
   const sizes = {
     width: 1080,

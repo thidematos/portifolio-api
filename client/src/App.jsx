@@ -22,6 +22,7 @@ import CodiceDetails from './components/CodiceDetails';
 import EditCodice from './components/EditCodice';
 import EditCodiceImage from './components/EditCodiceImage';
 import EditCodiceContent from './components/EditCodiceContent';
+import EditCodiceCategory from './components/EditCodiceCategory';
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -56,6 +57,7 @@ function App() {
             <Route path="editContent" element={<EditCodiceContent />}>
               <Route path="setImage" element={<SetTiptapImage />} />
             </Route>
+            <Route path="editCategory" element={<EditCodiceCategory />} />
           </Route>
           <Route path="codice/write" element={<CreateCodice />}>
             <Route path="setImage" element={<SetTiptapImage />} />

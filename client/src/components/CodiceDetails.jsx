@@ -129,16 +129,18 @@ function Content({ content, setNumWords }) {
 
 function Categories({ categories }) {
   return (
-    <div className="my-10 flex flex-row justify-start items-center flex-wrap w-full gap-3">
-      {categories?.map((category) => (
-        <button
-          key={category}
-          className="w-[30%] bg-gray-400 p-1 rounded-xl text-sm"
-        >
-          {category}
-        </button>
-      ))}
-    </div>
+    <Link to={'editCategory'} className="w-full">
+      <div className="my-10 flex flex-row justify-start items-center flex-wrap w-full gap-3 border border-orange-500 py-8 px-4 rounded shadow bg-gray-200">
+        {categories?.map((category) => (
+          <button
+            key={category}
+            className="w-[30%] bg-gray-500 p-1 text-gray-50 rounded-xl text-sm shadow"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    </Link>
   );
 }
 
