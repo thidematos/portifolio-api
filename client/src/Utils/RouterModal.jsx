@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-function RouterModal({ path, isModalScrollable = false, children }) {
+function RouterModal({
+  path,
+  isModalScrollable = false,
+  children,
+  hidden = false,
+}) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,7 +18,9 @@ function RouterModal({ path, isModalScrollable = false, children }) {
 
   return (
     <div
-      className="fixed w-screen h-screen z-[9990] bg-[rgba(0,0,0,0.6)] top-0 left-0 cursor-default"
+      className={`${
+        hidden ? 'hidden' : ''
+      } fixed w-screen h-screen z-[9990] bg-[rgba(0,0,0,0.6)] top-0 left-0 cursor-default`}
       onClick={() => {
         navigate(path);
       }}

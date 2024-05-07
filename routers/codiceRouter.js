@@ -29,6 +29,10 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
+    upload.fields([{ name: 'cover' }, { name: 'images' }]),
+    codiceController.resizeImages,
+    codiceController.replaceImgSrc,
+    codiceController.verifyImgContent,
     codiceController.patchCodice
   );
 

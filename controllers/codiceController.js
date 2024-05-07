@@ -2,9 +2,52 @@ const catchAsync = require('./../utils/catchAsync');
 const Codice = require('./../models/codiceModel');
 const sharp = require('sharp');
 const ApiFeatures = require('./../utils/apiFeatures');
+const deleteFile = require('./../utils/deleteFileFs');
+
+exports.verifyImgContent = catchAsync(async (req, res, next) => {
+  if (!req.files || !req.body.html) return next();
+
+  const actualCodice = await Codice.findById(req.params.id);
+
+  if (req.body.cover) deleteFile(actualCodice.cover, next);
+
+  if (req.body.html) {
+    const newUsedImages = actualCodice.usedImages.filter((imgName) =>
+      req.body.html.includes(imgName)
+    );
+
+    const imagesToDelete = actualCodice.usedImages.filter(
+      (imgName) => !req.body.html.includes(imgName)
+    );
+
+    if (imagesToDelete.length > 0)
+      imagesToDelete.forEach((img) => deleteFile(img.replace('/', ''), next));
+
+    if (!req.body.imagesNames) req.body.imagesNames = newUsedImages;
+    else req.body.imagesNames = req.body.imagesNames.concat(newUsedImages);
+  }
+
+  next();
+});
 
 exports.patchCodice = catchAsync(async (req, res, next) => {
-  const codice = await Codice.findByIdAndUpdate(req.params.id, req.body, {
+  const patch = {};
+  //Title, Cover, Content, usedImages, Category
+
+  if (req.body.html) {
+    patch.content = req.body.html;
+    patch.usedImages = req.body.imagesNames;
+  }
+
+  if (req.body.title) {
+    patch.title = req.body.title;
+  }
+
+  if (req.body.cover) {
+    patch.cover = req.body.cover;
+  }
+
+  const codice = await Codice.findByIdAndUpdate(req.params.id, patch, {
     new: true,
     runValidators: true,
   });
@@ -12,7 +55,7 @@ exports.patchCodice = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'sucess',
     data: {
-      codice,
+      codice: codice,
     },
   });
 });
@@ -23,7 +66,7 @@ exports.createCodice = catchAsync(async (req, res, next) => {
     content: req.body.html,
     summary: req.body.summary,
     author: req.user._id,
-    cover: req.body.coverName,
+    cover: req.body.cover,
     category: JSON.parse(req.body.categories),
     usedImages: req.body.imagesNames,
   });
@@ -73,26 +116,30 @@ exports.getCodice = catchAsync(async (req, res, next) => {
 });
 
 exports.resizeImages = catchAsync(async (req, res, next) => {
+  if (!req.files) next();
+
   const sizes = {
     width: 1080,
     height: 720,
   };
 
-  const coverName = `codice-cover-${Date.now()}.jpg`;
+  if (req.files.cover) {
+    const coverName = `codice-cover-${Date.now()}.jpg`;
 
-  await sharp(req.files.cover[0].buffer)
-    .resize(sizes.width, sizes.height)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`client/public/${coverName}`);
+    await sharp(req.files.cover[0].buffer)
+      .resize(sizes.width, sizes.height)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(`client/public/${coverName}`);
 
-  req.body.coverName = coverName;
+    req.body.cover = coverName;
+  }
 
   ///////////////////////////////////////////
 
-  req.body.imagesNames = [];
-
   if (req.files.images) {
+    req.body.imagesNames = [];
+
     await Promise.all(
       req.files.images.map(async (img, ind) => {
         let imgName = `codice-${ind}-${Date.now()}.jpg`;
@@ -114,7 +161,10 @@ exports.resizeImages = catchAsync(async (req, res, next) => {
 });
 
 exports.replaceImgSrc = (req, res, next) => {
+  if (!req.body.imagesInfo) return next();
+
   const imagesInfo = JSON.parse(req.body.imagesInfo);
+
   const html = JSON.parse(req.body.content).html;
 
   let finalStr = null;
@@ -127,6 +177,5 @@ exports.replaceImgSrc = (req, res, next) => {
 
   req.body.html = finalStr || html;
 
-  console.log(req.body.html);
   next();
 };

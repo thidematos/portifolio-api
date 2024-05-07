@@ -12,6 +12,7 @@ import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import Youtube from '@tiptap/extension-youtube';
 import FontFamily from '@tiptap/extension-font-family';
+import { useState } from 'react';
 
 /*
 <FloatingMenu>This is the floating menu</FloatingMenu>
@@ -88,20 +89,34 @@ const extensions = [
   }),
 ];
 
-const content = '<p>Hello World!</p>';
+function Tiptap({
+  images,
+  setImages,
+  setPostHTML,
+  setJSON,
+  initContent = '<p>Hello World!</p>',
+  size = 'w-[90vw] min-h-[600px]',
+  useSelfContext = true,
+}) {
+  const [content, setContent] = useState(initContent);
 
-function Tiptap({ images, setImages, setPostHTML, setJSON }) {
   return (
     <EditorProvider
       extensions={extensions}
       content={content}
       editorProps={{
         attributes: {
-          class:
-            'border-2 border-t-0 border-gray-400 rounded-b-lg shadow-lg w-[90vw] min-h-[600px] p-3  outline-none focus:border-blue-300 ',
+          class: `border-2 border-t-0 border-gray-400 rounded-b-lg shadow-lg ${size} p-3  outline-none focus:border-blue-300 `,
         },
       }}
-      slotBefore={<TiptapMenu setImages={setImages} images={images} />}
+      slotBefore={
+        <TiptapMenu
+          setImages={setImages}
+          images={images}
+          width={size.split(' ')[0]}
+          useSelfContext={useSelfContext}
+        />
+      }
       onUpdate={(e) => {
         setPostHTML(e.editor.getHTML());
         setJSON(e.editor.getJSON());

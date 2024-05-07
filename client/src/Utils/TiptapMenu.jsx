@@ -11,13 +11,15 @@ import { useEffect, useState } from 'react';
       />
 */
 
-function TiptapMenu({ images, setImages }) {
+function TiptapMenu({ images, setImages, width, useSelfContext }) {
   const { editor } = useCurrentEditor();
   const navigate = useNavigate();
   const [align, setAlign] = useState('left');
 
   useEffect(() => {
     if (!images.length > 0) return;
+
+    console.log('Hello from add image');
 
     editor
       .chain()
@@ -45,7 +47,9 @@ function TiptapMenu({ images, setImages }) {
   }
 
   return (
-    <div className="w-[90vw] border-2 border-gray-700 p-4 rounded-t-lg flex flex-row justify-center flex-wrap items-baseline gap-3 overflow-x-scroll">
+    <div
+      className={`${width} border-2 border-gray-700 p-4 rounded-t-lg flex flex-row justify-center flex-wrap items-baseline gap-3 overflow-x-scroll`}
+    >
       <Button
         type={'heading'}
         editor={editor}
@@ -143,7 +147,7 @@ function TiptapMenu({ images, setImages }) {
         editor={editor}
         onAction={() => editor.chain().toggleCodeBlock().focus().run()}
       />
-      <Outlet context={uploadImage} />
+      {useSelfContext && <Outlet context={uploadImage} />}
     </div>
   );
 }

@@ -8,6 +8,7 @@ import Loader from '../Utils/Loader';
 import Error from '../Utils/Error';
 import { Link } from 'react-router-dom';
 import countWords from '../Utils/CountWords';
+import Button from '../Utils/Button';
 
 function CodiceDetails() {
   const [isLoading, setIsLoading] = useState(false);
@@ -108,13 +109,21 @@ function Content({ content, setNumWords }) {
   }, [contentDiv.current]);
 
   return (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(content),
-      }}
-      ref={contentDiv}
-      className="tracking-wide"
-    ></div>
+    <>
+      <Link to={'editContent?field=content'}>
+        <button className="bg-blue-500 px-5 py-3 rounded text-gray-50 mb-6 shadow-lg drop-shadow">
+          🔧 Editar conteúdo
+        </button>
+      </Link>
+
+      <div
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(content),
+        }}
+        ref={contentDiv}
+        className="tracking-wide"
+      ></div>
+    </>
   );
 }
 
