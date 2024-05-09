@@ -1,12 +1,12 @@
-import useGetData from '../hooks/useGetData';
-import Loader from '../Utils/Loader';
-import Error from '../Utils/Error';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '../Utils/Button';
-import DialogueBox from '../Utils/DialogueBox';
-import axios from 'axios';
+import useGetData from "../hooks/useGetData";
+import Loader from "../Utils/Loader";
+import Error from "../Utils/Error";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import Button from "../Utils/Button";
+import DialogueBox from "../Utils/DialogueBox";
+import axios from "axios";
 
 function WorksPage() {
   const {
@@ -14,7 +14,7 @@ function WorksPage() {
     setData,
     error,
     isLoading,
-  } = useGetData('/api/v1/works?sort=viewOrder', false);
+  } = useGetData("/api/v1/works?sort=viewOrder", false);
 
   const [isReordered, setIsReordered] = useState(false);
 
@@ -30,10 +30,10 @@ function WorksPage() {
         setIsLoadingDialogue(true);
         const changedDocuments = [...new Set(changedRef.current)];
         const changedIds = changedDocuments.map(
-          (doc) => originalRef.current[doc]._id
+          (doc) => originalRef.current[doc]._id,
         );
         const newIndexes = changedIds.map((id) =>
-          works.findIndex((work) => work._id === id)
+          works.findIndex((work) => work._id === id),
         );
 
         const updatePromises = changedIds.map((id, ind) =>
@@ -44,8 +44,8 @@ function WorksPage() {
             },
             {
               withCredentials: true,
-            }
-          )
+            },
+          ),
         );
 
         await Promise.all(updatePromises);
@@ -60,12 +60,12 @@ function WorksPage() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full pb-10">
-      {isLoading && <Loader position={'absolute centerDivAbsolute'} />}
+    <div className="flex w-full flex-col items-center justify-center pb-6">
+      {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
       {error && <Error message={error} />}
       {!isLoading && !error && (
         <>
-          <h3 className="bg-gray-200 w-full text-center font-poppins text-gray-500 text-base pt-6">
+          <h3 className="w-full bg-gray-200 pt-6 text-center font-poppins text-base text-gray-500">
             🧵 Arraste para reordenar!
           </h3>
           <WorksList
@@ -83,44 +83,44 @@ function WorksPage() {
           </WorksList>
           {isReordered && (
             <DialogueBox
-              notification={'Mudanças foram feitas. Deseja salvá-las?'}
-              bgColor={'bg-blue-200'}
-              textColor={'text-gray-500'}
-              width={'w-[70%]'}
-              margin={'mt-10'}
+              notification={"Mudanças foram feitas. Deseja salvá-las?"}
+              bgColor={"bg-blue-200"}
+              textColor={"text-gray-500"}
+              width={"w-[70%]"}
+              margin={"mt-10"}
             >
               {isLoadingDialogue && <Loader width="w-[60%]" margin="mt-3" />}
               {!isLoadingDialogue && (
                 <Button
                   type="action"
                   onAction={handleSaveOrder}
-                  fontSize={'text-lg'}
-                  margin={'mt-3'}
+                  fontSize={"text-lg"}
+                  margin={"mt-3"}
                 >
                   Salvar ordem
                 </Button>
               )}
             </DialogueBox>
           )}
-          <div className="w-full flex flex-row justify-around items-center">
+          <div className="flex w-full flex-row items-center justify-around">
             <Button
-              fontSize={'text-lg'}
+              fontSize={"text-lg"}
               bgColor="bg-gray-400"
               type="back"
-              path={'/admin/dashboard'}
-              margin={'mt-10'}
-              width={'w-[40%]'}
+              path={"/admin/dashboard"}
+              margin={"mt-10"}
+              width={"w-[40%]"}
               padding="py-3"
             >
               &larr; Voltar
             </Button>
             <Button
-              fontSize={'text-lg'}
+              fontSize={"text-lg"}
               bgColor="bg-blue-500"
               type="back"
-              path={'/admin/dashboard/create-work'}
-              margin={'mt-10'}
-              width={'w-[40%]'}
+              path={"/admin/dashboard/create-work"}
+              margin={"mt-10"}
+              width={"w-[40%]"}
               padding="py-3"
             >
               Novo projeto
@@ -164,7 +164,7 @@ function WorksList({ children, works, onReorder, changedRef, originalRef }) {
           return (
             <ul
               ref={provided.innerRef}
-              className="flex flex-col justify-center items-center w-full bg-gray-200 gap-6 py-8 shadow-xl"
+              className="flex w-full flex-col items-center justify-center gap-6 bg-gray-200 py-8 shadow-xl"
               {...provided.droppableProps}
             >
               {children}
@@ -183,18 +183,18 @@ function Work({ work, ind }) {
       {(provided) => {
         return (
           <li
-            className={`border border-orange-300 w-[80%] rounded-lg  min-h-[160px] shadow-lg relative overflow-hidden`}
+            className={`relative min-h-[160px] w-[80%] overflow-hidden  rounded-lg border border-orange-300 shadow-lg`}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
             <Link to={`${work._id}`}>
-              <h1 className="z-[50] top-[5%] left-[5%] absolute font-poppins text-xl bg-blue-500 px-4 py-2 rounded text-gray-100 drop-shadow shadow-lg w-[60%] text-center ">
+              <h1 className="absolute left-[5%] top-[5%] z-[50] w-[60%] rounded bg-blue-500 px-4 py-2 text-center font-poppins text-xl text-gray-100 shadow-lg drop-shadow ">
                 {work.title}
               </h1>
               <img
                 src={`/${work.src}`}
-                className=" absolute z-[40] top-0 opacity-60 brightness-[.85] grayscale-[25%] duration-150"
+                className=" absolute top-0 z-[40] opacity-60 brightness-[.85] grayscale-[25%] duration-150"
               />
             </Link>
           </li>

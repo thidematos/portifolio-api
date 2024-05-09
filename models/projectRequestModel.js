@@ -32,12 +32,15 @@ const projectRequestSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    select: false,
   },
   isAnswered: {
     type: Boolean,
     default: false,
-    select: false,
+  },
+
+  currentProject: {
+    type: Boolean,
+    default: false,
   },
 });
 

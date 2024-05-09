@@ -1,15 +1,15 @@
-import { Outlet, useParams } from 'react-router-dom';
-import Loader from '../Utils/Loader';
-import Error from '../Utils/Error';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Button from '../Utils/Button';
+import { Outlet, useParams } from "react-router-dom";
+import Loader from "../Utils/Loader";
+import Error from "../Utils/Error";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Button from "../Utils/Button";
 
 function WorkDetails() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [work, setWork] = useState({});
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function WorkDetails() {
   }, [id]);
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       {isLoading && <Loader />}
       {error && <Error message={error} />}
       {!isLoading && !error && (
@@ -39,45 +39,45 @@ function WorkDetails() {
             <Details />
             <EditArea>
               <Title
-                fieldName={'Título'}
+                fieldName={"Título"}
                 title={work.title}
-                fontColor={'text-gray-700'}
-                fontSize={'text-base'}
+                fontColor={"text-gray-700"}
+                fontSize={"text-base"}
                 toUpperCase={true}
-                content={'title'}
+                content={"title"}
               />
               <Title
-                fieldName={'Sub-título'}
+                fieldName={"Sub-título"}
                 title={work.subTitle}
-                fontColor={'text-gray-700'}
-                fontSize={'text-base'}
+                fontColor={"text-gray-700"}
+                fontSize={"text-base"}
                 toUpperCase={true}
-                content={'subTitle'}
+                content={"subTitle"}
               />
-              <Image src={work.src} fieldName={'Capa'} content={'src'} />
+              <Image src={work.src} fieldName={"Capa"} content={"src"} />
               <Title
-                fieldName={'Descrição'}
+                fieldName={"Descrição"}
                 title={work.description}
-                fontColor={'text-gray-700'}
-                fontSize={'text-sm'}
+                fontColor={"text-gray-700"}
+                fontSize={"text-sm"}
                 toUpperCase={true}
-                content={'description'}
+                content={"description"}
                 textAlign="text-left"
-                width={'w-[90%]'}
+                width={"w-[90%]"}
                 underline=""
               />
               <Image
                 src={work.mainImg}
-                fieldName={'Hero'}
-                content={'mainImg'}
+                fieldName={"Hero"}
+                content={"mainImg"}
               />
 
               {work.sections?.map((section, ind) => (
                 <div
                   key={ind + 1}
                   className={`${
-                    (ind + 1) % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200'
-                  } w-full flex flex-col justify-center items-center gap-5`}
+                    (ind + 1) % 2 === 0 ? "bg-gray-50" : "bg-gray-200"
+                  } flex w-full flex-col items-center justify-center gap-5`}
                 >
                   <Field
                     fontSize="text-xl"
@@ -88,30 +88,30 @@ function WorkDetails() {
                     SEÇÃO - {ind + 1}
                   </Field>
                   <Title
-                    fieldName={'Heading'}
+                    fieldName={"Heading"}
                     title={section.title}
-                    fontColor={'text-gray-700'}
-                    fontSize={'text-base'}
+                    fontColor={"text-gray-700"}
+                    fontSize={"text-base"}
                     toUpperCase={true}
                     content={`title`}
-                    width={'w-[90%]'}
+                    width={"w-[90%]"}
                     section={String(ind)}
                   />
                   <Title
-                    fieldName={'Detalhes'}
+                    fieldName={"Detalhes"}
                     title={section.description}
-                    fontColor={'text-gray-700'}
-                    fontSize={'text-sm'}
+                    fontColor={"text-gray-700"}
+                    fontSize={"text-sm"}
                     toUpperCase={true}
                     content={`description`}
                     textAlign="text-left"
-                    width={'w-[90%]'}
+                    width={"w-[90%]"}
                     underline=""
                     section={String(ind)}
                   />
                   <Image
                     src={section.img}
-                    fieldName={'Imagem'}
+                    fieldName={"Imagem"}
                     content={`img`}
                     section={String(ind)}
                   />
@@ -121,58 +121,58 @@ function WorkDetails() {
                 PRODUÇÃO
               </Field>
               <Title
-                fieldName={'Ano'}
+                fieldName={"Ano"}
                 title={work.year}
-                fontColor={'text-gray-700'}
-                fontSize={'text-lg'}
+                fontColor={"text-gray-700"}
+                fontSize={"text-lg"}
                 toUpperCase={true}
                 content={`year`}
                 textAlign="text-center"
-                width={'w-[90%]'}
+                width={"w-[90%]"}
               />
               <Title
-                fieldName={'Habilidades'}
+                fieldName={"Habilidades"}
                 title={work.abilities}
-                fontColor={'text-gray-700'}
-                fontSize={'text-sm'}
+                fontColor={"text-gray-700"}
+                fontSize={"text-sm"}
                 toUpperCase={true}
                 content={`abilities`}
                 textAlign="text-left"
-                width={'w-[90%]'}
+                width={"w-[90%]"}
               />
               <Title
-                fieldName={'Deploy'}
+                fieldName={"Deploy"}
                 title={work.link}
-                fontColor={'text-gray-700'}
-                fontSize={'text-base'}
+                fontColor={"text-gray-700"}
+                fontSize={"text-base"}
                 toUpperCase={true}
                 content={`link`}
                 textAlign="text-center"
-                width={'w-[90%]'}
+                width={"w-[90%]"}
                 underline="underline"
               />
               <Color colors={work.colors} />
               <Image
-                fieldWidth={'w-[100%]'}
+                fieldWidth={"w-[100%]"}
                 src={work.projectLogo}
-                fieldName={'Logo do projeto'}
+                fieldName={"Logo do projeto"}
                 content={`projectLogo`}
               />
             </EditArea>
-            <div className="w-full flex flex-row justify-around items-center">
+            <div className="flex w-full flex-row items-center justify-around">
               <Button
-                fontSize={'text-2xl'}
+                fontSize={"text-2xl"}
                 bgColor="bg-orange-500"
                 type="back"
-                path={'/admin/dashboard/works'}
+                path={"/admin/dashboard/works"}
               >
                 VOLTAR
               </Button>
               <Button
-                fontSize={'text-xl'}
+                fontSize={"text-xl"}
                 bgColor="bg-gray-300"
                 type="back"
-                path={'delete'}
+                path={"delete"}
               >
                 🗑️
               </Button>
@@ -186,20 +186,20 @@ function WorkDetails() {
 
 function Container({ children }) {
   return (
-    <div className="w-full py-6 flex flex-col justify-start items-center ">
+    <div className="flex w-full flex-col items-center justify-start py-6 ">
       {children}
     </div>
   );
 }
 
-function Image({ src, fieldName, content, section = '', fieldWidth }) {
+function Image({ src, fieldName, content, section = "", fieldWidth }) {
   return (
     <Link
       to={`editar-img?field=${content}${
-        section !== '' ? `&section=${section}` : ''
+        section !== "" ? `&section=${section}` : ""
       }`}
     >
-      <div className="w-full flex flex-col justify-center items-center py-8 border-b border-gray-400 gap-6">
+      <div className="flex w-full flex-col items-center justify-center gap-6 border-b border-gray-400 py-8">
         <Field width={fieldWidth}>{fieldName}</Field>
         <img src={`/${src}`} alt="" className="w-full" />
       </div>
@@ -209,7 +209,7 @@ function Image({ src, fieldName, content, section = '', fieldWidth }) {
 
 function EditArea({ children }) {
   return (
-    <div className="pb-10 w-full flex flex-col justify-center items-center ">
+    <div className="flex w-full flex-col items-center justify-center pb-10 ">
       {children}
     </div>
   );
@@ -217,10 +217,10 @@ function EditArea({ children }) {
 
 function Color({ colors }) {
   return (
-    <div className="w-full flex flex-col justify-center items-center gap-5 py-8 border-b border-gray-400">
+    <div className="flex w-full flex-col items-center justify-center gap-5 border-b border-gray-400 py-8">
       <Field>Cores</Field>
       <Link className="w-full" to={`colors`}>
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex w-full flex-col items-center justify-center">
           <p className="font-poppins text-lg text-gray-400">
             Clique para alterar o gradiente
           </p>
@@ -238,7 +238,7 @@ function Color({ colors }) {
 
 function Details() {
   return (
-    <h5 className="w-full font-poppins text-center text-gray-400">
+    <h5 className="w-full text-center font-poppins text-gray-400">
       Clique em alguma das opções para editar
     </h5>
   );
@@ -254,18 +254,18 @@ function Title({
   toUpperCase = false,
   content,
   fieldName,
-  underline = '',
-  textAlign = 'text-center',
-  section = '',
+  underline = "",
+  textAlign = "text-center",
+  section = "",
 }) {
   return (
     <Link
       to={`editar?field=${content}${
-        section !== '' ? `&section=${section}` : ''
+        section !== "" ? `&section=${section}` : ""
       }`}
       className="w-full"
     >
-      <div className="w-full flex flex-col justify-center items-center gap-6 border-b border-gray-400 py-8">
+      <div className="flex w-full flex-col items-center justify-center gap-6 border-b border-gray-400 py-8">
         <Field>{fieldName}</Field>
         <h2
           className={`font-poppins ${fontColor} ${fontSize} ${padding} ${margin} ${width} drop-shadow ${textAlign} hover:text-blue-500 ${underline} underline-offset-2 `}
@@ -279,22 +279,22 @@ function Title({
 
 function Field({
   children,
-  width = 'w-[40%]',
-  fontSize = 'text-lg',
-  bgColor = 'bg-blue-500/75',
-  textColor = 'text-gray-100',
+  width = "w-[40%]",
+  fontSize = "text-lg",
+  bgColor = "bg-blue-500/75",
+  textColor = "text-gray-100",
   isSection = false,
-  section = '',
+  section = "",
 }) {
   return (
     <p
-      className={`rounded font-poppins ${fontSize} ${width} ${textColor} text-center px-6 py-3 ${bgColor} relative `}
+      className={`rounded font-poppins ${fontSize} ${width} ${textColor} px-6 py-3 text-center ${bgColor} relative `}
     >
       {isSection && (
         <Link to={`delete-section?id=${isSection}&section=${section}`}>
           <img
             src="/thrash-can.png"
-            className="absolute h-[23px] w-[23px] left-[10%] "
+            className="absolute left-[10%] h-[23px] w-[23px] "
           />
         </Link>
       )}
@@ -302,7 +302,7 @@ function Field({
         <Link to={`add-section?section=${section}`}>
           <img
             src="/add.png"
-            className=" absolute h-[26px] w-[26px] right-[10%]   "
+            className=" absolute right-[10%] h-[26px] w-[26px]   "
           />
         </Link>
       )}

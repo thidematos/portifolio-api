@@ -27,7 +27,7 @@ function CodiceDetails() {
   );
 
   return (
-    <div className="w-full flex flex-col justify-center items-center font-poppins px-6">
+    <div className="w-full flex flex-col justify-center items-center font-poppins px-6 mb-20">
       <Outlet context={[codice, setCodice]} />
       {isLoading && <Loader />}
       {error && <Error />}
@@ -147,7 +147,10 @@ function Categories({ categories }) {
 function Metrics({ gophers, readLaters }) {
   return (
     <div className="flex flex-row justify-center items-center w-full">
-      <Gophers gophers={gophers} />
+      <Link to={''}>
+        <Gophers gophers={gophers} />
+      </Link>
+
       <ReadLater readLater={readLaters} />
     </div>
   );
