@@ -1,29 +1,32 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Portifolio from './pages/Portifolio';
-import CodiceDesvelado from './pages/CodiceDesvelado';
-import Admin from './components/Admin';
-import Dashboard from './pages/Dashboard';
-import WorksPage from './components/WorksPage';
-import DashboardOverview from './components/DashboardOverview';
-import WorkDetails from './components/WorkDetails';
-import EditWork from './components/EditWork';
-import EditImg from './components/EditImg';
-import DeleteWork from './components/DeleteWork';
-import ColorPicker from './components/ColorPicker';
-import DeleteSection from './components/DeleteSection';
-import AddSection from './components/AddSection';
-import CreateWork from './components/CreateWork';
-import CodiceDashboard from './components/CodiceDashboard';
-import CreateCodice from './components/CreateCodice';
-import SetTiptapImage from './components/SetTiptapImage';
-import Generate from './pages/Generate';
-import CodiceFilters from './components/CodiceFilters';
-import CodiceDetails from './components/CodiceDetails';
-import EditCodice from './components/EditCodice';
-import EditCodiceImage from './components/EditCodiceImage';
-import EditCodiceContent from './components/EditCodiceContent';
-import EditCodiceCategory from './components/EditCodiceCategory';
-import ProjectRequests from './components/ProjectRequests';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Portifolio from "./pages/Portifolio";
+import CodiceDesvelado from "./pages/CodiceDesvelado";
+import Admin from "./components/Admin";
+import Dashboard from "./pages/Dashboard";
+import WorksPage from "./components/WorksPage";
+import DashboardOverview from "./components/DashboardOverview";
+import WorkDetails from "./components/WorkDetails";
+import EditWork from "./components/EditWork";
+import EditImg from "./components/EditImg";
+import DeleteWork from "./components/DeleteWork";
+import ColorPicker from "./components/ColorPicker";
+import DeleteSection from "./components/DeleteSection";
+import AddSection from "./components/AddSection";
+import CreateWork from "./components/CreateWork";
+import CodiceDashboard from "./components/CodiceDashboard";
+import CreateCodice from "./components/CreateCodice";
+import SetTiptapImage from "./components/SetTiptapImage";
+import Generate from "./pages/Generate";
+import CodiceFilters from "./components/CodiceFilters";
+import CodiceDetails from "./components/CodiceDetails";
+import EditCodice from "./components/EditCodice";
+import EditCodiceImage from "./components/EditCodiceImage";
+import EditCodiceContent from "./components/EditCodiceContent";
+import EditCodiceCategory from "./components/EditCodiceCategory";
+import ProjectRequests from "./components/ProjectRequests";
+import ProjectRequestsDetails from "./components/ProjectRequestsDetails";
+import DeleteProjectRequest from "./components/DeleteProjectRequest";
+import ProjectRequestsArchive from "./components/ProjectRequestsArchive";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -37,7 +40,7 @@ function App() {
         </Route>
         <Route path="/generate" element={<Generate />} />
         <Route path="/admin/dashboard" element={<Dashboard />}>
-          <Route index element={<Navigate replace to={'overview'} />} />
+          <Route index element={<Navigate replace to={"overview"} />} />
           <Route path="overview" element={<DashboardOverview />} />
           <Route path="works" element={<WorksPage />} />
           <Route path="create-work" element={<CreateWork />} />
@@ -64,6 +67,16 @@ function App() {
             <Route path="setImage" element={<SetTiptapImage />} />
           </Route>
           <Route path="project-requests" element={<ProjectRequests />} />
+          <Route
+            path="project-requests/archive"
+            element={<ProjectRequestsArchive />}
+          />
+          <Route
+            path="project-requests/:requestId"
+            element={<ProjectRequestsDetails />}
+          >
+            <Route path="delete" element={<DeleteProjectRequest />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
