@@ -25,8 +25,9 @@ import EditCodiceContent from "./components/EditCodiceContent";
 import EditCodiceCategory from "./components/EditCodiceCategory";
 import ProjectRequests from "./components/ProjectRequests";
 import ProjectRequestsDetails from "./components/ProjectRequestsDetails";
-import DeleteProjectRequest from "./components/DeleteProjectRequest";
 import ProjectRequestsArchive from "./components/ProjectRequestsArchive";
+import ProjectRequestSpam from "./components/ProjectRequestSpam";
+import ProjectsSchedule from "./components/ProjectsSchedule";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -42,6 +43,7 @@ function App() {
         <Route path="/admin/dashboard" element={<Dashboard />}>
           <Route index element={<Navigate replace to={"overview"} />} />
           <Route path="overview" element={<DashboardOverview />} />
+
           <Route path="works" element={<WorksPage />} />
           <Route path="create-work" element={<CreateWork />} />
           <Route path="works/:id" element={<WorkDetails />}>
@@ -52,6 +54,7 @@ function App() {
             <Route path="add-section" element={<AddSection />} />
             <Route path="colors" element={<ColorPicker />} />
           </Route>
+
           <Route path="codice" element={<CodiceDashboard />}>
             <Route path="at" element={<CodiceFilters />} />
           </Route>
@@ -66,16 +69,21 @@ function App() {
           <Route path="codice/write" element={<CreateCodice />}>
             <Route path="setImage" element={<SetTiptapImage />} />
           </Route>
+
           <Route path="project-requests" element={<ProjectRequests />} />
           <Route
             path="project-requests/archive"
             element={<ProjectRequestsArchive />}
           />
           <Route
+            path="project-requests/schedule"
+            element={<ProjectsSchedule />}
+          />
+          <Route
             path="project-requests/:requestId"
             element={<ProjectRequestsDetails />}
           >
-            <Route path="delete" element={<DeleteProjectRequest />} />
+            <Route path="spam" element={<ProjectRequestSpam />} />
           </Route>
         </Route>
       </Routes>

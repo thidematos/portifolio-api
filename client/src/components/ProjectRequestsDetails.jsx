@@ -7,6 +7,7 @@ import useDelete from "../hooks/useDelete";
 import Loader from "./../Utils/Loader";
 import Error from "./../Utils/Error";
 import usePatch from "../hooks/usePatch";
+import FloatingButton from "../Utils/FloatingButton";
 
 function ProjectRequestsDetails() {
   const { requestId } = useParams();
@@ -14,15 +15,6 @@ function ProjectRequestsDetails() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const {
-    handler: handleDelete,
-    isLoadingDelete,
-    errorDelete,
-  } = useDelete({
-    redirectTo: "/admin/dashboard/project-requests",
-    path: `/api/v1/project-requests/${requestId}`,
-  });
 
   const {
     handler: handleArchive,
@@ -63,18 +55,21 @@ function ProjectRequestsDetails() {
   return (
     <div className="relative flex w-full grow flex-col items-center justify-center gap-6 px-10 font-poppins">
       {isLoading && <Loader />}
-      {isLoadingDelete && <Loader />}
+
       {error && (
         <Error path={"/admin/dashboard/project-requests"} message={error} />
       )}
-      {errorDelete && (
-        <Error
-          path={"/admin/dashboard/project-requests"}
-          message={errorDelete}
-        />
-      )}
-      {!isLoading && !isLoadingDelete && !error && !errorDelete && (
+
+      {!isLoading && !error && (
         <>
+          <FloatingButton
+            path={"spam"}
+            icon={"spam-icon.png"}
+            size={"size-[60px]"}
+            bgColor={"bg-yellow-400"}
+            padding={"p-3"}
+            position={"top-[10%] right-6"}
+          />
           <Header projectRequest={projectRequest} />
           <CurrentProjectButton
             projectRequest={projectRequest}
@@ -140,11 +135,7 @@ function ProjectRequestsDetails() {
             position={"top-2 left-[10%]"}
             path={"/admin/dashboard/project-requests"}
           />
-          <Outlet
-            context={{
-              handleDelete,
-            }}
-          />
+          <Outlet />
         </>
       )}
     </div>
@@ -154,13 +145,13 @@ function ProjectRequestsDetails() {
 function Header({ projectRequest }) {
   return (
     <>
-      <div className="flex flex-col items-center justify-center text-gray-800">
+      <div className=" flex flex-col items-center justify-center text-gray-800">
         <h2 className="text-xl ">{projectRequest?.name.toUpperCase()}</h2>
         <p>
           {projectRequest?.position} em {projectRequest?.company}
         </p>
       </div>
-      <div className="flex flex-col items-center justify-center gap-1">
+      <div className="mt-8 flex flex-col items-center justify-center gap-1">
         <p
           className={`font-poppins text-xl ${projectRequest?.isAnswered ? "text-blue-500" : "italic text-red-600"}`}
         >
