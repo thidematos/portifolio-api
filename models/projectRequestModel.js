@@ -42,6 +42,11 @@ const projectRequestSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 projectRequestSchema.pre('save', function (next) {

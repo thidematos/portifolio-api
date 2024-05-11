@@ -1,48 +1,48 @@
-import { useEffect, useState } from 'react';
-import Button from '../Utils/Button';
-import Logo from '../Utils/Logo';
-import RouterModal from '../Utils/RouterModal';
-import ProgressBar from './ProgressBar';
-import TestUploader from '../Utils/TestUploader';
-import ColorInput from '../Utils/ColorInput';
-import ErrorNotification from './ErrorNotification';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Error from '../Utils/Error';
-import Loader from '../Utils/Loader';
+import { useEffect, useState } from "react";
+import Button from "../Utils/Button";
+import Logo from "../Utils/Logo";
+import RouterModal from "../Utils/RouterModal";
+import ProgressBar from "./ProgressBar";
+import TestUploader from "../Utils/TestUploader";
+import ColorInput from "../Utils/ColorInput";
+import ErrorNotification from "./../Utils/ErrorNotification";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Error from "../Utils/Error";
+import Loader from "../Utils/Loader";
 
-const flex = 'flex flex-col justify-center items-center w-full h-full';
+const flex = "flex flex-col justify-center items-center w-full h-full";
 
 function CreateWork() {
   const [progress, setProgress] = useState(0);
   const [src, setSrc] = useState(null);
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [mainImg, setMainImg] = useState(null);
   const [projectLogo, setProjectLogo] = useState(null);
-  const [abilities, setAbilities] = useState('');
-  const [link, setLink] = useState('');
-  const [year, setYear] = useState('');
+  const [abilities, setAbilities] = useState("");
+  const [link, setLink] = useState("");
+  const [year, setYear] = useState("");
   const [colors, setColors] = useState({
-    from: '#3b82f6',
-    to: '#f97316',
+    from: "#3b82f6",
+    to: "#f97316",
   });
   const [sections, setSections] = useState([
     {
-      title: '',
-      description: '',
-      img: '',
+      title: "",
+      description: "",
+      img: "",
     },
   ]);
-  const [errorNotification, setErrorNotification] = useState('');
+  const [errorNotification, setErrorNotification] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const slides = [
     <FirstInfo
-      key={'a'}
+      key={"a"}
       states={{
         title: [title, setTitle],
         subTitle: [subTitle, setSubTitle],
@@ -51,7 +51,7 @@ function CreateWork() {
       }}
     />,
     <SecondInfo
-      key={'b'}
+      key={"b"}
       states={{
         description: [description, setDescription],
         projectLogo: [projectLogo, setProjectLogo],
@@ -59,7 +59,7 @@ function CreateWork() {
       }}
     />,
     <ThirdInfo
-      key={'c'}
+      key={"c"}
       states={{
         abilities: [abilities, setAbilities],
         year: [year, setYear],
@@ -82,7 +82,7 @@ function CreateWork() {
         setProgress={setProgress}
         handleFinish={handleFinish}
       />
-    ))
+    )),
   );
 
   const [progressLength, setProgressLength] = useState(arrayToRender.length);
@@ -106,51 +106,51 @@ function CreateWork() {
 
   function handlePrev() {
     setProgress((currentProgress) =>
-      currentProgress > 0 ? currentProgress - 1 : currentProgress
+      currentProgress > 0 ? currentProgress - 1 : currentProgress,
     );
   }
 
   function verifyFormComplete() {
     if (!src)
-      return [false, setErrorNotification('O projeto precisa de uma capa!')];
+      return [false, setErrorNotification("O projeto precisa de uma capa!")];
 
     if (!title)
-      return [false, setErrorNotification('O projeto precisa de um título!')];
+      return [false, setErrorNotification("O projeto precisa de um título!")];
     if (!subTitle)
       return [
         false,
-        setErrorNotification('O projeto precisa de um sub título!'),
+        setErrorNotification("O projeto precisa de um sub título!"),
       ];
     if (!description)
       return [
         false,
-        setErrorNotification('O projeto precisa de uma descrição!'),
+        setErrorNotification("O projeto precisa de uma descrição!"),
       ];
     if (!mainImg)
       return [
         false,
-        setErrorNotification('O projeto precisa de uma imagem principal!'),
+        setErrorNotification("O projeto precisa de uma imagem principal!"),
       ];
     if (!projectLogo)
-      return [false, setErrorNotification('O projeto precisa de uma logo!')];
+      return [false, setErrorNotification("O projeto precisa de uma logo!")];
     if (!abilities)
       return [
         false,
-        setErrorNotification('O projeto precisa de um set de habilidades!'),
+        setErrorNotification("O projeto precisa de um set de habilidades!"),
       ];
     if (!year)
-      return [false, setErrorNotification('O projeto precisa de um ano!')];
+      return [false, setErrorNotification("O projeto precisa de um ano!")];
     if (!link)
-      return [false, setErrorNotification('O projeto precisa de um deploy!')];
+      return [false, setErrorNotification("O projeto precisa de um deploy!")];
 
     if (!Object.values(colors).length === 2)
-      return [false, setErrorNotification('O projeto precisa de cores!')];
+      return [false, setErrorNotification("O projeto precisa de cores!")];
 
     sections.forEach((section) => {
       if (!Object.values(section).length === 3)
         return [
           false,
-          setErrorNotification('As seções do projeto precisam ser completas!'),
+          setErrorNotification("As seções do projeto precisam ser completas!"),
         ];
     });
 
@@ -160,7 +160,7 @@ function CreateWork() {
   async function postWork(form) {
     try {
       setIsLoading(true);
-      const res = await axios.post('/api/v1/works', form, {
+      const res = await axios.post("/api/v1/works", form, {
         withCredentials: true,
       });
 
@@ -169,7 +169,7 @@ function CreateWork() {
       setError(err.response.data.message);
     } finally {
       setIsLoading(false);
-      navigate('/admin/dashboard/works');
+      navigate("/admin/dashboard/works");
     }
   }
 
@@ -179,19 +179,19 @@ function CreateWork() {
     if (!status) return errorHandler();
 
     const newWork = new FormData();
-    newWork.append('src', src);
-    newWork.append('title', title);
-    newWork.append('description', description);
-    newWork.append('mainImg', mainImg);
-    newWork.append('subTitle', subTitle);
-    newWork.append('year', year);
-    newWork.append('abilities', abilities);
-    newWork.append('colors', JSON.stringify(colors));
-    newWork.append('projectLogo', projectLogo);
-    newWork.append('link', link);
-    newWork.append('sections', JSON.stringify(sections));
+    newWork.append("src", src);
+    newWork.append("title", title);
+    newWork.append("description", description);
+    newWork.append("mainImg", mainImg);
+    newWork.append("subTitle", subTitle);
+    newWork.append("year", year);
+    newWork.append("abilities", abilities);
+    newWork.append("colors", JSON.stringify(colors));
+    newWork.append("projectLogo", projectLogo);
+    newWork.append("link", link);
+    newWork.append("sections", JSON.stringify(sections));
 
-    sections.forEach((section) => newWork.append('sectionImg', section.img));
+    sections.forEach((section) => newWork.append("sectionImg", section.img));
 
     console.log([...Object.entries(newWork)]);
 
@@ -200,16 +200,16 @@ function CreateWork() {
 
   return (
     <RouterModal path={-1} isModalScrollable={true}>
-      <div className="flex flex-col justify-start items-center w-full h-full relative py-6">
-        <Logo fontSize={'text-4xl'} margin="mb-6" />
+      <div className="relative flex h-full w-full flex-col items-center justify-start py-6">
+        <Logo fontSize={"text-4xl"} margin="mb-6" />
         {isLoading && <Loader />}
         {error && <Error />}
         {!isLoading && !error && (
           <>
             <img
               src="/roll-back.png"
-              className={`rounded-full absolute w-[10%] bg-white p-2 top-4 left-4 ${
-                progress > 1 ? 'block' : 'hidden'
+              className={`absolute left-4 top-4 w-[10%] rounded-full bg-white p-2 ${
+                progress > 1 ? "block" : "hidden"
               }`}
               onClick={handlePrev}
             />
@@ -232,10 +232,10 @@ function CreateWork() {
             {errorNotification && (
               <ErrorNotification
                 error={errorNotification}
-                bgColor={'bg-orange-400/90'}
-                textColor={'text-gray-50'}
-                position={'bottom-5'}
-                width={'w-[85%]'}
+                bgColor={"bg-orange-400/90"}
+                textColor={"text-gray-50"}
+                position={"bottom-5"}
+                width={"w-[85%]"}
                 setError={setErrorNotification}
               />
             )}
@@ -257,12 +257,12 @@ function SectionInfo({
 }) {
   return (
     <div
-      className={`flex flex-col justify-start items-center w-full h-full font-poppins relative`}
+      className={`relative flex h-full w-full flex-col items-center justify-start font-poppins`}
     >
       <img
         src="/thrash-can.png"
-        className={`absolute w-[12%]  top-1 bg-gray-200 shadow drop-shadow-sm right-10 border border-orange-300 rounded p-1 ${
-          entireArray.length === 1 ? 'hidden' : 'block'
+        className={`absolute right-10  top-1 w-[12%] rounded border border-orange-300 bg-gray-200 p-1 shadow drop-shadow-sm ${
+          entireArray.length === 1 ? "hidden" : "block"
         }`}
         onClick={() =>
           setter((sections) => {
@@ -272,9 +272,9 @@ function SectionInfo({
           })
         }
       />
-      <h2 className="text-gray-700 text-lg drop my-3">SEÇÃO</h2>
+      <h2 className="drop my-3 text-lg text-gray-700">SEÇÃO</h2>
       <InputText
-        label={'Título'}
+        label={"Título"}
         state={section.title}
         setter={(value) =>
           setter((sections) => {
@@ -284,13 +284,13 @@ function SectionInfo({
                     ...section,
                     title: value,
                   }
-                : section
+                : section,
             );
           })
         }
       />
       <Textarea
-        label={'Descrição'}
+        label={"Descrição"}
         state={section.description}
         setter={(value) =>
           setter((sections) => {
@@ -300,16 +300,16 @@ function SectionInfo({
                     ...section,
                     description: value,
                   }
-                : section
+                : section,
             );
           })
         }
       />
-      <div className="flex flex-col justify-center items-center gap-3 w-full py-3">
-        <p className="font-poppins text-gray-600 text-lg">Imagem</p>
+      <div className="flex w-full flex-col items-center justify-center gap-3 py-3">
+        <p className="font-poppins text-lg text-gray-600">Imagem</p>
         <TestUploader
           multiple={false}
-          guide={'Clique para adicionar uma imagem'}
+          guide={"Clique para adicionar uma imagem"}
           setter={(value) =>
             setter((sections) => {
               return sections.map((section, ind) =>
@@ -318,7 +318,7 @@ function SectionInfo({
                       ...section,
                       img: value,
                     }
-                  : section
+                  : section,
               );
             })
           }
@@ -326,27 +326,27 @@ function SectionInfo({
         />
       </div>
       {section.title && section.description && section.img && (
-        <div className="w-full flex flex-row justify-around items-center">
+        <div className="flex w-full flex-row items-center justify-around">
           {entireArray.length - 1 === index ? (
             <>
               <Button
-                width={'w-[40%]'}
+                width={"w-[40%]"}
                 bgColor="bg-orange-400"
                 onAction={() => handleFinish()}
               >
                 Finalizar
               </Button>
               <Button
-                width={'w-[40%]'}
+                width={"w-[40%]"}
                 type="action"
                 onAction={() => {
                   onNext();
                   setter((sections) => [
                     ...sections,
                     {
-                      title: '',
-                      description: '',
-                      img: '',
+                      title: "",
+                      description: "",
+                      img: "",
                     },
                   ]);
                 }}
@@ -355,7 +355,7 @@ function SectionInfo({
               </Button>
             </>
           ) : (
-            <Button margin={'mt-3'} type="action" onAction={() => onNext()}>
+            <Button margin={"mt-3"} type="action" onAction={() => onNext()}>
               Próximo &rarr;
             </Button>
           )}
@@ -367,7 +367,7 @@ function SectionInfo({
 
 function MySwiper({ children }) {
   return (
-    <div className="w-full h-[100%] overflow-x-hidden flex flex-row flex-nowrap justify-center items-center relative ">
+    <div className="relative flex h-[100%] w-full flex-row flex-nowrap items-center justify-center overflow-x-hidden ">
       {children}
     </div>
   );
@@ -387,21 +387,21 @@ function Slide({ index, children, progress }) {
 
 function Start({ onNext, srcState }) {
   return (
-    <div className="w-full  h-full flex flex-col justify-center items-center font-poppins">
-      <h2 className="text-xl w-[80%] text-center text-gray-800 drop-shadow">
+    <div className="flex  h-full w-full flex-col items-center justify-center font-poppins">
+      <h2 className="w-[80%] text-center text-xl text-gray-800 drop-shadow">
         Bem vindo à criação de Projetos
       </h2>
-      <p className="text-sm text-gray-500 text-center w-[80%] mt-10">
+      <p className="mt-10 w-[80%] text-center text-sm text-gray-500">
         Inicie com uma capa para o seu projeto!
       </p>
       <TestUploader
         multiple={false}
-        guide={'Selecione uma capa para seu projeto.'}
+        guide={"Selecione uma capa para seu projeto."}
         setter={srcState[1]}
         withDialogueBox={false}
       />
       {srcState[0] && (
-        <Button margin={'mt-10'} type="action" onAction={() => onNext()}>
+        <Button margin={"mt-10"} type="action" onAction={() => onNext()}>
           Começar &rarr;
         </Button>
       )}
@@ -412,24 +412,24 @@ function Start({ onNext, srcState }) {
 function FirstInfo({ states }) {
   return (
     <div
-      className={`flex flex-col justify-center items-center w-full h-full font-poppins`}
+      className={`flex h-full w-full flex-col items-center justify-center font-poppins`}
     >
-      <h2 className="text-gray-700 text-lg drop my-3">PRIMEIRAS INFORMAÇÕES</h2>
+      <h2 className="drop my-3 text-lg text-gray-700">PRIMEIRAS INFORMAÇÕES</h2>
       <InputText
-        label={'Título'}
+        label={"Título"}
         state={states.title[0]}
         setter={states.title[1]}
       />
       <InputText
-        label={'Sub título'}
+        label={"Sub título"}
         state={states.subTitle[0]}
         setter={states.subTitle[1]}
       />
-      <div className="flex flex-col justify-center items-center gap-3 w-full py-3">
-        <p className="font-poppins text-gray-600 text-lg">Hero</p>
+      <div className="flex w-full flex-col items-center justify-center gap-3 py-3">
+        <p className="font-poppins text-lg text-gray-600">Hero</p>
         <TestUploader
           multiple={false}
-          guide={'Clique para adicionar uma imagem'}
+          guide={"Clique para adicionar uma imagem"}
           setter={states.mainImg[1]}
           withDialogueBox={false}
         />
@@ -439,7 +439,7 @@ function FirstInfo({ states }) {
         Boolean(states.subTitle[0]) &&
         Boolean(states.mainImg[0]) && (
           <Button
-            margin={'mt-3'}
+            margin={"mt-3"}
             type="action"
             onAction={() => states.onNext()}
           >
@@ -453,25 +453,25 @@ function FirstInfo({ states }) {
 function SecondInfo({ states }) {
   return (
     <div
-      className={`flex flex-col justify-center items-center w-full h-full font-poppins`}
+      className={`flex h-full w-full flex-col items-center justify-center font-poppins`}
     >
-      <h2 className="text-gray-700 text-lg drop my-3">IDENTIDADE</h2>
+      <h2 className="drop my-3 text-lg text-gray-700">IDENTIDADE</h2>
       <Textarea
-        label={'Detalhes'}
+        label={"Detalhes"}
         state={states.description[0]}
         setter={states.description[1]}
       />
-      <div className="flex flex-col justify-center items-center gap-3 w-full py-3">
-        <p className="font-poppins text-gray-600 text-lg">Logo do projeto</p>
+      <div className="flex w-full flex-col items-center justify-center gap-3 py-3">
+        <p className="font-poppins text-lg text-gray-600">Logo do projeto</p>
         <TestUploader
           multiple={false}
-          guide={'Clique para adicionar uma imagem'}
+          guide={"Clique para adicionar uma imagem"}
           setter={states.projectLogo[1]}
           withDialogueBox={false}
         />
       </div>
       {states.description[0] && states.projectLogo[0] && (
-        <Button margin={'mt-3'} type="action" onAction={() => states.onNext()}>
+        <Button margin={"mt-3"} type="action" onAction={() => states.onNext()}>
           Próximo &rarr;
         </Button>
       )}
@@ -483,43 +483,43 @@ function ThirdInfo({ states }) {
   return (
     //link year abilites colors
     <div
-      className={`flex flex-col justify-center items-center w-full h-full font-poppins`}
+      className={`flex h-full w-full flex-col items-center justify-center font-poppins`}
     >
-      <h2 className="text-gray-700 text-lg drop my-3">ENTREGA</h2>
+      <h2 className="drop my-3 text-lg text-gray-700">ENTREGA</h2>
       <InputText
-        label={'Deploy'}
+        label={"Deploy"}
         state={states.link[0]}
         setter={states.link[1]}
       />
-      <div className="flex flex-col justify-center items-center gap-5 w-full py-3">
-        <p className="font-poppins text-gray-600 text-lg">Cores</p>
-        <div className="flex flex-row justify-around w-[80%] items-center">
+      <div className="flex w-full flex-col items-center justify-center gap-5 py-3">
+        <p className="font-poppins text-lg text-gray-600">Cores</p>
+        <div className="flex w-[80%] flex-row items-center justify-around">
           <ColorInput
-            label={'From'}
-            direction={'from'}
+            label={"From"}
+            direction={"from"}
             color={states.colors[0]}
             onChangeColor={states.colors[1]}
           />
           <ColorInput
-            label={'To'}
-            direction={'to'}
+            label={"To"}
+            direction={"to"}
             color={states.colors[0]}
             onChangeColor={states.colors[1]}
           />
         </div>
       </div>
       <Textarea
-        label={'Habilidades'}
+        label={"Habilidades"}
         state={states.abilities[0]}
         setter={states.abilities[1]}
       />
-      <InputText label={'Ano'} state={states.year[0]} setter={states.year[1]} />
+      <InputText label={"Ano"} state={states.year[0]} setter={states.year[1]} />
 
       {Boolean(states.link[0]) &&
         Boolean(states.abilities[0]) &&
         Boolean(states.year[0]) && (
           <Button
-            margin={'mt-3'}
+            margin={"mt-3"}
             type="action"
             onAction={() => states.onNext()}
           >
@@ -532,8 +532,8 @@ function ThirdInfo({ states }) {
 
 function InputText({ label, state, setter }) {
   return (
-    <div className="flex flex-col justify-center items-start gap-1 w-[70%] my-3">
-      <label className="text-gray-600 text-lg" htmlFor={Math.random()}>
+    <div className="my-3 flex w-[70%] flex-col items-start justify-center gap-1">
+      <label className="text-lg text-gray-600" htmlFor={Math.random()}>
         {label}
       </label>
       <input
@@ -541,7 +541,7 @@ function InputText({ label, state, setter }) {
         value={state}
         id={Math.random()}
         onChange={(e) => setter(e.target.value)}
-        className="w-full p-2 text-gray-700 border border-gray-400 rounded shadow text-sm"
+        className="w-full rounded border border-gray-400 p-2 text-sm text-gray-700 shadow"
       />
     </div>
   );
@@ -549,8 +549,8 @@ function InputText({ label, state, setter }) {
 
 function Textarea({ label, state, setter }) {
   return (
-    <div className="flex flex-col justify-center items-start gap-1 w-[70%] my-3">
-      <label className="text-gray-600 text-lg" id={Math.random()}>
+    <div className="my-3 flex w-[70%] flex-col items-start justify-center gap-1">
+      <label className="text-lg text-gray-600" id={Math.random()}>
         {label}
       </label>
       <textarea
@@ -560,7 +560,7 @@ function Textarea({ label, state, setter }) {
         id={Math.random()}
         value={state}
         onChange={(e) => setter(e.target.value)}
-        className="w-full p-2 text-gray-700 border border-gray-400 rounded shadow text-sm"
+        className="w-full rounded border border-gray-400 p-2 text-sm text-gray-700 shadow"
       />
     </div>
   );

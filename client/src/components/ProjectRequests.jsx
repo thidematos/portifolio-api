@@ -57,7 +57,7 @@ function ProjectRequests() {
   useGet(
     setProjectRequests,
     "projectRequests",
-    `/api/v1/project-requests`,
+    `/api/v1/project-requests?isArchived=false`,
     true,
     setIsLoading,
     setError,
@@ -69,7 +69,14 @@ function ProjectRequests() {
       <h1 className="my-2 font-poppins text-xl text-gray-800">
         PEDIDOS DE PROJETOS
       </h1>
-      <CurrentProject projectRequest={currentProject} />
+      {currentProject ? (
+        <CurrentProject projectRequest={currentProject} />
+      ) : (
+        <p className="my-4 font-poppins text-sm text-gray-400">
+          Nenhum projeto ativo no momento!
+        </p>
+      )}
+
       <div className="relative flex min-w-full flex-row flex-nowrap items-center justify-start overflow-x-scroll px-3">
         {filters.map((filter) => (
           <Filter

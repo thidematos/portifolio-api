@@ -65,9 +65,13 @@ exports.createProjectRequest = catchAsync(async (req, res, next) => {
 });
 
 exports.updateProjectRequest = catchAsync(async (req, res, next) => {
+  const patch = { ...req.body };
+
+  if (req.body.isArchived) patch.currentProject = false;
+
   const updatedProjectRequest = await ProjectRequest.findByIdAndUpdate(
     req.params.id,
-    req.body,
+    patch,
     {
       new: true,
       runValidators: true,
@@ -83,6 +87,20 @@ exports.updateProjectRequest = catchAsync(async (req, res, next) => {
       projectRequest: updatedProjectRequest,
     },
   });
+});
+
+exports.toggleCurrentProjects = catchAsync(async (req, res, next) => {
+  if (!req.body.currentProject) return next();
+
+  const requests = await ProjectRequest.find();
+
+  requests.forEach(async (project) => {
+    await project.updateOne({
+      currentProject: false,
+    });
+  });
+
+  next();
 });
 
 exports.deleteProjectRequest = catchAsync(async (req, res, next) => {
