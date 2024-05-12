@@ -15,7 +15,7 @@ import {
   isSameDay,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Calendar({ today, selectedDay, setSelectedDay, appointments }) {
   //PRECISO RENDERIZAR OS APPOINTMENTS JÁ FEITOS!
@@ -38,6 +38,10 @@ function Calendar({ today, selectedDay, setSelectedDay, appointments }) {
     });
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy", { locale: ptBR }));
   }
+
+  useEffect(() => {
+    setSelectedDay(firstDayCurrentMonth);
+  }, [currentMonth, setSelectedDay]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center  text-center">
@@ -62,29 +66,36 @@ function Calendar({ today, selectedDay, setSelectedDay, appointments }) {
       </div>
 
       <div className="grid w-full grid-cols-7 text-gray-800">
-        {monthDays.map((day) => (
-          <Day
-            key={day}
-            isSelected={isEqual(day, selectedDay)}
-            className={`${isSameMonth(day, firstDayCurrentMonth) ? "" : "text-gray-400"} ${isToday(day) ? " text-red-600" : " "}`}
-            setSelected={() => setSelectedDay(day)}
-          >
-            {format(day, "dd")}
-          </Day>
-        ))}
+        {monthDays.map((day) => {
+          const hasAppointment = appointments?.filter((task) =>
+            isSameDay(day, task),
+          );
+
+          return (
+            <Day
+              key={day}
+              hasAppointment={hasAppointment?.length > 0}
+              isSelected={isEqual(day, selectedDay)}
+              className={`${isSameMonth(day, firstDayCurrentMonth) ? "" : "text-gray-400"} ${isToday(day) ? " text-red-600" : " "}`}
+              setSelected={() => setSelectedDay(day)}
+            >
+              {format(day, "dd")}
+            </Day>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-function Day({ children, className, isSelected, setSelected }) {
+function Day({ children, className, isSelected, setSelected, hasAppointment }) {
   return (
     <div
       className={`py-4  text-center font-noto  ${className}`}
       onClick={setSelected}
     >
       <button
-        className={`${isSelected ? "rounded-full bg-orange-500 p-1 text-gray-50" : ""}  size-8 duration-150`}
+        className={`${hasAppointment ? "rounded-full bg-orange-500 p-1 text-gray-50" : ""} ${isSelected ? "rounded-full bg-blue-500/75 p-1 text-gray-50" : ""} ${isSelected && hasAppointment && "font-bold"} size-8 duration-150`}
       >
         {children}
       </button>
