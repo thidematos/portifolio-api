@@ -76,7 +76,7 @@ function App() {
             element={<ProjectRequestsArchive />}
           />
           <Route
-            path="project-requests/schedule"
+            path="project-requests/:requestId/schedule"
             element={<ProjectsSchedule />}
           />
           <Route

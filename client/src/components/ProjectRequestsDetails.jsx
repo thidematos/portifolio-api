@@ -91,7 +91,7 @@ function ProjectRequestsDetails() {
             )}
           />
           <Action
-            path={"a"}
+            path={"schedule"}
             action={"AGENDAR"}
             textColor={"text-gray-50"}
             bgColor={"bg-orange-500"}

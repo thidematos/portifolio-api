@@ -11,6 +11,7 @@ const workRouter = require('./routers/workRouter');
 const projectRequestRouter = require('./routers/projectRequestRouter');
 const userRouter = require('./routers/userRouter');
 const codiceRouter = require('./routers/codiceRouter');
+const scheduleRouter = require('./routers/scheduleRouter');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -59,6 +60,8 @@ app.use('/api/v1/project-requests', projectRequestRouter);
 app.use('/api/v1/users', userRouter);
 
 app.use('/api/v1/codice', codiceRouter);
+
+app.use('/api/v1/schedule', scheduleRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Could not find ${req.originalUrl} in this server`, 404));
