@@ -28,6 +28,7 @@ import ProjectRequestsDetails from "./components/ProjectRequestsDetails";
 import ProjectRequestsArchive from "./components/ProjectRequestsArchive";
 import ProjectRequestSpam from "./components/ProjectRequestSpam";
 import ProjectsSchedule from "./components/ProjectsSchedule";
+import AnswerProjectRequest from "./components/AnswerProjectRequest";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -76,15 +77,19 @@ function App() {
             element={<ProjectRequestsArchive />}
           />
           <Route
-            path="project-requests/:requestId/schedule"
-            element={<ProjectsSchedule />}
-          />
-          <Route
             path="project-requests/:requestId"
             element={<ProjectRequestsDetails />}
           >
             <Route path="spam" element={<ProjectRequestSpam />} />
           </Route>
+          <Route
+            path="project-requests/:requestId/schedule"
+            element={<ProjectsSchedule />}
+          />
+          <Route
+            path="project-requests/:requestId/answer"
+            element={<AnswerProjectRequest />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -15,6 +15,7 @@ import axios from "axios";
 import useGet from "../hooks/useGet";
 import Loader from "../Utils/Loader";
 import Error from "../Utils/Error";
+import GoBack from "./../Utils/GoBack";
 
 function ProjectsSchedule() {
   const { requestId } = useParams();
@@ -83,12 +84,15 @@ function ProjectsSchedule() {
           />
         </>
       )}
+      <GoBack
+        position={"left-8 top-[-1%]"}
+        path={`/admin/dashboard/project-requests/${requestId}`}
+      />
     </div>
   );
 }
 
 function Appointment({ appointment }) {
-  console.log(appointment);
   return (
     <div className="flex w-full flex-col items-center justify-center gap-3 rounded border border-dashed border-blue-500 p-3 font-poppins shadow">
       <div>

@@ -37,6 +37,23 @@ const projectRequestSchema = new mongoose.Schema({
     default: false,
   },
 
+  Answers: [
+    {
+      sendAt: {
+        type: Date,
+        default: Date.now,
+      },
+      content: {
+        type: String,
+        required: true,
+      },
+      subject: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+
   currentProject: {
     type: Boolean,
     default: false,

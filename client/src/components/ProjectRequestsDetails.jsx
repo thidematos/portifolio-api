@@ -98,7 +98,7 @@ function ProjectRequestsDetails() {
             icon={"schedule-icon.png"}
           />
           <Action
-            path={"a"}
+            path={"answer"}
             action={"RESPONDER"}
             textColor={"text-gray-50"}
             bgColor={"bg-blue-500"}

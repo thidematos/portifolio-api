@@ -13,6 +13,7 @@ import {
   add,
   parse,
   isSameDay,
+  isBefore,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
@@ -40,7 +41,9 @@ function Calendar({ today, selectedDay, setSelectedDay, appointments }) {
   }
 
   useEffect(() => {
-    setSelectedDay(firstDayCurrentMonth);
+    setSelectedDay(
+      isBefore(firstDayCurrentMonth, today) ? today : firstDayCurrentMonth,
+    );
   }, [currentMonth, setSelectedDay]);
 
   return (
