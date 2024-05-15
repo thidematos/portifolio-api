@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import useGet from "../hooks/useGet";
 import { format, intervalToDuration, startOfToday } from "date-fns";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,6 +7,7 @@ import Button from "./../Utils/Button";
 import { ptBR } from "date-fns/locale";
 import Loader from "./../Utils/Loader";
 import Error from "./../Utils/Error";
+import GoBack from "./../Utils/GoBack";
 
 // Import Swiper styles
 import "swiper/css";
@@ -27,10 +28,8 @@ function AnswerProjectRequest() {
     setError,
   );
 
-  console.log(projectRequest);
-
   return (
-    <div className="relative flex w-full grow flex-col items-center justify-start gap-4 px-6 font-poppins ">
+    <div className="relative flex w-full grow flex-col items-center justify-start gap-4 px-6 font-poppins">
       {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
       {error && (
         <Error
@@ -42,19 +41,24 @@ function AnswerProjectRequest() {
         <>
           <div className="flex w-[90%] flex-col items-start justify-center">
             <Header />
-            <SentList answer={projectRequest?.answers} />
+            <SentList answer={projectRequest?.answers.toReversed()} />
           </div>
-          <Swiper className=" flex w-full grow " loop={true}>
-            <SwiperSlide className=" flex w-full flex-col items-center justify-start px-2">
+          <Swiper className=" relative flex w-full grow" loop={true}>
+            <GoBack
+              position={"top-0 left-0 z-[900]"}
+              path={`/admin/dashboard/project-requests/${requestId}`}
+            />
+            <SwiperSlide className=" flex w-full flex-col items-center justify-start px-2 pt-1">
               <ProjectInfo projectRequest={projectRequest} />
             </SwiperSlide>
-            <SwiperSlide className=" flex w-full flex-col items-center justify-start px-2">
+            <SwiperSlide className=" flex w-full flex-col items-center justify-start px-2 pt-1">
               <CreateEmail
                 projectRequest={projectRequest}
                 setter={setProjectRequest}
               />
             </SwiperSlide>
           </Swiper>
+          <Outlet context={projectRequest} />
         </>
       )}
     </div>
@@ -101,11 +105,12 @@ function ProjectInfo({ projectRequest }) {
 }
 
 function CreateEmail({ projectRequest, setter }) {
+  const [success, setSuccess] = useState(false);
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState("");
-  const [successMail, setSuccessMail] = useState(false);
 
   async function sendEmail() {
     const email = {
@@ -123,7 +128,8 @@ function CreateEmail({ projectRequest, setter }) {
         },
       );
 
-      setSuccessMail(true);
+      setSuccess(true);
+
       setter(res.data.data.projectRequest);
     } catch (err) {
       console.log(err);
@@ -145,8 +151,20 @@ function CreateEmail({ projectRequest, setter }) {
       )}
       {!isLoading && !error && (
         <>
-          {successMail ? (
-            <button onClick={setSuccessMail(false)}>Enviar novo email</button>
+          {success ? (
+            <div className="flex grow flex-col items-center justify-center gap-6 text-gray-800">
+              <p className="text-center">
+                Email enviado com sucesso para{" "}
+                <span className="text-blue-500">{projectRequest.email}</span>
+              </p>
+              <Button
+                fontSize={"text-lg"}
+                type="action"
+                onAction={() => setSuccess(false)}
+              >
+                Novo email
+              </Button>
+            </div>
           ) : (
             <>
               <div className="flex w-full flex-col items-start justify-center gap-2">
@@ -187,60 +205,71 @@ function CreateEmail({ projectRequest, setter }) {
 
 function SentList({ answer }) {
   const [currentSendEmail, setCurrentSendEmail] = useState(0);
-  //É um fiddle para as ANSWERS do ProjectRequest Document.
+  //Preciso fazer a pagination dos buttons das anwers
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-4">
-        {answer?.length > 0 && <SentEmail email={answer?.[currentSendEmail]} />}
-      </div>
-      <div className="flex w-full flex-row items-center justify-center py-4">
-        <button
-          className="w-[10%]"
-          onClick={() =>
-            setCurrentSendEmail((state) =>
-              state === 0 ? answer?.length - 1 : state - 1,
-            )
-          }
-        >
-          <img src="/left-arrow-blue.png" className="w-[50%]" />
-        </button>
-        <div className="flex w-full flex-row items-center justify-center gap-4">
-          {answer?.map((email, ind) => (
+      {answer?.length > 0 ? (
+        <>
+          <div className="flex flex-col items-center justify-center gap-4">
+            <SentEmail email={answer?.[currentSendEmail]} />
+          </div>
+          <div className="flex w-full flex-row items-center justify-center py-4">
             <button
-              className={`size-[15px] rounded-full shadow-lg duration-150 ${ind === currentSendEmail ? "bg-blue-500" : "bg-gray-300"}`}
-              key={ind}
-            ></button>
-          ))}
-        </div>
-        <button
-          className="w-[10%]"
-          onClick={() =>
-            setCurrentSendEmail((state) =>
-              state === answer?.length - 1 ? 0 : state + 1,
-            )
-          }
-        >
-          <img src="/left-arrow-blue.png" className="w-[50%] rotate-180" />
-        </button>
-      </div>
+              className="w-[10%]"
+              onClick={() =>
+                setCurrentSendEmail((state) =>
+                  state === 0 ? answer?.length - 1 : state - 1,
+                )
+              }
+            >
+              <img src="/left-arrow-blue.png" className="w-[50%]" />
+            </button>
+            <div className="flex w-full flex-row items-center justify-center gap-4">
+              {answer?.map((email, ind) => (
+                <button
+                  className={`size-[15px] rounded-full shadow-lg duration-150 ${ind === currentSendEmail ? "bg-blue-500" : "bg-gray-300"}`}
+                  onClick={() => setCurrentSendEmail(ind)}
+                  key={ind}
+                ></button>
+              ))}
+            </div>
+            <button
+              className="w-[10%]"
+              onClick={() =>
+                setCurrentSendEmail((state) =>
+                  state === answer?.length - 1 ? 0 : state + 1,
+                )
+              }
+            >
+              <img src="/left-arrow-blue.png" className="w-[50%] rotate-180" />
+            </button>
+          </div>
+        </>
+      ) : (
+        <p className="mb-2 flex min-h-[80px] w-full flex-col justify-center rounded border border-gray-300 bg-blue-500 px-2 py-3 text-center text-gray-50 shadow">
+          Nenhuma resposta enviada.
+        </p>
+      )}
     </div>
   );
 }
 
 function SentEmail({ email }) {
   return (
-    <div className="relative flex min-h-[80px] flex-row items-center justify-center gap-4 rounded border border-gray-300 px-2 py-3 shadow">
-      <div className="w-[15%]">
-        <img src="/email-icon.png" className="drop-shadow-lg" />
+    <Link to={`email?id=${email._id}`}>
+      <div className="relative flex min-h-[80px] flex-row items-center justify-center gap-4 rounded border border-gray-300 bg-blue-400 px-2 py-3 shadow">
+        <div className="w-[15%]">
+          <img src="/email-icon-white.png" className="drop-shadow-xl" />
+        </div>
+        <div className="w-full">
+          <p className="font-poppins text-gray-50">{email.subject}</p>
+        </div>
+        <span className="absolute bottom-0 right-2 text-sm text-gray-200">
+          {format(email.sendAt, "dd MMM'. de' yyyy", { locale: ptBR })}
+        </span>
       </div>
-      <div className="w-full">
-        <p className="text-sm text-gray-800">{email.subject}</p>
-      </div>
-      <span className="absolute bottom-0 right-2 text-sm text-gray-400">
-        {format(email.sendAt, "dd MMM'. de' yyyy", { locale: ptBR })}
-      </span>
-    </div>
+    </Link>
   );
 }
 

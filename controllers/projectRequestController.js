@@ -79,6 +79,7 @@ exports.answerProjectRequest = catchAsync(async (req, res, next) => {
     content: req.body.content,
     subject: req.body.subject,
   });
+  if (!projectRequest.isAnswered) projectRequest.isAnswered = true;
 
   const newProjectRequest = await projectRequest.save();
 

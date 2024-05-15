@@ -29,6 +29,7 @@ import ProjectRequestsArchive from "./components/ProjectRequestsArchive";
 import ProjectRequestSpam from "./components/ProjectRequestSpam";
 import ProjectsSchedule from "./components/ProjectsSchedule";
 import AnswerProjectRequest from "./components/AnswerProjectRequest";
+import EmailAnswerOfRequest from "./components/EmailAnswerOfRequest";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -89,7 +90,9 @@ function App() {
           <Route
             path="project-requests/:requestId/answer"
             element={<AnswerProjectRequest />}
-          />
+          >
+            <Route path="email" element={<EmailAnswerOfRequest />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
