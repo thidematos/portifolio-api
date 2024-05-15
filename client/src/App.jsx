@@ -30,6 +30,7 @@ import ProjectRequestSpam from "./components/ProjectRequestSpam";
 import ProjectsSchedule from "./components/ProjectsSchedule";
 import AnswerProjectRequest from "./components/AnswerProjectRequest";
 import EmailAnswerOfRequest from "./components/EmailAnswerOfRequest";
+import ArchivedProjectDetails from "./components/ArchivedProjectDetails";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -76,7 +77,9 @@ function App() {
           <Route
             path="project-requests/archive"
             element={<ProjectRequestsArchive />}
-          />
+          >
+            <Route path=":projectId" element={<ArchivedProjectDetails />} />
+          </Route>
           <Route
             path="project-requests/:requestId"
             element={<ProjectRequestsDetails />}
