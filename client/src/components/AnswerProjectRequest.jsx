@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useGet from "../hooks/useGet";
-import { intervalToDuration, startOfToday } from "date-fns";
+import { format, intervalToDuration, startOfToday } from "date-fns";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Button from "./../Utils/Button";
+import { ptBR } from "date-fns/locale";
+import Loader from "./../Utils/Loader";
+import Error from "./../Utils/Error";
 
 // Import Swiper styles
 import "swiper/css";
+import axios from "axios";
 
 function AnswerProjectRequest() {
   const { requestId } = useParams();
@@ -25,19 +30,33 @@ function AnswerProjectRequest() {
   console.log(projectRequest);
 
   return (
-    <div className="flex w-full grow flex-col items-center justify-start gap-4 px-6 font-poppins ">
-      <div className="flex w-[90%] flex-col items-start justify-center">
-        <Header />
-        <SentList />
-      </div>
-      <Swiper className=" flex w-full grow " loop={true}>
-        <SwiperSlide className=" flex w-full flex-col items-center justify-start">
-          <ProjectInfo projectRequest={projectRequest} />
-        </SwiperSlide>
-        <SwiperSlide className=" flex w-full flex-col items-center justify-start">
-          <CreateEmail />
-        </SwiperSlide>
-      </Swiper>
+    <div className="relative flex w-full grow flex-col items-center justify-start gap-4 px-6 font-poppins ">
+      {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
+      {error && (
+        <Error
+          path={`/admin/dashboard/project-requests/${requestId}`}
+          message={error}
+        />
+      )}
+      {!isLoading && !error && (
+        <>
+          <div className="flex w-[90%] flex-col items-start justify-center">
+            <Header />
+            <SentList answer={projectRequest?.answers} />
+          </div>
+          <Swiper className=" flex w-full grow " loop={true}>
+            <SwiperSlide className=" flex w-full flex-col items-center justify-start px-2">
+              <ProjectInfo projectRequest={projectRequest} />
+            </SwiperSlide>
+            <SwiperSlide className=" flex w-full flex-col items-center justify-start px-2">
+              <CreateEmail
+                projectRequest={projectRequest}
+                setter={setProjectRequest}
+              />
+            </SwiperSlide>
+          </Swiper>
+        </>
+      )}
     </div>
   );
 }
@@ -81,110 +100,113 @@ function ProjectInfo({ projectRequest }) {
   );
 }
 
-function CreateEmail() {
-  return <div className="w-full grow ">oioioioio</div>;
+function CreateEmail({ projectRequest, setter }) {
+  const [subject, setSubject] = useState("");
+  const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMail, setSuccessMail] = useState(false);
+
+  async function sendEmail() {
+    const email = {
+      subject,
+      content,
+    };
+
+    try {
+      setIsLoading(true);
+      const res = await axios.patch(
+        `/api/v1/project-requests/${projectRequest._id}/sendAnswer`,
+        email,
+        {
+          withCredentials: true,
+        },
+      );
+
+      setSuccessMail(true);
+      setter(res.data.data.projectRequest);
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <div className="relative flex w-full grow flex-col items-center justify-start gap-6">
+      <h2 className="text-xl drop-shadow">NOVO EMAIL</h2>
+      {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
+      {error && (
+        <Error
+          path={`/admin/dashboard/project-requests/${projectRequest._id}`}
+          message={error}
+        />
+      )}
+      {!isLoading && !error && (
+        <>
+          {successMail ? (
+            <button onClick={setSuccessMail(false)}>Enviar novo email</button>
+          ) : (
+            <>
+              <div className="flex w-full flex-col items-start justify-center gap-2">
+                <label className="font-gray-500 ">ASSUNTO</label>
+                <input
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className={`w-full rounded  border p-3 text-sm shadow-lg outline-none ${subject ? "border-blue-500" : "border-gray-400"}`}
+                  placeholder="Agendamento de reunião"
+                />
+              </div>
+              <div className="flex w-full grow flex-col items-start justify-center gap-2">
+                <label className="font-gray-500 ">CONTEÚDO</label>
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className={`w-full grow rounded border p-3 text-sm shadow-lg outline-none ${content ? "border-blue-500" : "border-gray-400"}`}
+                  placeholder={`Olá, ${projectRequest?.name.split(" ").at(0)}!\nGostaria de agendar nossa reunião.`}
+                />
+              </div>
+              {subject && content ? (
+                <Button type="action" onAction={() => sendEmail()}>
+                  ENVIAR
+                </Button>
+              ) : (
+                <p className="text-xs text-gray-400">
+                  Preencha o assunto e o conteúdo para enviar o email.
+                </p>
+              )}
+            </>
+          )}
+        </>
+      )}
+    </div>
+  );
 }
 
 function SentList({ answer }) {
   const [currentSendEmail, setCurrentSendEmail] = useState(0);
-
-  const emailExamples = [
-    {
-      sendAt: new Date(2024, 4, 27), // 7 dias atrás
-      content: `
-            Prezado(a) [Nome do Destinatário],
-      
-            Espero que esteja tudo bem.
-      
-            Escrevo para você hoje para apresentar [Nome da Sua Empresa] e como podemos ajudá-lo(a) a alcançar seus objetivos de negócios.
-      
-            [Nome da Sua Empresa] é uma empresa especializada em [Descrição dos Seus Serviços]. Oferecemos uma ampla gama de serviços para atender às suas necessidades, incluindo:
-
-            Temos uma equipe experiente e dedicada que está comprometida em fornecer um serviço de alta qualidade aos nossos clientes. Estamos sempre atualizados sobre as últimas tendências do setor e usamos as tecnologias mais recentes para oferecer as melhores soluções possíveis.
-      
-            Acreditamos que podemos ajudá-lo(a) a alcançar seus objetivos de negócios. Entre em contato conosco hoje para agendar uma consulta gratuita.
-      
-            Atenciosamente,
-          `,
-      subject: "Apresentando [Nome da Sua Empresa]",
-    },
-    {
-      sendAt: new Date(2024, 4, 29),
-      content: `
-            Prezado(a) Sr(a). [Sobrenome do Destinatário],
-
-            Vi com grande interesse seu anúncio em [Local do Anúncio] para [Produto ou Serviço]. 
-      
-            Sou [Seu Nome], representante da [Nome da Sua Empresa], empresa especializada em [Descrição dos Seus Serviços]. Acredito que podemos oferecer uma solução completa para suas necessidades de [Produto ou Serviço].
-      
-            [Nome da Sua Empresa] oferece uma ampla gama de produtos e serviços de alta qualidade, além de preços competitivos e um excelente atendimento ao cliente. 
-      
-            Gostaria de agendar uma breve reunião com você para discutir suas necessidades em mais detalhes e como podemos ajudá-lo(a) a alcançar seus objetivos.
-      
-            Aguardo seu retorno.
-      
-            Atenciosamente,
-          `,
-      subject: "Proposta para [Produto ou Serviço]",
-    },
-    {
-      sendAt: new Date(2024, 5, 2),
-      content: `
-            Olá [Nome do Destinatário],
-      
-            Espero que esteja tudo bem.
-      
-            Estou entrando em contato para acompanhar o interesse demonstrado em [Produto ou Serviço] da [Nome da Sua Empresa].
-      
-            Gostaria de saber se você teve a oportunidade de avaliar nosso site e materiais informativos. Se tiver alguma dúvida ou precisar de mais informações, por favor, não hesite em entrar em contato.
-      
-            Também estamos disponíveis para agendar uma demonstração personalizada de nossos produtos e serviços.
-      
-            Aguardo seu retorno.
-      
-            Atenciosamente,
-          `,
-      subject: "Acompanhando Interesse em [Produto ou Serviço]",
-    },
-    {
-      sendAt: new Date(2024, 5, 5),
-      content: `
-            Prezado(a) [Nome do Destinatário],
-      
-            Obrigado por seu interesse em [Produto ou Serviço] da [Nome da Sua Empresa].
-      
-            Fiquei feliz em saber que você está considerando nossa solução. Acredito que podemos oferecer a você a melhor relação custo-benefício do mercado.
-      
-            Para tornar sua decisão ainda mais fácil, estamos oferecendo um desconto especial de [Porcentagem]% em seu primeiro pedido. Basta usar o código [Código de Desconto] ao finalizar a compra.
-      
-            Não perca esta oportunidade! Entre em contato conosco hoje mesmo para saber mais.
-      
-            Atenciosamente,
-          `,
-      subject: "Oferta Especial - [Produto ou Serviço]",
-    },
-  ];
+  //É um fiddle para as ANSWERS do ProjectRequest Document.
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-4">
-        {emailExamples.length > 0 && (
-          <SentEmail email={emailExamples?.[currentSendEmail]} />
-        )}
+        {answer?.length > 0 && <SentEmail email={answer?.[currentSendEmail]} />}
       </div>
       <div className="flex w-full flex-row items-center justify-center py-4">
         <button
           className="w-[10%]"
           onClick={() =>
             setCurrentSendEmail((state) =>
-              state === 0 ? emailExamples.length - 1 : state - 1,
+              state === 0 ? answer?.length - 1 : state - 1,
             )
           }
         >
           <img src="/left-arrow-blue.png" className="w-[50%]" />
         </button>
         <div className="flex w-full flex-row items-center justify-center gap-4">
-          {emailExamples.map((email, ind) => (
+          {answer?.map((email, ind) => (
             <button
               className={`size-[15px] rounded-full shadow-lg duration-150 ${ind === currentSendEmail ? "bg-blue-500" : "bg-gray-300"}`}
               key={ind}
@@ -195,7 +217,7 @@ function SentList({ answer }) {
           className="w-[10%]"
           onClick={() =>
             setCurrentSendEmail((state) =>
-              state === emailExamples.length - 1 ? 0 : state + 1,
+              state === answer?.length - 1 ? 0 : state + 1,
             )
           }
         >
@@ -216,7 +238,7 @@ function SentEmail({ email }) {
         <p className="text-sm text-gray-800">{email.subject}</p>
       </div>
       <span className="absolute bottom-0 right-2 text-sm text-gray-400">
-        {email.sendAt.toLocaleDateString()}
+        {format(email.sendAt, "dd MMM'. de' yyyy", { locale: ptBR })}
       </span>
     </div>
   );

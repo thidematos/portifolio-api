@@ -37,7 +37,7 @@ const projectRequestSchema = new mongoose.Schema({
     default: false,
   },
 
-  Answers: [
+  answers: [
     {
       sendAt: {
         type: Date,

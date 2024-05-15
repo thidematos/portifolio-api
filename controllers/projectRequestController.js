@@ -64,6 +64,32 @@ exports.createProjectRequest = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.answerProjectRequest = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const projectRequest = await ProjectRequest.findById(id);
+
+  await new SendMail(
+    projectRequest,
+    req.body.subject,
+    req.body.content
+  ).sendAnswer(req.body.subject);
+
+  projectRequest.answers.push({
+    content: req.body.content,
+    subject: req.body.subject,
+  });
+
+  const newProjectRequest = await projectRequest.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      projectRequest: newProjectRequest,
+    },
+  });
+});
+
 exports.updateProjectRequest = catchAsync(async (req, res, next) => {
   const patch = { ...req.body };
 

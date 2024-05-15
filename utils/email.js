@@ -3,14 +3,20 @@ const pug = require('pug');
 const { htmlToText } = require('html-to-text');
 
 class SendMail {
-  constructor(data) {
+  constructor(data, subject, content) {
     this.data = data;
     this.name = data.name.split(' ')[0];
     this.to = data.email;
+    this.subject = subject;
+    this.content = content;
     this.from = process.env.EMAIL_FROM;
   }
 
   injectDataToTemplate(data, template) {
+    data.phone = process.env.PHONE;
+    data.subject = this.subject;
+    data.content = this.content;
+
     return pug.renderFile(`${__dirname}/../public/${template}.pug`, {
       basedir: `${__dirname}/../public/`,
       firstName: this.name,
@@ -58,6 +64,10 @@ class SendMail {
 
   async sendProjectRequestConfirmation() {
     await this.send('projectRequest', 'Projeto enviado com sucesso!');
+  }
+
+  async sendAnswer(subject) {
+    await this.send('contactEmail', subject);
   }
 }
 

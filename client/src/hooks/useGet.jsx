@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function useGet(
   setter,
@@ -7,7 +7,7 @@ function useGet(
   path,
   withCredentials,
   setIsLoading,
-  setError
+  setError,
 ) {
   useEffect(() => {
     const getData = async () => {
@@ -19,7 +19,7 @@ function useGet(
 
         setter(res.data.data[resource]);
       } catch (err) {
-        setError(err.err.response.data.message);
+        setError(err.response.data.message);
       } finally {
         setIsLoading(false);
       }

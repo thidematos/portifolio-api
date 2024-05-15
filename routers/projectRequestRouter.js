@@ -15,6 +15,8 @@ router
 
 router.use(authController.protect, authController.restrictTo('admin'));
 
+router.patch('/:id/sendAnswer', projectRequestController.answerProjectRequest);
+
 router
   .route('/:id')
   .get(projectRequestController.getProjectRequest)
