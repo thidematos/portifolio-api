@@ -1,10 +1,10 @@
-function Logo({ fontSize, margin = '' }) {
+import { Link } from "react-router-dom";
+
+function Logo({ path = "/", width = "w-[50%]" }) {
   return (
-    <h1
-      className={`font-roboto tracking-tighter text-gray-800 ${fontSize} drop-shadow-md ${margin}`}
-    >
-      Thiago L. Matos
-    </h1>
+    <Link className={`${width}`} to={path}>
+      <img src="/logo-tlm.png" className={"w-full"} />
+    </Link>
   );
 }
 

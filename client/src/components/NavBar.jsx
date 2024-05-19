@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import Modal from '../Utils/Modal';
-import ProjectRequestForm from './ProjectRequestForm';
-import AboutMe from './AboutMe';
+import { useState } from "react";
+import Modal from "../Utils/Modal";
+import ProjectRequestForm from "./ProjectRequestForm";
+import AboutMe from "./AboutMe";
+import Logo from "../Utils/Logo";
 
 function NavBar({ isMobile }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -11,26 +12,18 @@ function NavBar({ isMobile }) {
   }
 
   return (
-    <div className="w-screen flex flex-row justify-center items-center bg-[rgba(250,250,250,0.7)] z-[9996] fixed top-0 backdrop-blur-[2px]">
-      <nav className="flex flex-row justify-between w-[90%] lg:w-[75%] xl:w-[65%] 3xl:w-[60%] py-4 md:py-6 border-b items-baseline NavBar ">
-        <Brand />
+    <div className="fixed top-0 z-[9996] flex w-screen flex-row items-center justify-center bg-[rgba(250,250,250,0.7)] backdrop-blur-[2px]">
+      <nav className="NavBar flex w-[90%] flex-row items-center justify-between border-b py-6 lg:w-[75%] xl:w-[65%] 3xl:w-[60%] ">
+        <Logo width="w-[40%]" />
         {isMobile || <SectionList />}
         <ProjectRequest onProjectRequest={handleProjectRequest}>
-          Solicitar atendimento {'>'}
+          Solicitar atendimento {">"}
         </ProjectRequest>
         <Modal isOpenModal={isOpenModal} onOpenModal={setIsOpenModal}>
           <ProjectRequestForm />
         </Modal>
       </nav>
     </div>
-  );
-}
-
-function Brand() {
-  return (
-    <h1 className="w-[50%] md:w-[25%] md:text-center font-roboto md:text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-3xl text-gray-800 tracking-tighter  drop-shadow-sm">
-      Thiago L. Matos
-    </h1>
   );
 }
 
@@ -70,8 +63,8 @@ function Section({ children }) {
 
   return (
     <li
-      className={`font-poppins tracking-wide text-gray-600 drop-shadow-sm md:text-xs lg:text-sm 3xl:text-base duration-200 underline-offset-4 ${
-        isHovered ? 'scale-110 underline' : ''
+      className={`font-poppins tracking-wide text-gray-600 underline-offset-4 drop-shadow-sm duration-200 md:text-xs lg:text-sm 3xl:text-base ${
+        isHovered ? "scale-110 underline" : ""
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}
@@ -84,7 +77,7 @@ function Section({ children }) {
 function ProjectRequest({ children, onProjectRequest }) {
   return (
     <button
-      className="w-[50%] md:w-[25%] flex flex-row justify-end md:justify-center items-center font-poppins tracking-tight text text-blue-500 drop-shadow-sm hover:underline underline-offset-[6px] text-xs lg:text-sm 3xl:text-base"
+      className="text flex w-[50%] flex-row items-center justify-end font-poppins text-xs tracking-tight text-blue-500 underline-offset-[6px] drop-shadow-sm hover:underline md:w-[25%] md:justify-center lg:text-sm 3xl:text-base"
       onClick={onProjectRequest}
     >
       {children}

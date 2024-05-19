@@ -19,7 +19,7 @@ function DashboardOverview() {
         img={"mern-4.1"}
       />
       <PreviewDashboard
-        to={"/admin/dashboard/works"}
+        to={"/admin/dashboard/reviews"}
         title={"Reviews"}
         img={"mern-5.1"}
       />

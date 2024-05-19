@@ -31,6 +31,8 @@ import ProjectsSchedule from "./components/ProjectsSchedule";
 import AnswerProjectRequest from "./components/AnswerProjectRequest";
 import EmailAnswerOfRequest from "./components/EmailAnswerOfRequest";
 import ArchivedProjectDetails from "./components/ArchivedProjectDetails";
+import Reviews from "./components/Reviews";
+import CodiceRead from "./components/CodiceRead";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -39,10 +41,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Portifolio isMobile={isMobile} />} />
+
         <Route path="/codice-desvelado" element={<CodiceDesvelado />}>
           <Route path="admin" element={<Admin />} />
         </Route>
-        <Route path="/generate" element={<Generate />} />
+        <Route path="/codice-desvelado/read" element={<CodiceRead />} />
+
         <Route path="/admin/dashboard" element={<Dashboard />}>
           <Route index element={<Navigate replace to={"overview"} />} />
           <Route path="overview" element={<DashboardOverview />} />
@@ -96,6 +100,8 @@ function App() {
           >
             <Route path="email" element={<EmailAnswerOfRequest />} />
           </Route>
+
+          <Route path="reviews" element={<Reviews />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
