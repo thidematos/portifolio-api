@@ -41,7 +41,7 @@ function ProjectRequestsArchive() {
             position={"top-0 left-10"}
             path={"/admin/dashboard/project-requests"}
           />
-          <Outlet context={archivedProjects} />
+          <Outlet context={[archivedProjects, setArchivedProjects]} />
         </>
       )}
     </div>
