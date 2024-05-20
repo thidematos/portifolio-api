@@ -28,7 +28,7 @@ function Hero({ headerSize }) {
         className="h-full w-full opacity-30 blur-sm brightness-75"
       />
 
-      <div className="absolute top-[10%] flex w-full flex-col items-center justify-center gap-3 text-lg text-gray-600">
+      <div className="absolute top-[10%] flex w-full flex-col items-center justify-center gap-3 text-lg text-gray-500">
         <h2 className="w-[40%]   text-center  drop-shadow">TECNOLOGIA</h2>
         <h2 className="w-[40%]   text-center drop-shadow">HISTÓRIA</h2>
         <h2 className="w-[40%]   text-center  drop-shadow">COTIDIANO</h2>
@@ -43,7 +43,7 @@ function Hero({ headerSize }) {
       </div>
       <div className="absolute bottom-[15%] flex w-full flex-col items-center justify-center">
         <Link
-          to={"read"}
+          to={"read/?category=+gophed"}
           className="rounded-lg bg-blue-500/90 p-3 font-noto text-lg tracking-wider text-gray-50 shadow-xl drop-shadow"
         >
           Conheça o Códice

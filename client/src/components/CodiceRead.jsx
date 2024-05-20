@@ -1,14 +1,9 @@
-import { useState } from "react";
-import CodiceHeader from "../Utils/CodiceHeader";
+import { useParams } from "react-router-dom";
 
 function CodiceRead() {
-  const [headerSize, setHeaderSize] = useState("");
+  const { codiceId } = useParams();
 
-  return (
-    <div className="relative min-h-[100svh] w-full">
-      <CodiceHeader headerSize={headerSize} setHeaderSize={setHeaderSize} />
-    </div>
-  );
+  return <div>{codiceId}</div>;
 }
 
 export default CodiceRead;

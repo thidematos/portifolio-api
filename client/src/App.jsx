@@ -32,7 +32,9 @@ import AnswerProjectRequest from "./components/AnswerProjectRequest";
 import EmailAnswerOfRequest from "./components/EmailAnswerOfRequest";
 import ArchivedProjectDetails from "./components/ArchivedProjectDetails";
 import Reviews from "./components/Reviews";
-import CodiceRead from "./components/CodiceRead";
+import CodiceList from "./components/CodiceList.jsx";
+import CodiceRead from "./components/CodiceRead.jsx";
+import LoginUser from "./components/LoginUser.jsx";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -44,8 +46,15 @@ function App() {
 
         <Route path="/codice-desvelado" element={<CodiceDesvelado />}>
           <Route path="admin" element={<Admin />} />
+          <Route path="get-started" element={<LoginUser />} />
         </Route>
-        <Route path="/codice-desvelado/read" element={<CodiceRead />} />
+        <Route path="/codice-desvelado/read" element={<CodiceList />}>
+          <Route path="get-started" element={<LoginUser />} />
+        </Route>
+        <Route
+          path="/codice-desvelado/read/:codiceId"
+          element={<CodiceRead />}
+        />
 
         <Route path="/admin/dashboard" element={<Dashboard />}>
           <Route index element={<Navigate replace to={"overview"} />} />

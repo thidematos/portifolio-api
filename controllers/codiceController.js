@@ -81,6 +81,8 @@ exports.createCodice = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getTopGophed = catchAsync(async (req, res, next) => {});
+
 exports.getAllCodices = catchAsync(async (req, res, next) => {
   const features = new ApiFeatures(Codice.find({}), req.query);
 

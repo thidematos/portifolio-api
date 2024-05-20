@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: 'default-user.png',
+    default: 'user-icon.png',
   },
   company: {
     type: String,

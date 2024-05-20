@@ -4,6 +4,7 @@ import useGetData from "../hooks/useGetData";
 import axios from "axios";
 import Loader from "../Utils/Loader";
 import { useSearchParams } from "react-router-dom";
+import Category from "./../Utils/Category";
 
 function CodiceDashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -87,25 +88,6 @@ function CodiceDashboard() {
         />
       </Link>
     </div>
-  );
-}
-
-function Category({ category, currentCategory }) {
-  return (
-    <Link
-      to={`at?category=${category.toLowerCase()}`}
-      className={"min-w-[30%]"}
-    >
-      <button
-        className={`h-full w-full py-6 text-center font-poppins text-base duration-150 ${
-          category?.toLowerCase() === currentCategory
-            ? "-translate-y-2 text-blue-500 underline underline-offset-8"
-            : "text-gray-700"
-        }`}
-      >
-        {category}
-      </button>
-    </Link>
   );
 }
 

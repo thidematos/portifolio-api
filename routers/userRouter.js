@@ -7,6 +7,8 @@ router.post('/signup', authController.signup);
 
 router.post('/login', authController.login);
 
+router.get('/verify-user', authController.protect, authController.verify);
+
 router.get(
   '/verify',
   authController.protect,

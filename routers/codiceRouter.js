@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/categories', codiceController.getCategories);
 
+router.get('/top-gophed', codiceController.getTopGophed);
+
 router
   .route('/')
   .post(
@@ -17,11 +19,7 @@ router
     codiceController.replaceImgSrc,
     codiceController.createCodice
   )
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    codiceController.getAllCodices
-  );
+  .get(codiceController.getAllCodices);
 
 router
   .route('/:id')
