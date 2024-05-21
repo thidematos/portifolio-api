@@ -13,7 +13,7 @@ function LoginUser() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const setUser = useOutletContext();
+  const { setUser, path = "/codice-desvelado/read" } = useOutletContext();
   const navigate = useNavigate();
 
   async function handleLogin() {
@@ -24,7 +24,7 @@ function LoginUser() {
       });
 
       setUser(res.data.data.user);
-      navigate("/codice-desvelado/read");
+      navigate(path);
     } catch (err) {
       setUser(null);
       setError(err.response.data.message);
@@ -34,7 +34,7 @@ function LoginUser() {
   }
 
   return (
-    <RouterModal path={"/codice-desvelado"}>
+    <RouterModal path={-1}>
       <div className="relative flex h-full w-full flex-col items-center justify-center gap-10">
         {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
         {error && (

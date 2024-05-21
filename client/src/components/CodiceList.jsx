@@ -27,7 +27,7 @@ function CodiceList() {
       />
       <CategoriesList currentCategory={currentCategory} />
       <CodicesFiltered currentCategory={currentCategory} />
-      <Outlet context={setUser} />
+      <Outlet context={{ setUser }} />
       <Footer
         position={"absolute bottom-0"}
         padding={"py-4"}

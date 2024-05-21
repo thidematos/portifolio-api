@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
     select: false,
   },
+  toReadLater: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Codice',
+  },
   role: {
     type: String,
     enum: ['user', 'client', 'admin'],

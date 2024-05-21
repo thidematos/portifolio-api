@@ -51,10 +51,9 @@ function App() {
         <Route path="/codice-desvelado/read" element={<CodiceList />}>
           <Route path="get-started" element={<LoginUser />} />
         </Route>
-        <Route
-          path="/codice-desvelado/read/:codiceId"
-          element={<CodiceRead />}
-        />
+        <Route path="/codice-desvelado/read/:codiceId" element={<CodiceRead />}>
+          <Route path="get-started" element={<LoginUser />} />
+        </Route>
 
         <Route path="/admin/dashboard" element={<Dashboard />}>
           <Route index element={<Navigate replace to={"overview"} />} />

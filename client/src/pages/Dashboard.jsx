@@ -50,9 +50,7 @@ function DashMainContainer({ children }) {
 function NavDashboard({ user }) {
   return (
     <div className="fixed z-[999] flex w-full flex-row items-center justify-between bg-gray-100/75 px-5 py-4 ">
-      <Link to={"/admin/dashboard"}>
-        <Logo fontSize={"text-3xl"} />
-      </Link>
+      <Logo fontSize={"text-3xl"} path="/admin/dashboard" />
 
       <img
         src={`/${user.photo}`}
