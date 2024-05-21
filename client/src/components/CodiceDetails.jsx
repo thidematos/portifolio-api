@@ -142,7 +142,7 @@ function Metrics({ gophers, readLaters }) {
         <Gophers gophers={gophers} />
       </Link>
 
-      <ReadLater readLater={readLaters} />
+      <ReadLater readLater={readLaters} isToReadLater={true} />
     </div>
   );
 }

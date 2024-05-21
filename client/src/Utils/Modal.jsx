@@ -1,32 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
 function Modal({ children, isOpenModal, onOpenModal, isModalProject = false }) {
   if (isOpenModal) {
-    document.body.style.height = '100svh';
-    document.body.style.overflow = 'hidden';
+    document.body.style.height = "100svh";
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.style = '';
+    document.body.style = "";
   }
 
   return (
     <>
       {isOpenModal && (
         <div
-          className="fixed w-screen h-screen z-[9998] bg-[rgba(0,0,0,0.6)] top-0 left-0 cursor-default"
+          className="fixed left-0 top-0 z-[9998] h-screen w-screen cursor-default bg-[rgba(0,0,0,0.6)]"
           onClick={(e) => onOpenModal(false)}
         >
           <div
-            className={`modal relative bg-gray-100 z-[9999] centerDivAbsolute animateToMiddle ${
+            className={`modal centerDivAbsolute animateToMiddle relative z-[9999] bg-gray-100 ${
               isModalProject
-                ? 'w-[100%] fixed h-[100svh] overflow-y-scroll  rounded-xl overflow-x-hidden lg:w-[85%] lg:h-[90svh]'
-                : 'rounded-xl w-[90%] md:w-[60%] lg:w-[40%] md:max-w-[600px] lg:max-w-[500px] 3xl:max-w-[560px] h-[75%] md:h-[65%] lg:h-[90%] 3xl:h-[80%]'
+                ? "fixed h-[100svh] w-[100%] overflow-x-hidden  overflow-y-scroll rounded-xl lg:h-[90svh] lg:w-[85%]"
+                : "h-[75%] w-[90%] rounded-xl md:h-[65%] md:w-[60%] md:max-w-[600px] lg:h-[90%] lg:w-[40%] lg:max-w-[500px] 3xl:h-[80%] 3xl:max-w-[560px]"
             }  shadow-xl`}
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src="plus-close.png"
               alt=""
-              className="closeBtn z-[9999] absolute opacity-75 max-w-[20px] top-[6%] md:top-[5%] right-[5%] cursor-pointer"
+              className="closeBtn absolute right-[5%] top-[6%] z-[9999] max-w-[20px] cursor-pointer opacity-75 md:top-[5%]"
               onClick={() => onOpenModal(false)}
             ></img>
             {children}

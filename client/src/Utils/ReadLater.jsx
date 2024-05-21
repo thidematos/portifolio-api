@@ -3,7 +3,7 @@ function ReadLater({
   position,
   width = "w-[30%]",
   showCount = true,
-  isToReadLater = true,
+  isToReadLater,
   action = () => null,
 }) {
   return (

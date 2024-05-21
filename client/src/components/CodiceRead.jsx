@@ -10,6 +10,8 @@ import DOMPurify from "dompurify";
 import Gophers from "../Utils/Gophers";
 import ReadLater from "../Utils/ReadLater";
 import usePatch from "./../hooks/usePatch";
+import LoginUser from "./LoginUser";
+import LoginModal from "../Utils/LoginModal";
 
 function CodiceRead() {
   const { codiceId } = useParams();
@@ -18,6 +20,7 @@ function CodiceRead() {
   const [error, setError] = useState("");
   const [headerSize, setHeaderSize] = useState(0);
   const [user, setUser] = useVerifyUser();
+  const [needLogin, setNeedLogin] = useState(false);
 
   const readTime = new ReadTime().calcReadTime(codice.content);
 
@@ -29,6 +32,15 @@ function CodiceRead() {
     setIsLoading,
     setError,
   );
+
+  function loginIsNeeded() {
+    if (!user) {
+      setNeedLogin(true);
+      return true;
+    }
+
+    return false;
+  }
 
   return (
     <div className="w-full">
@@ -47,6 +59,7 @@ function CodiceRead() {
           isToReadLater={user?.toReadLater?.includes(codiceId)}
           setter={setUser}
           codiceId={codiceId}
+          loginIsNeeded={loginIsNeeded}
         />
         <Image
           img={codice?.cover}
@@ -54,6 +67,12 @@ function CodiceRead() {
         />
         <Content content={codice?.content} />
       </div>
+
+      <LoginModal
+        setUser={setUser}
+        isOpenModal={needLogin}
+        onOpenModal={() => setNeedLogin(false)}
+      />
 
       <Metrics gophers={codice?.likes?.length} />
       <Categories categories={codice?.category} />
@@ -82,7 +101,15 @@ function Title({ title }) {
   return <h1 className=" text-2xl font-bold text-gray-800">{title}</h1>;
 }
 
-function Header({ author, date, readTime, isToReadLater, setter, codiceId }) {
+function Header({
+  author,
+  date,
+  readTime,
+  isToReadLater,
+  setter,
+  codiceId,
+  loginIsNeeded,
+}) {
   const {
     handler: handleToReadLater,
     isLoading,
@@ -117,7 +144,10 @@ function Header({ author, date, readTime, isToReadLater, setter, codiceId }) {
         showCount={false}
         width={"w-[12%]"}
         isToReadLater={isToReadLater}
-        action={() => handleToReadLater()}
+        action={() => {
+          const isNeeded = loginIsNeeded();
+          if (!isNeeded) handleToReadLater();
+        }}
       />
     </div>
   );

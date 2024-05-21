@@ -7,17 +7,13 @@ import Loader from "../Utils/Loader";
 import Error from "../Utils/Error";
 import ErrorNotification from "../Utils/ErrorNotification";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import Modal from "./../Utils/Modal";
 
-function LoginUser({ setUserProp, pathProp }) {
+function LoginModal({ setUser, isOpenModal, onOpenModal }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { setUser, path = "/codice-desvelado/read" } = useOutletContext() || {
-    setUser: setUserProp,
-    path: pathProp,
-  };
-  const navigate = useNavigate();
 
   async function handleLogin() {
     try {
@@ -27,7 +23,7 @@ function LoginUser({ setUserProp, pathProp }) {
       });
 
       setUser(res.data.data.user);
-      navigate(path);
+      onOpenModal();
     } catch (err) {
       setUser(null);
       setError(err.response.data.message);
@@ -37,7 +33,7 @@ function LoginUser({ setUserProp, pathProp }) {
   }
 
   return (
-    <RouterModal path={pathProp || -1}>
+    <Modal isOpenModal={isOpenModal} onOpenModal={onOpenModal}>
       <div className="relative flex h-full w-full flex-col items-center justify-center gap-10">
         {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
         {error && (
@@ -68,7 +64,7 @@ function LoginUser({ setUserProp, pathProp }) {
           </>
         )}
       </div>
-    </RouterModal>
+    </Modal>
   );
 }
 
@@ -146,4 +142,4 @@ function BecomeGopher() {
   );
 }
 
-export default LoginUser;
+export default LoginModal;
