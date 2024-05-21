@@ -46,7 +46,7 @@ const codiceSchema = new mongoose.Schema({
 
 codiceSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
-  this.readTime = this.next();
+  next();
 });
 
 codiceSchema.pre(/^find/, function (next) {

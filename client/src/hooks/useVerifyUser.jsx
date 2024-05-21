@@ -13,7 +13,6 @@ function useVerifyUser() {
 
         setUser(res.data.data.user);
       } catch (err) {
-        console.log(err);
         setUser(null);
       }
     };

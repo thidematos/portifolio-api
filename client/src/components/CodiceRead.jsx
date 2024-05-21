@@ -1,6 +1,6 @@
 import { Outlet, useParams } from "react-router-dom";
 import useGet from "../hooks/useGet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CodiceHeader from "../Utils/CodiceHeader";
 import useVerifyUser from "../hooks/useVerifyUser";
 import { format } from "date-fns";
@@ -12,6 +12,8 @@ import ReadLater from "../Utils/ReadLater";
 import usePatch from "./../hooks/usePatch";
 import LoginUser from "./LoginUser";
 import LoginModal from "../Utils/LoginModal";
+import Footer from "./Footer";
+import axios from "axios";
 
 function CodiceRead() {
   const { codiceId } = useParams();
@@ -21,6 +23,7 @@ function CodiceRead() {
   const [headerSize, setHeaderSize] = useState(0);
   const [user, setUser] = useVerifyUser();
   const [needLogin, setNeedLogin] = useState(false);
+  const [numGophers, setNumGophers] = useState(0);
 
   const readTime = new ReadTime().calcReadTime(codice.content);
 
@@ -32,6 +35,20 @@ function CodiceRead() {
     setIsLoading,
     setError,
   );
+
+  useEffect(() => {
+    const getGophers = async () => {
+      try {
+        const res = await axios.get(`/api/v1/codice/${codiceId}?fields=likes`);
+        console.log(res);
+        setNumGophers(res.data.data.codice.likes.length);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getGophers();
+  }, [codiceId, user]);
 
   function loginIsNeeded() {
     if (!user) {
@@ -74,9 +91,21 @@ function CodiceRead() {
         onOpenModal={() => setNeedLogin(false)}
       />
 
-      <Metrics gophers={codice?.likes?.length} />
+      <Metrics
+        gophers={numGophers}
+        dependencies={{
+          loginIsNeeded,
+          setter: setUser,
+          codiceId,
+          isLiked: user?.gophed.includes(codiceId),
+        }}
+      />
       <Categories categories={codice?.category} />
-
+      <Footer
+        padding={"py-8"}
+        fontSize={"text-sm"}
+        textColor={"text-gray-500"}
+      />
       <Outlet context={{ setUser, path: -1 }} />
     </div>
   );
@@ -153,12 +182,43 @@ function Header({
   );
 }
 
-function Metrics({ gophers, readLaters }) {
-  return (
-    <div className="flex w-full flex-row items-center justify-center">
-      <Gophers gophers={gophers} />
+function Metrics({ gophers, dependencies }) {
+  const {
+    handler: handleGopher,
+    isLoading,
+    error,
+  } = usePatch({
+    resource: "user",
+    field: "gophed",
+    newValue: dependencies.codiceId,
+    setter: dependencies.setter,
+    usePath: "/api/v1/users",
+  });
 
-      <ReadLater readLater={readLaters} />
+  return (
+    <div className="flex w-full flex-col items-center justify-center gap-4 p-6">
+      <p className="w-full text-center font-poppins text-gray-800 drop-shadow-sm">
+        Gostou? Deixe seu <span className="italic text-blue-500">Gopher</span>{" "}
+        para o autor!
+      </p>
+      <div className="flex w-full flex-row items-center justify-center gap-3">
+        <Gophers
+          gophers={gophers}
+          isLikeGopher={{
+            width: "w-[20%]",
+            isLiked: dependencies.isLiked,
+            onGopher: () => {
+              const isNeeded = dependencies.loginIsNeeded();
+              if (!isNeeded) handleGopher();
+            },
+          }}
+        />
+        <p className="font-poppins text-sm  text-gray-800 drop-shadow-sm">
+          <span className="italic text-blue-500">Gophed</span> por{" "}
+          <span className="text-lg">{gophers} </span>
+          leitor{gophers > 1 ? "es" : ""}
+        </p>
+      </div>
     </div>
   );
 }

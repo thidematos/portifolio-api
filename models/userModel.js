@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Codice',
   },
+  gophed: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Codice',
+  },
   role: {
     type: String,
     enum: ['user', 'client', 'admin'],
