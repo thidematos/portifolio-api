@@ -7,7 +7,9 @@ const router = express.Router();
 
 router.get('/categories', codiceController.getCategories);
 
-router.get('/top-gophed', codiceController.getTopGophed);
+router
+  .route('/top-gophed')
+  .post(codiceController.getTopGophed, codiceController.getAllCodices);
 
 router
   .route('/')

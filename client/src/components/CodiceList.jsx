@@ -14,7 +14,9 @@ function CodiceList() {
   const [headerSize, setHeaderSize] = useState("");
 
   const [searchParams] = useSearchParams();
-  const currentCategory = searchParams.get("category");
+  let currentCategory = searchParams.get("category");
+
+  if (currentCategory.trim() === "gophed") currentCategory = "most-gophed";
 
   const [user, setUser] = useVerifyUser();
 
@@ -63,7 +65,7 @@ function CategoriesList({ currentCategory }) {
       {!isLoading && (
         <>
           <Category
-            category={"+Gophed"}
+            category={"+ Gophed"}
             path=""
             currentCategory={currentCategory}
           />
@@ -86,12 +88,12 @@ function CodicesFiltered({ currentCategory }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const isTopGophed = currentCategory === "+gophed";
+  const isTopGophed = currentCategory === "most-gophed";
 
   useGet(
     setCodices,
     "codices",
-    `/api/v1/codice${isTopGophed ? "/top-gophed" : ``}`,
+    `/api/v1/codice${isTopGophed ? "?sort=-numLikes" : ``}`,
     false,
     setIsLoading,
     setError,
@@ -120,6 +122,14 @@ function CodicesFiltered({ currentCategory }) {
               path={`/codice-desvelado/read`}
             />
           ))}
+          {!filteredCodices.length &&
+            codices.map((codice) => (
+              <Codice
+                codice={codice}
+                key={codice._id}
+                path={`/codice-desvelado/read`}
+              />
+            ))}
           {filteredCodices.length < 4 && (
             <p className="py-16 font-poppins text-lg text-gray-800 drop-shadow">
               Mais Códices em breve...

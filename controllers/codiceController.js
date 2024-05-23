@@ -81,7 +81,32 @@ exports.createCodice = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getTopGophed = catchAsync(async (req, res, next) => {});
+exports.getTopGophed = catchAsync(async (req, res, next) => {
+  const categories = req.body.categories;
+
+  let codices;
+
+  if (categories) {
+    const query = categories.map((category) => {
+      return {
+        category: category,
+      };
+    });
+
+    codices = await Codice.find({ $or: query }).limit(5).sort('-numLikes');
+  }
+
+  if (!categories) {
+    codices = await Codice.find({}).sort('-numLikes');
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      codices,
+    },
+  });
+});
 
 exports.getAllCodices = catchAsync(async (req, res, next) => {
   const features = new ApiFeatures(Codice.find({}), req.query);

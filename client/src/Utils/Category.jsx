@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 function Category({ category, currentCategory, path = "at" }) {
+  const mappedCategory = category === "+ Gophed" ? "most-gophed" : category;
+
   return (
     <Link
       to={`${path}?category=${category.toLowerCase()}`}
@@ -8,7 +10,7 @@ function Category({ category, currentCategory, path = "at" }) {
     >
       <button
         className={`h-full w-full py-6 text-center font-poppins text-base duration-150 ${
-          category?.toLowerCase() === currentCategory
+          mappedCategory?.toLowerCase() === currentCategory
             ? "-translate-y-2 text-blue-500 underline underline-offset-8"
             : "text-gray-700"
         }`}

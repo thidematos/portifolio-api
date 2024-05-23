@@ -9,13 +9,10 @@ function Gophers({ gophers = 155, isLikeGopher = false }) {
     );
 
   return (
-    <div className="flex flex-row items-center justify-center gap-1 ">
-      <img
-        src="/gopher-like.png"
-        className="w-[30%] rounded-full border border-blue-500  grayscale-[50%]"
-      />
-      <span>{gophers}</span>
-    </div>
+    <img
+      src="/gopher-like.png"
+      className={`w-[20%] rounded-full border border-blue-500  `}
+    />
   );
 }
 

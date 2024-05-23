@@ -14,6 +14,7 @@ import LoginUser from "./LoginUser";
 import LoginModal from "../Utils/LoginModal";
 import Footer from "./Footer";
 import axios from "axios";
+import CodiceSuggestions from "../Utils/CodiceSuggestions";
 
 function CodiceRead() {
   const { codiceId } = useParams();
@@ -40,7 +41,6 @@ function CodiceRead() {
     const getGophers = async () => {
       try {
         const res = await axios.get(`/api/v1/codice/${codiceId}?fields=likes`);
-        console.log(res);
         setNumGophers(res.data.data.codice.likes.length);
       } catch (err) {
         console.log(err);
@@ -101,6 +101,7 @@ function CodiceRead() {
         }}
       />
       <Categories categories={codice?.category} />
+      <CodiceSuggestions codice={codice} />
       <Footer
         padding={"py-8"}
         fontSize={"text-sm"}
@@ -139,11 +140,7 @@ function Header({
   codiceId,
   loginIsNeeded,
 }) {
-  const {
-    handler: handleToReadLater,
-    isLoading,
-    error,
-  } = usePatch({
+  const { handler: handleToReadLater } = usePatch({
     resource: "user",
     field: "toReadLater",
     newValue: codiceId,
@@ -183,11 +180,7 @@ function Header({
 }
 
 function Metrics({ gophers, dependencies }) {
-  const {
-    handler: handleGopher,
-    isLoading,
-    error,
-  } = usePatch({
+  const { handler: handleGopher } = usePatch({
     resource: "user",
     field: "gophed",
     newValue: dependencies.codiceId,

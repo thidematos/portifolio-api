@@ -33,10 +33,12 @@ const codiceSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
   },
+  numLikes: Number,
   toReadLater: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
   },
+  numReadLater: Number,
   date: {
     type: Date,
     default: Date.now,
@@ -46,6 +48,8 @@ const codiceSchema = new mongoose.Schema({
 
 codiceSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
+  this.numLikes = this.likes.length;
+  this.numReadLater = this.toReadLater.length;
   next();
 });
 
