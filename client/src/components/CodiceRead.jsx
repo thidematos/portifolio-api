@@ -10,11 +10,22 @@ import DOMPurify from "dompurify";
 import Gophers from "../Utils/Gophers";
 import ReadLater from "../Utils/ReadLater";
 import usePatch from "./../hooks/usePatch";
-import LoginUser from "./LoginUser";
 import LoginModal from "../Utils/LoginModal";
 import Footer from "./Footer";
 import axios from "axios";
 import CodiceSuggestions from "../Utils/CodiceSuggestions";
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
 
 function CodiceRead() {
   const { codiceId } = useParams();
@@ -90,7 +101,7 @@ function CodiceRead() {
         isOpenModal={needLogin}
         onOpenModal={() => setNeedLogin(false)}
       />
-
+      <Categories categories={codice?.category} />
       <Metrics
         gophers={numGophers}
         dependencies={{
@@ -100,7 +111,7 @@ function CodiceRead() {
           isLiked: user?.gophed.includes(codiceId),
         }}
       />
-      <Categories categories={codice?.category} />
+      <ShareCodice codice={codice} />
       <CodiceSuggestions codice={codice} />
       <Footer
         padding={"py-8"}
@@ -108,6 +119,54 @@ function CodiceRead() {
         textColor={"text-gray-500"}
       />
       <Outlet context={{ setUser, path: -1 }} />
+    </div>
+  );
+}
+
+function ShareCodice({ codice }) {
+  const url = window.location.href;
+
+  return (
+    <div className="my-6 flex w-full flex-col items-center justify-center gap-4 px-6">
+      <p className="w-full text-center font-poppins text-lg text-gray-800 drop-shadow-sm">
+        Compartilhe esse Códice:
+      </p>
+      <div className="flex w-full flex-row items-center justify-around">
+        <EmailShareButton
+          url={url}
+          subject={`Confira esse Códice: ${codice.title}`}
+          body={`${codice.summary}`}
+          separator=" Confira nesse link: "
+        >
+          <EmailIcon round={true} size={50} />
+        </EmailShareButton>
+        <FacebookShareButton hashtag="#codice" url={url}>
+          <FacebookIcon round={true} size={50} />
+        </FacebookShareButton>
+        <LinkedinShareButton
+          title={`Códice: ${codice.title}`}
+          summary={`${codice.summary}`}
+          source={`Thiago L. Matos - Códice Desvelado`}
+          url={url}
+        >
+          <LinkedinIcon round={true} size={50} />
+        </LinkedinShareButton>
+        <WhatsappShareButton
+          title={`Códice: ${codice.title}`}
+          separator=" Confira nesse link: "
+          url={url}
+        >
+          <WhatsappIcon round={true} size={50} />
+        </WhatsappShareButton>
+        <TwitterShareButton
+          title={`Códice: ${codice.title}`}
+          hashtag={["#codice"]}
+          related={["@thivez_"]}
+          url={url}
+        >
+          <TwitterIcon round={true} size={50} />
+        </TwitterShareButton>
+      </div>
     </div>
   );
 }
@@ -190,9 +249,8 @@ function Metrics({ gophers, dependencies }) {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4 p-6">
-      <p className="w-full text-center font-poppins text-gray-800 drop-shadow-sm">
-        Gostou? Deixe seu <span className="italic text-blue-500">Gopher</span>{" "}
-        para o autor!
+      <p className="w-full text-center font-poppins text-lg text-gray-800 drop-shadow-sm">
+        Gostou? Deixe seu <span className="italic text-blue-500">Gopher</span>!
       </p>
       <div className="flex w-full flex-row items-center justify-center gap-3">
         <Gophers

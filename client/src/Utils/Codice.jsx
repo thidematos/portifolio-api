@@ -7,7 +7,7 @@ import { ptBR } from "date-fns/locale";
 function Codice({ codice, path = "/admin/dashboard/codice" }) {
   return (
     <Link to={`${path}/${codice._id}`}>
-      <div className="flex h-[250px] w-full flex-col items-center justify-center overflow-hidden border-b border-gray-400 px-4 py-6">
+      <div className="flex h-[250px] w-full flex-col items-center justify-center overflow-hidden border-b border-gray-300 px-4 py-6">
         <h2 className=" pb-1 font-poppins font-bold text-gray-800">
           {codice.title}
         </h2>
