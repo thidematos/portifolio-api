@@ -35,6 +35,7 @@ import Reviews from "./components/Reviews";
 import CodiceList from "./components/CodiceList.jsx";
 import CodiceRead from "./components/CodiceRead.jsx";
 import LoginUser from "./components/LoginUser.jsx";
+import Signup from "./components/Signup.jsx";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -48,6 +49,7 @@ function App() {
           <Route path="admin" element={<Admin />} />
           <Route path="get-started" element={<LoginUser />} />
         </Route>
+        <Route path="/codice-desvelado/signup" element={<Signup />} />
         <Route path="/codice-desvelado/read" element={<CodiceList />}>
           <Route path="get-started" element={<LoginUser />} />
         </Route>

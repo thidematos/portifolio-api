@@ -24,7 +24,11 @@ function CodiceSuggestions({ codice }) {
           },
         );
 
-        setSuggestedCodices(res.data.data.codices);
+        setSuggestedCodices(
+          res.data.data.codices.filter(
+            (currentCodice) => currentCodice._id !== codice._id,
+          ),
+        );
       } catch (err) {
         console.log(err);
         setError(err.response.data.message);
@@ -42,13 +46,18 @@ function CodiceSuggestions({ codice }) {
       {error && <Error />}
       {!isLoading &&
         !error &&
-        suggestedCodices.map((codice) => (
+        suggestedCodices.map((currentCodice) => (
           <Codice
-            key={codice._id}
-            codice={codice}
-            path={`/codice-desvelado/read/${codice._id}`}
+            key={currentCodice._id}
+            codice={currentCodice}
+            path={`/codice-desvelado/read/${currentCodice._id}`}
           />
         ))}
+      {!suggestedCodices.length && (
+        <p className="py-8 font-poppins text-lg text-gray-800 drop-shadow">
+          Mais Códices em breve...
+        </p>
+      )}
     </div>
   );
 }

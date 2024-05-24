@@ -6,7 +6,7 @@ import axios from "axios";
 import Loader from "../Utils/Loader";
 import Error from "../Utils/Error";
 import ErrorNotification from "../Utils/ErrorNotification";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 function LoginUser({ setUserProp, pathProp }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -139,9 +139,11 @@ function BecomeGopher() {
   return (
     <div className="flex w-full flex-col items-center justify-center font-poppins">
       <p className="text-sm text-blue-500">Novo no Códice Desvelado?</p>
-      <button className=" text-orange-500 underline underline-offset-2">
-        Tornar-se um Gopher!
-      </button>
+      <Link to={"/codice-desvelado/signup"}>
+        <button className=" text-orange-500 underline underline-offset-2">
+          Tornar-se um Gopher!
+        </button>
+      </Link>
     </div>
   );
 }

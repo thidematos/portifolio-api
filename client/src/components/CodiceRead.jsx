@@ -26,6 +26,8 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import Loader from "../Utils/Loader";
+import Error from "../Utils/Error";
 
 function CodiceRead() {
   const { codiceId } = useParams();
@@ -71,54 +73,60 @@ function CodiceRead() {
   }
 
   return (
-    <div className="w-full">
+    <div className="relative  w-full">
       <CodiceHeader
         setHeaderSize={setHeaderSize}
         headerSize={headerSize}
         user={user}
       />
 
-      <div className="p-6">
-        <Title title={codice?.title} />
-        <Header
-          author={codice?.author}
-          date={codice?.date}
-          readTime={readTime}
-          isToReadLater={user?.toReadLater?.includes(codiceId)}
-          setter={setUser}
-          codiceId={codiceId}
-          loginIsNeeded={loginIsNeeded}
-        />
-        <Image
-          img={codice?.cover}
-          className={"my-6 rounded border-2 border-orange-500 shadow"}
-        />
-        <Content content={codice?.content} />
-      </div>
+      {isLoading && <Loader margin="my-20" />}
+      {error && <Error />}
+      {!isLoading && !error && (
+        <>
+          <div className="p-6">
+            <Title title={codice?.title} />
+            <Header
+              author={codice?.author}
+              date={codice?.date}
+              readTime={readTime}
+              isToReadLater={user?.toReadLater?.includes(codiceId)}
+              setter={setUser}
+              codiceId={codiceId}
+              loginIsNeeded={loginIsNeeded}
+            />
+            <Image
+              img={codice?.cover}
+              className={"my-6 rounded border-2 border-orange-500 shadow"}
+            />
+            <Content content={codice?.content} />
+          </div>
 
-      <LoginModal
-        setUser={setUser}
-        isOpenModal={needLogin}
-        onOpenModal={() => setNeedLogin(false)}
-      />
-      <Categories categories={codice?.category} />
-      <Metrics
-        gophers={numGophers}
-        dependencies={{
-          loginIsNeeded,
-          setter: setUser,
-          codiceId,
-          isLiked: user?.gophed.includes(codiceId),
-        }}
-      />
-      <ShareCodice codice={codice} />
-      <CodiceSuggestions codice={codice} />
-      <Footer
-        padding={"py-8"}
-        fontSize={"text-sm"}
-        textColor={"text-gray-500"}
-      />
-      <Outlet context={{ setUser, path: -1 }} />
+          <LoginModal
+            setUser={setUser}
+            isOpenModal={needLogin}
+            onOpenModal={() => setNeedLogin(false)}
+          />
+          <Categories categories={codice?.category} />
+          <Metrics
+            gophers={numGophers}
+            dependencies={{
+              loginIsNeeded,
+              setter: setUser,
+              codiceId,
+              isLiked: user?.gophed.includes(codiceId),
+            }}
+          />
+          <ShareCodice codice={codice} />
+          <CodiceSuggestions codice={codice} />
+          <Footer
+            padding={"py-8"}
+            fontSize={"text-sm"}
+            textColor={"text-gray-500"}
+          />
+          <Outlet context={{ setUser, path: -1 }} />
+        </>
+      )}
     </div>
   );
 }
