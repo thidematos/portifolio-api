@@ -16,7 +16,7 @@ function CodiceList() {
   const [searchParams] = useSearchParams();
   let currentCategory = searchParams.get("category");
 
-  if (currentCategory.trim() === "gophed") currentCategory = "most-gophed";
+  if (currentCategory?.trim() === "gophed") currentCategory = "most-gophed";
 
   const [user, setUser] = useVerifyUser();
 
