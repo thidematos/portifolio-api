@@ -35,11 +35,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'user-icon.png',
   },
-  company: {
-    type: String,
-  },
-  position: {
-    type: String,
+  mailNewPosts: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,

@@ -1,3 +1,4 @@
+const sharp = require('sharp');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const User = require('./../models/userModel');
@@ -35,20 +36,47 @@ const createSendCookie = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm, position, company, photo } =
-    req.body;
+  const {
+    name,
+    email,
+    password,
+    passwordConfirm,
+    mailNewPosts,
+    photo = 'user-icon.png',
+  } = req.body;
 
   const newUser = await User.create({
     name,
     email,
     password,
     passwordConfirm,
-    position,
-    company,
+    mailNewPosts,
     photo,
   });
 
   createSendCookie(newUser, 201, res);
+});
+
+exports.resizePhoto = catchAsync(async (req, res, next) => {
+  console.log(req.file);
+  if (!req.file) return next();
+
+  const sizes = {
+    width: 250,
+    height: 250,
+  };
+
+  const photoName = `user-${Date.now()}.jpg`;
+
+  await sharp(req.file.buffer)
+    .resize(sizes.width, sizes.height)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`client/public/${photoName}`);
+
+  req.body.photo = photoName;
+
+  next();
 });
 
 exports.login = catchAsync(async (req, res, next) => {
