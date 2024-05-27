@@ -6,7 +6,7 @@ function RouterModal({
   isModalScrollable = false,
   children,
   hidden = false,
-  height = "h-[75%]",
+  height = "h-[75%] md:h-[65%] lg:h-[90%] 3xl:h-[80%]",
   closeTop = "top-[3%]",
 }) {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function RouterModal({
         className={`modal centerDivAbsolute animateToMiddle relative z-[9991] bg-gray-100 ${
           isModalScrollable
             ? "fixed h-[90svh] w-[100%] overflow-x-hidden  overflow-y-scroll rounded-xl lg:h-[90svh] lg:w-[85%]"
-            : `${height} w-[90%] rounded-xl md:h-[65%] md:w-[60%] md:max-w-[600px] lg:h-[90%] lg:w-[40%] lg:max-w-[500px] 3xl:h-[80%] 3xl:max-w-[560px]`
+            : `${height} w-[90%] rounded-xl md:w-[60%] md:max-w-[600px]  lg:w-[40%] lg:max-w-[500px]  3xl:max-w-[560px]`
         }  shadow-xl`}
         onClick={(e) => e.stopPropagation()}
       >

@@ -46,8 +46,11 @@ function LoginUser({ setUserProp, pathProp }) {
   }
 
   return (
-    <RouterModal path={path || "/codice-desvelado"}>
-      <div className="relative flex h-full w-full flex-col items-center justify-center gap-10">
+    <RouterModal
+      height="h-[75%] md:h-[65%] lg:h-[90%] 3xl:h-[65%]"
+      path={path || "/codice-desvelado"}
+    >
+      <div className="relative flex h-full w-full flex-col items-center justify-center gap-10 lg:gap-8 xl:gap-12 3xl:gap-10">
         <Header />
         {isLoading && <Loader />}
         {error && (
@@ -70,7 +73,9 @@ function LoginUser({ setUserProp, pathProp }) {
               setSearchParams={setSearchParams}
             />
             <Button
-              fontSize={"text-xl"}
+              fontSize={
+                "text-xl lg:text-base xl:text-xl 2xl:text-lg 3xl:text-xl"
+              }
               type="action"
               onAction={() => handleLogin()}
             >
@@ -119,35 +124,40 @@ function ForgotPassword({ setSearchParams }) {
   }
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-12 px-10 font-poppins">
-      <h2 className="text-xl text-gray-800 drop-shadow">Esqueci minha senha</h2>
+    <div className="flex w-full flex-col items-center justify-center gap-12 px-10 font-poppins md:gap-14 lg:gap-10 xl:gap-14">
+      <h2 className="text-xl text-gray-800 drop-shadow lg:text-base xl:text-xl 2xl:text-lg 3xl:text-xl">
+        Esqueci minha senha
+      </h2>
       {isLoading && <Loader />}
       {!isLoading && !response.fetched && (
         <>
-          <div className="flex w-full flex-col items-start justify-center gap-1">
+          <div className="flex w-full flex-col items-start justify-center gap-1 md:gap-2">
             <label
-              className={`text-lg  ${isValid ? "text-blue-500" : "text-gray-500"}`}
+              className={`text-lg  ${isValid ? "text-blue-500" : "text-gray-500"} md:text-xl lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg`}
             >
-              EMAIL
+              Email
             </label>
             <input
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="esqueci@gmail.com"
-              className={`${isValid ? "border-blue-500" : "border-gray-300"} w-full rounded border p-2 text-gray-800 shadow outline-none placeholder:text-gray-300`}
+              className={`${isValid ? "border-blue-500" : "border-gray-300"} w-full rounded border p-2 text-gray-800 shadow outline-none placeholder:text-gray-300 md:text-lg lg:text-sm xl:text-base 2xl:text-sm 3xl:text-base`}
             />
           </div>
           {isValid ? (
             <Button
               type="action"
-              fontSize={"text-lg"}
+              fontSize={
+                "text-lg md:text-xl lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg"
+              }
               onAction={() => handleResetPassword()}
+              margin={"mt-2"}
             >
               Recuperar senha
             </Button>
           ) : (
-            <p className="text-center text-sm text-blue-500">
+            <p className="text-center text-sm text-blue-500 md:text-base lg:text-xs xl:text-sm ">
               Insira um email válido para recuperar sua senha!
             </p>
           )}
@@ -157,13 +167,15 @@ function ForgotPassword({ setSearchParams }) {
         <div className="w-full">
           {response.status && (
             <div className="flex flex-col items-center justify-center">
-              <p className="text-center text-xl text-blue-500">
+              <p className="text-center text-xl text-blue-500 lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg">
                 {response.data}
               </p>
               <Button
                 type="action"
                 onAction={() => setSearchParams("")}
-                fontSize={"text-lg"}
+                fontSize={
+                  "text-lg md:text-xl lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg"
+                }
                 margin={"mt-12"}
               >
                 Ir para o login
@@ -172,10 +184,10 @@ function ForgotPassword({ setSearchParams }) {
           )}
           {!response.status && (
             <div className="flex w-full flex-col items-center justify-center">
-              <p className="text-center text-lg text-red-500">
+              <p className="text-center text-lg text-red-500 md:text-xl lg:text-base xl:text-lg 3xl:text-xl">
                 {response.data}.
               </p>
-              <p className="text-center text-sm text-gray-800">
+              <p className="text-center text-sm text-gray-800 md:text-base lg:text-sm xl:text-base 2xl:text-sm 3xl:text-base">
                 Por favor, tente novamente.
               </p>
               <Button
@@ -187,6 +199,9 @@ function ForgotPassword({ setSearchParams }) {
                     status: false,
                     fetched: false,
                   })
+                }
+                fontSize={
+                  "md:text-lg lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg"
                 }
               >
                 Tentar novamente
@@ -202,8 +217,11 @@ function ForgotPassword({ setSearchParams }) {
 function Header() {
   return (
     <div className="flex flex-col items-center justify-center gap-2">
-      <Logo clickable={false} width="w-[65%]" />
-      <h2 className="text-wide font-noto text-xl text-gray-500 drop-shadow">
+      <Logo
+        clickable={false}
+        width="w-[65%] lg:w-[50%] xl:w-[60%] 2xl:w-[55%] 3xl:w-[60%]"
+      />
+      <h2 className="text-wide font-noto text-xl text-gray-500 drop-shadow lg:text-base xl:text-xl 2xl:text-lg 3xl:text-xl">
         Leitor do Códice
       </h2>
     </div>
@@ -220,44 +238,51 @@ function LoginForm({ setCredentials, setSearchParams }) {
   }, [email, password, setCredentials]);
 
   return (
-    <div className="flex w-[80%] flex-col items-center justify-center gap-5">
+    <div className="flex w-[80%] flex-col items-center justify-center gap-5 lg:gap-3 xl:gap-5 2xl:gap-4 3xl:gap-6">
       <div className="flex w-full flex-col items-start justify-center gap-2 font-poppins">
-        <label className="text-lg text-gray-500">Email</label>
+        <label className="text-lg text-gray-500 lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg">
+          Email
+        </label>
         <div className="relative w-full">
           <img
             src="/gopher-like.png"
-            className="absolute left-2 top-1 h-[75%] rounded-full "
+            className="absolute left-2 top-1 h-[75%] rounded-full lg:top-2 lg:h-[55%] xl:h-[60%] 2xl:h-[55%] 3xl:h-[60%]"
           />
           <input
             type="text"
             placeholder="gopher@go.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="min-h-[50px] w-full rounded border border-gray-300 p-2 pl-[20%] text-gray-800 shadow outline-none"
+            className="min-h-[50px] w-full rounded border border-gray-300 py-2 pl-[20%] text-gray-800 shadow outline-none lg:min-h-[40px] lg:py-1 lg:pl-[15%] lg:text-sm xl:min-h-[50px] xl:py-2 xl:text-base 2xl:min-h-[45px] 2xl:text-sm 3xl:min-h-[50px] 3xl:text-base"
           />
         </div>
       </div>
       <div className="flex w-full flex-col items-start justify-center gap-2 font-poppins">
-        <label className="text-lg text-gray-500">Senha</label>
+        <label className="text-lg text-gray-500 lg:text-base xl:text-lg 2xl:text-base 3xl:text-lg">
+          Senha
+        </label>
         <div className="relative w-full">
-          <img src="/pwd-icon.png" className="absolute left-3 top-2 h-[65%] " />
+          <img
+            src="/pwd-icon.png"
+            className="absolute left-3 top-2 h-[65%] lg:h-[50%] xl:h-[55%] 2xl:h-[50%] 3xl:h-[55%]"
+          />
           <input
             type={`${showPassword ? "text" : "password"}`}
             placeholder="********"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="min-h-[50px] w-full rounded border border-gray-300 p-2 pl-[20%] text-gray-800 shadow outline-none"
+            className="min-h-[50px] w-full rounded border border-gray-300 py-2 pl-[20%] text-gray-800 shadow outline-none lg:min-h-[40px] lg:py-1 lg:pl-[15%] lg:text-sm xl:min-h-[50px] xl:py-2 xl:text-base 2xl:min-h-[45px] 2xl:text-sm 3xl:min-h-[50px] 3xl:text-base"
           />
           <img
             src={`/${showPassword ? "hidden" : "show"}-pwd-icon.png`}
-            className="absolute right-3 top-3 h-[45%]"
+            className="absolute right-3 top-3 h-[45%] lg:h-[40%] xl:h-[45%] 2xl:h-[40%] 3xl:h-[45%]"
             onClick={() => setShowPassword((state) => !state)}
           />
         </div>
       </div>
 
       <button
-        className="font-poppins text-sm text-gray-500 underline underline-offset-2"
+        className="font-poppins text-sm text-gray-500 underline underline-offset-2 lg:text-xs xl:text-sm "
         onClick={() => setSearchParams("forgot-password=true")}
       >
         Esqueci minha senha
@@ -269,9 +294,11 @@ function LoginForm({ setCredentials, setSearchParams }) {
 function BecomeGopher() {
   return (
     <div className="flex w-full flex-col items-center justify-center font-poppins">
-      <p className="text-sm text-blue-500">Novo no Códice Desvelado?</p>
+      <p className="text-sm text-blue-500 lg:text-xs xl:text-sm 2xl:text-xs 3xl:text-sm">
+        Novo no Códice Desvelado?
+      </p>
       <Link to={"/codice-desvelado/signup"}>
-        <button className=" text-orange-500 underline underline-offset-2">
+        <button className=" text-orange-500 underline underline-offset-2 lg:text-sm xl:text-base 2xl:text-sm 3xl:text-base">
           Tornar-se um Gopher!
         </button>
       </Link>

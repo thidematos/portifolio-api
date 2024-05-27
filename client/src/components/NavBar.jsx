@@ -14,7 +14,7 @@ function NavBar({ isMobile }) {
   return (
     <div className="fixed top-0 z-[9996] flex w-screen flex-row items-center justify-center bg-[rgba(250,250,250,0.7)] backdrop-blur-[2px]">
       <nav className="NavBar flex w-[90%] flex-row items-center justify-between border-b py-6 lg:w-[75%] xl:w-[65%] 3xl:w-[60%] ">
-        <Logo width="w-[40%]" />
+        <Logo width="w-[40%] md:w-[20%]" clickable={true} path="/" />
         {isMobile || <SectionList />}
         <ProjectRequest onProjectRequest={handleProjectRequest}>
           Solicitar atendimento {">"}
@@ -74,10 +74,14 @@ function Section({ children }) {
   );
 }
 
-function ProjectRequest({ children, onProjectRequest }) {
+function ProjectRequest({
+  children,
+  onProjectRequest,
+  width = "w-[50%] md:w-[20%]",
+}) {
   return (
     <button
-      className="text flex w-[50%] flex-row items-center justify-end font-poppins text-xs tracking-tight text-blue-500 underline-offset-[6px] drop-shadow-sm hover:underline md:w-[25%] md:justify-center lg:text-sm 3xl:text-base"
+      className={`${width} flex w-[50%] flex-row items-center justify-end font-poppins text-xs tracking-tight text-blue-500 underline-offset-[6px] drop-shadow-sm hover:underline  md:justify-center lg:text-sm 3xl:text-base`}
       onClick={onProjectRequest}
     >
       {children}
