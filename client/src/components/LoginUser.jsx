@@ -4,16 +4,24 @@ import RouterModal from "../Utils/RouterModal";
 import Button from "../Utils/Button";
 import axios from "axios";
 import Loader from "../Utils/Loader";
-import Error from "../Utils/Error";
 import ErrorNotification from "../Utils/ErrorNotification";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
+import validator from "validator";
 
 function LoginUser({ setUserProp, pathProp }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const isForgotPassword = searchParams.get("forgot-password");
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { setUser, path = "/codice-desvelado/read" } = useOutletContext() || {
+  const { setUser, path } = useOutletContext() || {
     setUser: setUserProp,
     path: pathProp,
   };
@@ -21,6 +29,7 @@ function LoginUser({ setUserProp, pathProp }) {
 
   async function handleLogin() {
     try {
+      if (!credentials.email || !credentials.password) return;
       setIsLoading(true);
       const res = await axios.post("/api/v1/users/login", credentials, {
         withCredentials: true,
@@ -37,7 +46,7 @@ function LoginUser({ setUserProp, pathProp }) {
   }
 
   return (
-    <RouterModal path={pathProp || -1}>
+    <RouterModal path={path || "/codice-desvelado"}>
       <div className="relative flex h-full w-full flex-col items-center justify-center gap-10">
         {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
         {error && (
@@ -53,10 +62,13 @@ function LoginUser({ setUserProp, pathProp }) {
             {error}
           </ErrorNotification>
         )}
-        {!isLoading && (
+        <Header />
+        {!isLoading && !isForgotPassword && (
           <>
-            <Header />
-            <LoginForm setCredentials={setCredentials} />
+            <LoginForm
+              setCredentials={setCredentials}
+              setSearchParams={setSearchParams}
+            />
             <Button
               fontSize={"text-xl"}
               type="action"
@@ -67,8 +79,123 @@ function LoginUser({ setUserProp, pathProp }) {
             <BecomeGopher />
           </>
         )}
+        {!isLoading && isForgotPassword && (
+          <ForgotPassword setSearchParams={setSearchParams} />
+        )}
       </div>
     </RouterModal>
+  );
+}
+
+function ForgotPassword({ setSearchParams }) {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState({
+    fetched: false,
+    data: null,
+    status: false,
+  });
+  const isValid = validator.isEmail(email);
+
+  async function handleResetPassword() {
+    try {
+      setIsLoading(true);
+      await axios.post("/api/v1/users/forgot-password", { email });
+      setResponse({
+        data: `Recuperação de senha enviada com sucesso!`,
+        status: true,
+        fetched: true,
+      });
+    } catch (err) {
+      console.log(err);
+      setResponse({
+        status: false,
+        fetched: true,
+        data: err.response.data.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center justify-center gap-12 px-10 font-poppins">
+      <h2 className="text-xl text-gray-800 drop-shadow">Esqueci minha senha</h2>
+      {isLoading && <Loader />}
+      {!isLoading && !response.fetched && (
+        <>
+          <div className="flex w-full flex-col items-start justify-center gap-1">
+            <label
+              className={`text-lg  ${isValid ? "text-blue-500" : "text-gray-500"}`}
+            >
+              EMAIL
+            </label>
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="esqueci@gmail.com"
+              className={`${isValid ? "border-blue-500" : "border-gray-300"} w-full rounded border p-2 text-gray-800 shadow outline-none placeholder:text-gray-300`}
+            />
+          </div>
+          {isValid ? (
+            <Button
+              type="action"
+              fontSize={"text-lg"}
+              onAction={() => handleResetPassword()}
+            >
+              Recuperar senha
+            </Button>
+          ) : (
+            <p className="text-center text-sm text-blue-500">
+              Insira um email válido para recuperar sua senha!
+            </p>
+          )}
+        </>
+      )}
+      {!isLoading && response.fetched && (
+        <div className="w-full">
+          {response.status && (
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-center text-xl text-blue-500">
+                {response.data}
+              </p>
+              <Button
+                type="action"
+                onAction={() => setSearchParams("")}
+                fontSize={"text-lg"}
+                margin={"mt-12"}
+              >
+                Ir para o login
+              </Button>
+            </div>
+          )}
+          {!response.status && (
+            <div className="flex w-full flex-col items-center justify-center">
+              <p className="text-center text-lg text-red-500">
+                {response.data}.
+              </p>
+              <p className="text-center text-sm text-gray-800">
+                Por favor, tente novamente.
+              </p>
+              <Button
+                type="action"
+                margin={"mt-12"}
+                onAction={() =>
+                  setResponse({
+                    data: null,
+                    status: false,
+                    fetched: false,
+                  })
+                }
+              >
+                Tentar novamente
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -83,7 +210,7 @@ function Header() {
   );
 }
 
-function LoginForm({ setCredentials }) {
+function LoginForm({ setCredentials, setSearchParams }) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -128,7 +255,11 @@ function LoginForm({ setCredentials }) {
           />
         </div>
       </div>
-      <button className="font-poppins text-sm text-gray-500 underline underline-offset-2">
+
+      <button
+        className="font-poppins text-sm text-gray-500 underline underline-offset-2"
+        onClick={() => setSearchParams("forgot-password=true")}
+      >
         Esqueci minha senha
       </button>
     </div>

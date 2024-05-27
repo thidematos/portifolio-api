@@ -76,7 +76,7 @@ function Signup() {
     const form = createForm();
     try {
       setIsLoading(true);
-      const res = await axios.post("/api/v1/users/signup", form);
+      await axios.post("/api/v1/users/signup", form);
       navigate("/codice-desvelado/read");
     } catch (err) {
       console.log(err);

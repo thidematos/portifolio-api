@@ -5,7 +5,7 @@ const { htmlToText } = require('html-to-text');
 class SendMail {
   constructor(data, subject, content) {
     this.data = data;
-    this.name = data.name.split(' ')[0];
+    this.name = data.name?.split(' ')[0];
     this.to = data.email;
     this.subject = subject;
     this.content = content;
@@ -16,9 +16,10 @@ class SendMail {
     data.phone = process.env.PHONE;
     data.subject = this.subject;
     data.content = this.content;
+    data.myHost = 'http://127.0.0.1:3001';
 
-    return pug.renderFile(`${__dirname}/../public/${template}.pug`, {
-      basedir: `${__dirname}/../public/`,
+    return pug.renderFile(`${__dirname}/../views/${template}.pug`, {
+      basedir: `${__dirname}/../views/`,
       firstName: this.name,
       data: data,
     });
@@ -60,6 +61,10 @@ class SendMail {
     };
 
     await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendPasswordReset() {
+    await this.send('passwordReset', this.subject);
   }
 
   async sendProjectRequestConfirmation() {

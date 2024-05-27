@@ -29,7 +29,7 @@ function CodiceList() {
       />
       <CategoriesList currentCategory={currentCategory} />
       <CodicesFiltered currentCategory={currentCategory} />
-      <Outlet context={{ setUser }} />
+      <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
       <Footer
         position={"absolute bottom-0"}
         padding={"py-4"}

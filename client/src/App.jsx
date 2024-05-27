@@ -36,6 +36,7 @@ import CodiceList from "./components/CodiceList.jsx";
 import CodiceRead from "./components/CodiceRead.jsx";
 import LoginUser from "./components/LoginUser.jsx";
 import Signup from "./components/Signup.jsx";
+import ResetPassword from "./components/ResetPassword.jsx";
 
 function App() {
   const isMobile = window.innerWidth < 640;
@@ -44,11 +45,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Portifolio isMobile={isMobile} />} />
-
         <Route path="/codice-desvelado" element={<CodiceDesvelado />}>
           <Route path="admin" element={<Admin />} />
           <Route path="get-started" element={<LoginUser />} />
         </Route>
+        <Route
+          path="/codice-desvelado/reset-password/:resetToken"
+          element={<ResetPassword />}
+        />
         <Route path="/codice-desvelado/signup" element={<Signup />} />
         <Route path="/codice-desvelado/read" element={<CodiceList />}>
           <Route path="get-started" element={<LoginUser />} />

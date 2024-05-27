@@ -30,7 +30,7 @@ const handleCastErrorDb = (err) => {
 };
 
 const handleDuplicateDb = (err) => {
-  const message = `Duplicate field: ${err.keyValue.email}`;
+  const message = `Esse email já existe: ${err.keyValue.email}`;
   const errorObj = new AppError(message, 400);
 
   return errorObj;

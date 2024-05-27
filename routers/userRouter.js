@@ -12,6 +12,10 @@ router.post(
   authController.signup
 );
 
+router.post('/forgot-password', authController.forgotPassword);
+
+router.patch('/reset-password/:resetToken', authController.resetPassword);
+
 router.post('/login', authController.login);
 
 router.get('/verify-user', authController.protect, authController.verify);
