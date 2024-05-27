@@ -23,6 +23,12 @@ router.get('/verify-user', authController.protect, authController.verify);
 router.route('/').patch(authController.protect, userController.patchUser);
 
 router.get(
+  '/read-laters',
+  authController.protect,
+  userController.getUserReadLaters
+);
+
+router.get(
   '/verify',
   authController.protect,
   authController.restrictTo('admin'),

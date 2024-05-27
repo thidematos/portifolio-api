@@ -19,7 +19,8 @@ router
     upload.fields([{ name: 'images' }, { name: 'cover' }]),
     codiceController.resizeImages,
     codiceController.replaceImgSrc,
-    codiceController.createCodice
+    codiceController.createCodice,
+    codiceController.sendNewCodiceNotification
   )
   .get(codiceController.getAllCodices);
 
@@ -36,4 +37,5 @@ router
     codiceController.patchCodice
   );
 
+router.post('/test', codiceController.sendNewCodiceNotification);
 module.exports = router;

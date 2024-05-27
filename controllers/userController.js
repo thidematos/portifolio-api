@@ -53,3 +53,16 @@ exports.patchUser = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getUserReadLaters = catchAsync(async (req, res, next) => {
+  const populatedUser = await req.user.populate('toReadLater');
+
+  const codices = populatedUser.toReadLater;
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      codices: codices,
+    },
+  });
+});

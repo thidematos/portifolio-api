@@ -27,8 +27,8 @@ function CodiceList() {
         setHeaderSize={setHeaderSize}
         user={user}
       />
-      <CategoriesList currentCategory={currentCategory} />
-      <CodicesFiltered currentCategory={currentCategory} />
+      <CategoriesList currentCategory={currentCategory} user={user} />
+      <CodicesFiltered currentCategory={currentCategory} user={user} />
       <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
       <Footer
         position={"absolute bottom-0"}
@@ -40,7 +40,7 @@ function CodiceList() {
   );
 }
 
-function CategoriesList({ currentCategory }) {
+function CategoriesList({ currentCategory, user }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -69,6 +69,7 @@ function CategoriesList({ currentCategory }) {
             path=""
             currentCategory={currentCategory}
           />
+
           {eachCategory.map((category) => (
             <Category
               category={category}
@@ -77,18 +78,47 @@ function CategoriesList({ currentCategory }) {
               path=""
             />
           ))}
+          {user && (
+            <Category
+              category={"Salvos"}
+              path=""
+              currentCategory={currentCategory}
+            />
+          )}
         </>
       )}
     </div>
   );
 }
 
-function CodicesFiltered({ currentCategory }) {
+function CodicesFiltered({ currentCategory, user }) {
   const [codices, setCodices] = useState([]);
+  const [userReadLaters, setUserReadLaters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const isTopGophed = currentCategory === "most-gophed";
+
+  useEffect(() => {
+    if (!user && currentCategory !== "salvos") return;
+
+    const getUserReadLaters = async () => {
+      try {
+        setIsLoading(true);
+        const res = await axios.get("/api/v1/users/read-laters", {
+          withCredentials: true,
+        });
+        setUserReadLaters(res.data.data.codices);
+      } catch (err) {
+        console.log(err);
+        setError(err.response.data.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getUserReadLaters();
+  }, [user, currentCategory]);
 
   useGet(
     setCodices,
@@ -115,25 +145,45 @@ function CodicesFiltered({ currentCategory }) {
       {error && <Error path={"/codice-desvelado"} message={error} />}
       {!isLoading && !error && (
         <>
-          {filteredCodices.map((codice) => (
-            <Codice
-              codice={codice}
-              key={codice._id}
-              path={`/codice-desvelado/read`}
-            />
-          ))}
-          {!filteredCodices.length &&
-            codices.map((codice) => (
-              <Codice
-                codice={codice}
-                key={codice._id}
-                path={`/codice-desvelado/read`}
-              />
-            ))}
-          {filteredCodices.length < 4 && (
-            <p className="py-16 font-poppins text-lg text-gray-800 drop-shadow">
-              Mais Códices em breve...
-            </p>
+          {currentCategory !== "salvos" ? (
+            <>
+              {filteredCodices.map((codice) => (
+                <Codice
+                  codice={codice}
+                  key={codice._id}
+                  path={`/codice-desvelado/read`}
+                />
+              ))}
+
+              {!filteredCodices.length &&
+                codices.map((codice) => (
+                  <Codice
+                    codice={codice}
+                    key={codice._id}
+                    path={`/codice-desvelado/read`}
+                  />
+                ))}
+              {filteredCodices.length < 4 && (
+                <p className="py-16 font-poppins text-lg text-gray-800 drop-shadow">
+                  Mais Códices em breve...
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              {userReadLaters.map((codice) => (
+                <Codice
+                  codice={codice}
+                  key={codice._id}
+                  path={`/codice-desvelado/read`}
+                />
+              ))}
+              {!userReadLaters.length && (
+                <p className="w-[85%] py-16 text-center font-poppins text-gray-400 drop-shadow">
+                  Nenhum Códice salvo para ler depois...
+                </p>
+              )}
+            </>
           )}
         </>
       )}

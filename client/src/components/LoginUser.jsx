@@ -48,7 +48,8 @@ function LoginUser({ setUserProp, pathProp }) {
   return (
     <RouterModal path={path || "/codice-desvelado"}>
       <div className="relative flex h-full w-full flex-col items-center justify-center gap-10">
-        {isLoading && <Loader position={"absolute centerDivAbsolute"} />}
+        <Header />
+        {isLoading && <Loader />}
         {error && (
           <ErrorNotification
             error={error}
@@ -62,7 +63,6 @@ function LoginUser({ setUserProp, pathProp }) {
             {error}
           </ErrorNotification>
         )}
-        <Header />
         {!isLoading && !isForgotPassword && (
           <>
             <LoginForm

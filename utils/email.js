@@ -74,6 +74,10 @@ class SendMail {
   async sendAnswer(subject) {
     await this.send('contactEmail', subject);
   }
+
+  async sendNewCodice() {
+    await this.send('newCodice', this.subject);
+  }
 }
 
 module.exports = SendMail;

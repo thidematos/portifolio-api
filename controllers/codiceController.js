@@ -3,6 +3,8 @@ const Codice = require('./../models/codiceModel');
 const sharp = require('sharp');
 const ApiFeatures = require('./../utils/apiFeatures');
 const deleteFile = require('./../utils/deleteFileFs');
+const SendMail = require('../utils/email');
+const User = require('./../models/userModel');
 
 exports.verifyImgContent = catchAsync(async (req, res, next) => {
   if (!req.files || !req.body.html) return next();
@@ -64,6 +66,28 @@ exports.patchCodice = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.sendNewCodiceNotification = catchAsync(async (req, res, next) => {
+  const users = await User.find({ mailNewPosts: true }).select('name email');
+
+  const generateContent = () =>
+    `Acabamos de publicar um novo Códice! ${req.newCodice.summary} Ficou interessado? Leia o artigo completo no Códice Desvelado. Não se esqueça de deixar seu Gopher!`;
+
+  const promises = users.map((user) => {
+    return new SendMail(
+      { name: user.name, email: user.email, codiceId: req.newCodice._id },
+      `Novo Códice disponível: ${req.newCodice.title}`,
+      generateContent()
+    ).sendNewCodice();
+  });
+
+  Promise.all(promises);
+
+  res.status(201).json({
+    status: 'success',
+    data: { newCodice: req.newCodice },
+  });
+});
+
 exports.createCodice = catchAsync(async (req, res, next) => {
   const newCodice = await Codice.create({
     title: req.body.title,
@@ -75,10 +99,9 @@ exports.createCodice = catchAsync(async (req, res, next) => {
     usedImages: req.body.imagesNames,
   });
 
-  res.status(201).json({
-    status: 'success',
-    data: { newCodice },
-  });
+  req.newCodice = newCodice;
+
+  next();
 });
 
 exports.getTopGophed = catchAsync(async (req, res, next) => {
