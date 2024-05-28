@@ -12,6 +12,7 @@ const projectRequestRouter = require('./routers/projectRequestRouter');
 const userRouter = require('./routers/userRouter');
 const codiceRouter = require('./routers/codiceRouter');
 const scheduleRouter = require('./routers/scheduleRouter');
+const musicRouter = require('./routers/musicRouter');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -58,6 +59,8 @@ app.use('/api/v1/works', workRouter);
 app.use('/api/v1/project-requests', projectRequestRouter);
 
 app.use('/api/v1/users', userRouter);
+
+app.use('/api/v1/musics', musicRouter);
 
 app.use('/api/v1/codice', codiceRouter);
 

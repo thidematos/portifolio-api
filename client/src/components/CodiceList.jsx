@@ -9,6 +9,7 @@ import Codice from "../Utils/Codice";
 import Footer from "./Footer";
 import axios from "axios";
 import useVerifyUser from "../hooks/useVerifyUser";
+import Music from "../Utils/Music";
 
 function CodiceList() {
   const [headerSize, setHeaderSize] = useState("");
@@ -21,21 +22,45 @@ function CodiceList() {
   const [user, setUser] = useVerifyUser();
 
   return (
-    <div className="relative min-h-[100svh] w-full">
-      <CodiceHeader
-        headerSize={headerSize}
-        setHeaderSize={setHeaderSize}
-        user={user}
-      />
-      <CategoriesList currentCategory={currentCategory} user={user} />
-      <CodicesFiltered currentCategory={currentCategory} user={user} />
-      <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
-      <Footer
-        position={"absolute bottom-0"}
-        padding={"py-4"}
-        textColor={"text-gray-500"}
-        fontSize={"text-sm"}
-      />
+    <div className="relative min-h-[100svh] w-full lg:flex lg:flex-row lg:items-center lg:justify-center">
+      <div className="markup relative min-h-[100svh] w-full lg:w-[65%]">
+        <CodiceHeader
+          headerSize={headerSize}
+          setHeaderSize={setHeaderSize}
+          user={user}
+        />
+        <CategoriesList currentCategory={currentCategory} user={user} />
+        <CodicesFiltered currentCategory={currentCategory} user={user} />
+        <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
+        <Footer
+          position={"absolute bottom-0"}
+          padding={"py-4"}
+          textColor={"text-gray-500"}
+          fontSize={"text-sm"}
+        />
+      </div>
+      <div className="markup hidden grow lg:block lg:w-[35%]">
+        <MusicOfTheDay />
+      </div>
+    </div>
+  );
+}
+
+function MusicOfTheDay() {
+  const [musics, setMusics] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useGet(setMusics, "musics", "/api/v1/musics", false, setIsLoading, setError);
+
+  return (
+    <div className="w-full ">
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <>
+          <Music music={musics.at(0)} />
+        </>
+      )}
     </div>
   );
 }
@@ -59,7 +84,7 @@ function CategoriesList({ currentCategory, user }) {
   ];
 
   return (
-    <div className="flex w-full flex-row flex-nowrap overflow-x-scroll  ">
+    <div className="flex w-full flex-row flex-nowrap overflow-x-scroll ">
       {isLoading && <Loader size={50} margin="mt-2" />}
 
       {!isLoading && (

@@ -17,19 +17,19 @@ function CodiceHeader({ setHeaderSize, headerSize, user }) {
     <>
       <header
         ref={headerRef}
-        className={`fixed z-[500] flex w-full flex-row items-center justify-around border-b border-gray-500/75 bg-gray-50/75 ${user ? "py-4" : "py-6 lg:py-4"}`}
+        className={`fixed z-[500] flex w-full flex-row items-center justify-around border-b border-gray-500/75 bg-gray-50/75 ${user ? "py-4 lg:py-2" : "py-6 lg:py-4"}`}
       >
-        <Logo width="w-[40%] md:w-[25%] lg:w-[15%] 2xl:w-[10%]" />
+        <Logo width="w-[40%] md:w-[25%] lg:w-[12%] 2xl:w-[10%]" />
         {user && (
           <img
             src={`/${user.photo}`}
-            className="size-[40px] rounded-full border-2 border-orange-500 shadow-lg"
+            className="size-[40px] rounded-full border-2 border-orange-500 shadow-lg lg:size-[30px]"
           />
         )}
         {!user && (
           <Link
             to={"get-started"}
-            className="flex flex-row items-center justify-end font-poppins text-sm tracking-tight text-blue-500 underline-offset-[6px] drop-shadow-sm hover:underline md:text-lg lg:text-base 2xl:text-sm 3xl:text-lg"
+            className="flex flex-row items-center justify-end font-poppins text-sm tracking-tight text-blue-500 underline-offset-[6px] drop-shadow-sm hover:underline md:text-lg lg:text-xs 2xl:text-sm 3xl:text-lg"
           >
             Iniciar {">"}
           </Link>

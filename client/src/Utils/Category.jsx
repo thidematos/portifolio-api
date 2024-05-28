@@ -6,10 +6,10 @@ function Category({ category, currentCategory, path = "at" }) {
   return (
     <Link
       to={`${path}?category=${category.toLowerCase()}`}
-      className={"min-w-[30%]"}
+      className={"min-w-[30%] md:min-w-[20%] lg:w-[10%]"}
     >
       <button
-        className={`h-full w-full py-6 text-center font-poppins text-base duration-150 ${
+        className={`h-full w-full py-6 text-center font-poppins text-base duration-150 lg:text-xs ${
           mappedCategory?.toLowerCase() === currentCategory
             ? "-translate-y-2 text-blue-500 underline underline-offset-8"
             : "text-gray-700"
