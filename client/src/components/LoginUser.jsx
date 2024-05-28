@@ -25,6 +25,7 @@ function LoginUser({ setUserProp, pathProp }) {
     setUser: setUserProp,
     path: pathProp,
   };
+
   const navigate = useNavigate();
 
   async function handleLogin() {

@@ -37,10 +37,17 @@ const musicSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
   },
+  numGophs: Number,
   createdAt: {
     type: Date,
     default: Date.now,
   },
+});
+
+musicSchema.pre('save', function (next) {
+  this.numGophs = this.gophers.length;
+
+  next();
 });
 
 const Music = mongoose.model('Music', musicSchema);

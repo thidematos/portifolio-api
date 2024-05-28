@@ -168,6 +168,20 @@ body,
   @apply w-[30%] rounded-lg border bg-gray-100  p-4 text-center font-poppins text-xs text-gray-500 md:text-base lg:text-xs xl:text-base 3xl:text-lg;
 }
 
+.categoriesScroll::-webkit-scrollbar {
+  @apply size-[7px];
+}
+
+.categoriesScroll::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+  @apply rounded-l-xl rounded-r-xl;
+}
+
+.categoriesScroll::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+  @apply rounded-l-xl rounded-r-xl bg-gray-200;
+}
+
 .modal::-webkit-scrollbar {
   @apply w-[10px]  rounded-r-xl bg-gray-300;
 }

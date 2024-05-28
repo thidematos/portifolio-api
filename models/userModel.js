@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Codice',
   },
+  likedMusics: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Music',
+  },
   role: {
     type: String,
     enum: ['user', 'client', 'admin'],

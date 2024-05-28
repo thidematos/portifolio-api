@@ -1,16 +1,18 @@
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import CodiceHeader from "./../Utils/CodiceHeader";
+import useVerifyUser from "../hooks/useVerifyUser";
 
 function CodiceDesvelado() {
   const [headerSize, setHeaderSize] = useState("");
+  const [user, setUser] = useVerifyUser();
 
   return (
     <div className="min-h-[100svh] w-full overflow-y-hidden md:h-[100svh] ">
       <CodiceHeader headerSize={headerSize} setHeaderSize={setHeaderSize} />
       <Hero headerSize={headerSize} />
 
-      <Outlet />
+      <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
     </div>
   );
 }

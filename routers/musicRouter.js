@@ -16,4 +16,9 @@ router
   )
   .get(musicController.getAllMusics);
 
+router.patch(
+  '/like-music/:musicId',
+  authController.protect,
+  musicController.likeMusic
+);
 module.exports = router;

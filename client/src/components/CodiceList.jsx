@@ -21,32 +21,52 @@ function CodiceList() {
 
   const [user, setUser] = useVerifyUser();
 
+  const isMediumSize = window.innerWidth <= 768;
+
   return (
-    <div className="relative min-h-[100svh] w-full lg:flex lg:flex-row lg:items-center lg:justify-center">
-      <div className="markup relative min-h-[100svh] w-full lg:w-[65%]">
+    <div className="relative min-h-[100svh] w-full bg-gray-50 lg:flex lg:flex-row lg:items-center lg:justify-center">
+      <div className="categoriesScroll relative h-[100svh] w-full overflow-y-scroll  lg:w-[65%] 2xl:w-[70%]">
         <CodiceHeader
           headerSize={headerSize}
           setHeaderSize={setHeaderSize}
           user={user}
         />
-        <CategoriesList currentCategory={currentCategory} user={user} />
-        <CodicesFiltered currentCategory={currentCategory} user={user} />
-        <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
-        <Footer
-          position={"absolute bottom-0"}
-          padding={"py-4"}
-          textColor={"text-gray-500"}
-          fontSize={"text-sm"}
+        <CategoriesList
+          isMediumSize={isMediumSize}
+          currentCategory={currentCategory}
+          user={user}
         />
+        <CodicesFiltered currentCategory={currentCategory} user={user}>
+          {isMediumSize && <MusicIcon user={user} setUser={setUser} />}
+        </CodicesFiltered>
+        <Outlet context={{ setUser, path: "/codice-desvelado/read" }} />
       </div>
-      <div className="markup hidden grow lg:block lg:w-[35%]">
-        <MusicOfTheDay />
+      <div className="relative hidden lg:block lg:w-[35%] 2xl:w-[30%] 3xl:mr-[10%]">
+        <MusicOfTheDay user={user} setUser={setUser} />
       </div>
     </div>
   );
 }
 
-function MusicOfTheDay() {
+function MusicIcon({ user, setUser }) {
+  const [isShow, setIsShow] = useState(false);
+
+  return (
+    <div
+      className={`${isShow ? "translate-x-0" : "translate-x-[100%]"} absolute right-0 z-10 w-[80%] origin-right bg-gray-50 py-5 duration-200 md:w-[50%]`}
+    >
+      <div
+        className={`absolute right-[100%] top-0 flex w-[20%] flex-row  justify-center rounded-l-xl  bg-blue-400 py-2 shadow lg:hidden`}
+        onClick={() => setIsShow((state) => !state)}
+      >
+        <img src="/radio-icon.png" className="w-[35%]" />
+      </div>
+      <MusicOfTheDay user={user} setUser={setUser} isMobile={true} />
+    </div>
+  );
+}
+
+function MusicOfTheDay({ user, setUser }) {
   const [musics, setMusics] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -54,18 +74,21 @@ function MusicOfTheDay() {
   useGet(setMusics, "musics", "/api/v1/musics", false, setIsLoading, setError);
 
   return (
-    <div className="w-full ">
+    <>
       {isLoading && <Loader />}
       {!isLoading && (
-        <>
-          <Music music={musics.at(0)} />
-        </>
+        <Music
+          user={user}
+          setMusic={setMusics}
+          setUser={setUser}
+          music={musics.at(0)}
+        />
       )}
-    </div>
+    </>
   );
 }
 
-function CategoriesList({ currentCategory, user }) {
+function CategoriesList({ currentCategory, user, isMediumSize }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -84,7 +107,7 @@ function CategoriesList({ currentCategory, user }) {
   ];
 
   return (
-    <div className="flex w-full flex-row flex-nowrap overflow-x-scroll ">
+    <div className="categoriesScroll mx-10 flex w-[90%] flex-row flex-nowrap overflow-x-scroll  3xl:ml-[15%] 3xl:mr-0 3xl:w-auto">
       {isLoading && <Loader size={50} margin="mt-2" />}
 
       {!isLoading && (
@@ -116,7 +139,7 @@ function CategoriesList({ currentCategory, user }) {
   );
 }
 
-function CodicesFiltered({ currentCategory, user }) {
+function CodicesFiltered({ currentCategory, user, children }) {
   const [codices, setCodices] = useState([]);
   const [userReadLaters, setUserReadLaters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -163,7 +186,8 @@ function CodicesFiltered({ currentCategory, user }) {
   });
 
   return (
-    <div className="flex w-full  flex-col items-center justify-center">
+    <div className=" relative flex w-full flex-col  items-center justify-center  pt-6 md:pt-0 3xl:ml-[15%] 3xl:w-auto">
+      {children}
       {isLoading && (
         <Loader position={"absolute centerDivAbsolute"} size={100} />
       )}
@@ -189,7 +213,7 @@ function CodicesFiltered({ currentCategory, user }) {
                   />
                 ))}
               {filteredCodices.length < 4 && (
-                <p className="py-16 font-poppins text-lg text-gray-800 drop-shadow">
+                <p className="py-16 font-poppins text-lg text-gray-800 drop-shadow lg:text-sm xl:text-base 2xl:text-lg 3xl:text-xl">
                   Mais Códices em breve...
                 </p>
               )}

@@ -1,3 +1,4 @@
+const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const Music = require('./../models/musicModel');
 const sharp = require('sharp');
@@ -29,6 +30,41 @@ exports.createMusic = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       music: newMusic,
+    },
+  });
+});
+exports.likeMusic = catchAsync(async (req, res, next) => {
+  const { musicId } = req.params;
+  const music = await Music.findById(musicId);
+
+  const user = await User.findById(req.user._id);
+
+  if (req.body.goph) {
+    const includes = music.gophers.includes(user._id);
+
+    if (includes) {
+      music.gophers = music.gophers.filter(
+        (gophs) => String(gophs) !== String(user._id)
+      );
+
+      user.likedMusics = user.likedMusics.filter(
+        (music) => String(music) !== String(musicId)
+      );
+    }
+
+    if (!includes) {
+      music.gophers.push(user._id);
+      user.likedMusics.push(musicId);
+    }
+  }
+
+  await music.save({ validateModifiedOnly: true });
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser,
     },
   });
 });
