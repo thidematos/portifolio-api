@@ -47,10 +47,10 @@ function LoginUser({ setUserProp, pathProp }) {
 
   return (
     <RouterModal
-      height="h-[75%] md:h-[65%] lg:h-[90%] 3xl:h-[65%]"
+      height="h-[75%] md:h-[65%] lg:h-[90%] 2xl:h-[80%] 3xl:h-[65%]"
       path={path || "/codice-desvelado"}
     >
-      <div className="relative flex h-full w-full flex-col items-center justify-center gap-10 lg:gap-8 xl:gap-12 3xl:gap-10">
+      <div className="relative flex h-full w-full flex-col items-center justify-center gap-10 lg:gap-8 xl:gap-12 2xl:gap-10 3xl:gap-10">
         <Header />
         {isLoading && <Loader />}
         {error && (
