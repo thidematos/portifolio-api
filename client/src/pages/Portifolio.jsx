@@ -34,7 +34,7 @@ function Portifolio({ isMobile }) {
 
 function WelcomePage({ children }) {
   return (
-    <div className="flex h-screen w-screen flex-col items-center  md:h-auto md:justify-start lg:h-screen lg:justify-evenly">
+    <div className="flex h-[100svh] w-screen flex-col items-center  md:h-auto md:justify-start lg:h-screen lg:justify-evenly">
       {children}
     </div>
   );
