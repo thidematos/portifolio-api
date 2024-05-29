@@ -89,7 +89,7 @@ exports.resizeCover = catchAsync(async (req, res, next) => {
     .resize(600, 400)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`client/public/${musicCover}`);
+    .toFile(`public/${musicCover}`);
 
   req.body.cover = musicCover;
 

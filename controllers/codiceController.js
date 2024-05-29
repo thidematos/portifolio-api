@@ -184,7 +184,7 @@ exports.resizeImages = catchAsync(async (req, res, next) => {
       .resize(sizes.width, sizes.height)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
-      .toFile(`client/public/${coverName}`);
+      .toFile(`public/${coverName}`);
 
     req.body.cover = coverName;
   }
@@ -202,7 +202,7 @@ exports.resizeImages = catchAsync(async (req, res, next) => {
           .resize(sizes.width, sizes.height)
           .toFormat('jpeg')
           .jpeg({ quality: 90 })
-          .toFile(`client/public/${imgName}`);
+          .toFile(`public/${imgName}`);
 
         imgName = `/${imgName}`;
 

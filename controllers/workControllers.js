@@ -107,7 +107,7 @@ exports.resizeMultipleImages = async (req, res, next) => {
     .resize(sizes.src.width, sizes.src.height)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`client/public/${srcName}`);
+    .toFile(`public/${srcName}`);
 
   req.body.src = srcName;
 
@@ -121,7 +121,7 @@ exports.resizeMultipleImages = async (req, res, next) => {
     .resize(sizes.mainImg.width, sizes.mainImg.height)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`client/public/${mainImgName}`);
+    .toFile(`public/${mainImgName}`);
 
   req.body.mainImg = mainImgName;
 
@@ -134,7 +134,7 @@ exports.resizeMultipleImages = async (req, res, next) => {
     .resize(sizes.mainImg.width, sizes.mainImg.height)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`client/public/${projectLogoName}`);
+    .toFile(`public/${projectLogoName}`);
 
   req.body.projectLogo = projectLogoName;
 
@@ -152,7 +152,7 @@ exports.resizeMultipleImages = async (req, res, next) => {
         .resize(sizes.img.width, sizes.img.height)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`client/public/${imgName}`);
+        .toFile(`public/${imgName}`);
 
       req.body.sectionImgs.push(imgName);
     })
@@ -321,7 +321,7 @@ exports.resizeImage = async (req, res, next) => {
     )
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`client/public/${req.file.filename}`);
+    .toFile(`public/${req.file.filename}`);
 
   next();
 };

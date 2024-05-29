@@ -74,7 +74,7 @@ exports.resizePhoto = catchAsync(async (req, res, next) => {
     .resize(sizes.width, sizes.height)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`client/public/${photoName}`);
+    .toFile(`public/${photoName}`);
 
   req.body.photo = photoName;
 
