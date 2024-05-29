@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "../Utils/Modal";
 import ProjectRequestForm from "./ProjectRequestForm";
 import AboutMe from "./AboutMe";
 import Logo from "../Utils/Logo";
 
-function NavBar({ isMobile }) {
+function NavBar({ isMobile, setNavHeight }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const navRef = useRef(null);
+
+  useEffect(
+    () =>
+      setNavHeight(Math.round(navRef.current.getBoundingClientRect().height)),
+    [setNavHeight],
+  );
 
   function handleProjectRequest() {
     setIsOpenModal(true);
   }
 
   return (
-    <div className="fixed top-0 z-[9996] flex w-screen flex-row items-center justify-center bg-[rgba(250,250,250,0.7)] backdrop-blur-[2px]">
+    <div
+      className="fixed top-0 z-[9996] flex w-screen flex-row items-center justify-center bg-[rgba(250,250,250,0.7)] backdrop-blur-[2px]"
+      ref={navRef}
+    >
       <nav className="NavBar flex w-[90%] flex-row items-center justify-between border-b py-6 lg:w-[75%] xl:w-[65%] 3xl:w-[60%] ">
         <Logo width="w-[40%] md:w-[20%]" clickable={true} path="/" />
         {isMobile || <SectionList />}

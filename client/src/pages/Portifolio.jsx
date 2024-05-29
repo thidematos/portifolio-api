@@ -7,14 +7,17 @@ import WorkFlow from "./../components/WorkFlow";
 import AskedQuestions from "./../components/AskedQuestions";
 import Ending from "./../components/Ending";
 import Footer from "./../components/Footer";
+import { useState } from "react";
 //<Reports />
 function Portifolio({ isMobile }) {
+  const [navHeight, setNavHeight] = useState(0);
+
   return (
     <>
       <div className="relative flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-slate-50 pb-16">
         <WelcomePage>
-          <NavBar isMobile={isMobile}></NavBar>
-          <Hero isMobile={isMobile}></Hero>
+          <NavBar isMobile={isMobile} setNavHeight={setNavHeight}></NavBar>
+          <Hero isMobile={isMobile} navHeight={navHeight}></Hero>
         </WelcomePage>
         <Works />
         <Benefits isMobile={isMobile} />
