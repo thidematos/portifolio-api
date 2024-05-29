@@ -41,7 +41,9 @@ function CodiceSuggestions({ codice }) {
 
   return (
     <div className="flex w-full flex-col items-center justify-center py-6  drop-shadow-sm">
-      <h3 className="mb-6 font-noto text-2xl text-gray-800">Outros Códices</h3>
+      <h3 className="mb-6 font-noto text-2xl text-gray-800 2xl:text-xl 3xl:text-2xl">
+        Outros Códices
+      </h3>
       {isLoading && <Loader />}
       {error && <Error />}
       {!isLoading &&
@@ -54,7 +56,7 @@ function CodiceSuggestions({ codice }) {
           />
         ))}
       {!suggestedCodices.length && (
-        <p className="py-8 font-poppins text-lg text-gray-800 drop-shadow">
+        <p className="py-8 font-poppins text-lg text-gray-800 drop-shadow 2xl:text-base 3xl:text-lg">
           Mais Códices em breve...
         </p>
       )}

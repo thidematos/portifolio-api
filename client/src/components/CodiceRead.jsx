@@ -84,7 +84,7 @@ function CodiceRead() {
       {error && <Error />}
       {!isLoading && !error && (
         <>
-          <div className="p-6">
+          <div className="flex flex-col items-center justify-center p-6 md:px-12 md:py-20 lg:px-[15%] xl:px-[25%] 2xl:px-[28%] 2xl:py-12 3xl:px-[33%]">
             <Title title={codice?.title} />
             <Header
               author={codice?.author}
@@ -97,7 +97,9 @@ function CodiceRead() {
             />
             <Image
               img={codice?.cover}
-              className={"my-6 rounded border-2 border-orange-500 shadow"}
+              className={
+                "my-6 rounded border-2 border-orange-500 shadow md:w-[85%] lg:w-full 3xl:w-[90%]"
+              }
             />
             <Content content={codice?.content} />
           </div>
@@ -136,10 +138,10 @@ function ShareCodice({ codice }) {
 
   return (
     <div className="my-6 flex w-full flex-col items-center justify-center gap-4 px-6">
-      <p className="w-full text-center font-poppins text-lg text-gray-800 drop-shadow-sm">
+      <p className="w-full text-center font-poppins text-lg text-gray-800 drop-shadow-sm lg:text-base 3xl:text-lg">
         Compartilhe esse Códice:
       </p>
-      <div className="flex w-full flex-row items-center justify-around">
+      <div className="flex w-full flex-row items-center justify-around md:w-[60%] md:pt-4 lg:w-[50%] 2xl:w-[40%] 3xl:w-[30%]">
         <EmailShareButton
           url={url}
           subject={`Confira esse Códice: ${codice.title}`}
@@ -185,7 +187,7 @@ function Content({ content }) {
       dangerouslySetInnerHTML={{
         __html: DOMPurify.sanitize(content),
       }}
-      className="tracking-wide"
+      className="tracking-wide xl:text-xl 2xl:text-lg"
     ></div>
   );
 }
@@ -195,7 +197,11 @@ function Image({ img, className }) {
 }
 
 function Title({ title }) {
-  return <h1 className=" text-2xl font-bold text-gray-800">{title}</h1>;
+  return (
+    <h1 className=" text-2xl font-bold text-gray-800 md:text-4xl lg:w-full lg:text-start">
+      {title}
+    </h1>
+  );
 }
 
 function Header({
@@ -216,10 +222,10 @@ function Header({
   });
 
   return (
-    <div className="relative my-3 flex w-full flex-row items-center justify-start gap-6  text-sm text-gray-500">
+    <div className="relative my-3 flex w-full flex-row items-center justify-start gap-6  text-sm text-gray-500 md:my-6 md:text-base lg:text-sm xl:text-base 2xl:text-sm">
       <img
         src={`/${author?.photo}`}
-        className="w-[15%] rounded-full border border-orange-400 shadow"
+        className="w-[15%] rounded-full border border-orange-400 shadow md:w-[10%] lg:w-[8%] xl:w-[12%] 2xl:w-[8%]"
       />
       <div className="flex flex-col items-start justify-center">
         <div className="flex w-full flex-row items-center justify-between gap-3">
@@ -235,7 +241,7 @@ function Header({
       <ReadLater
         position={"absolute right-0"}
         showCount={false}
-        width={"w-[12%]"}
+        width={"w-[12%] md:w-[7%] xl:w-[10%] 2xl:w-[7%]"}
         isToReadLater={isToReadLater}
         action={() => {
           const isNeeded = loginIsNeeded();
@@ -257,14 +263,15 @@ function Metrics({ gophers, dependencies }) {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4 p-6">
-      <p className="w-full text-center font-poppins text-lg text-gray-800 drop-shadow-sm">
+      <p className="w-full text-center font-poppins text-lg text-gray-800 drop-shadow-sm lg:text-base xl:text-lg">
         Gostou? Deixe seu <span className="italic text-blue-500">Gopher</span>!
       </p>
       <div className="flex w-full flex-row items-center justify-center gap-3">
         <Gophers
           gophers={gophers}
           isLikeGopher={{
-            width: "w-[20%]",
+            width:
+              "w-[20%] md:w-[10%] lg:w-[5%] xl:w-[8%] 2xl:w-[5%] 3xl:w-[4%]",
             isLiked: dependencies.isLiked,
             onGopher: () => {
               const isNeeded = dependencies.loginIsNeeded();
@@ -284,15 +291,17 @@ function Metrics({ gophers, dependencies }) {
 
 function Categories({ categories }) {
   return (
-    <div className=" flex w-full flex-row flex-wrap items-center justify-start gap-3 rounded  px-4 py-8 ">
-      {categories?.map((category) => (
-        <button
-          key={category}
-          className="w-[30%] rounded-xl bg-gray-500 p-1 text-sm text-gray-50 shadow"
-        >
-          {category}
-        </button>
-      ))}
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="flex flex-row flex-wrap items-center justify-center gap-3 rounded   px-4 py-8 md:px-12 lg:w-[60%] 3xl:w-[45%]">
+        {categories?.map((category) => (
+          <button
+            key={category}
+            className="w-[30%] rounded-xl bg-gray-500 p-1 text-sm text-gray-50 shadow md:w-[20%] xl:text-base 2xl:text-sm"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

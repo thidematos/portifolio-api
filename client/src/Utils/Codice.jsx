@@ -10,7 +10,7 @@ function Codice({ codice, path = "/admin/dashboard/codice" }) {
       to={`${path}/${codice._id}`}
       className="flex w-full flex-col items-center justify-center "
     >
-      <div className=" flex h-[220px] w-full flex-col items-center justify-center overflow-hidden border-b border-gray-300 px-4 md:mt-10 md:h-[200px] md:w-[90%] md:px-0 lg:mt-6 lg:h-[150px] lg:pb-6 xl:px-10 2xl:h-[200px] 3xl:px-6">
+      <div className=" flex h-[220px] w-full flex-col items-center justify-center overflow-hidden border-b border-gray-200 px-4 md:mt-10 md:h-[200px] md:w-[90%] md:px-0 lg:mt-6 lg:h-[150px] lg:pb-6 xl:px-10 2xl:h-[200px] 3xl:px-6">
         <h2 className=" pb-1 font-poppins font-bold text-gray-800 md:hidden">
           {codice.title}
         </h2>

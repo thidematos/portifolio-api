@@ -25,7 +25,7 @@ function CodiceList() {
 
   return (
     <div className="relative min-h-[100svh] w-full bg-gray-50 lg:flex lg:flex-row lg:items-center lg:justify-center">
-      <div className="categoriesScroll relative h-[100svh] w-full overflow-y-scroll  lg:w-[65%] 2xl:w-[70%]">
+      <div className="categoriesScroll relative h-[100svh] w-full overflow-x-hidden  overflow-y-scroll lg:w-[65%] 2xl:w-[70%]">
         <CodiceHeader
           headerSize={headerSize}
           setHeaderSize={setHeaderSize}
@@ -53,7 +53,7 @@ function MusicIcon({ user, setUser }) {
 
   return (
     <div
-      className={`${isShow ? "translate-x-0" : "translate-x-[100%]"} absolute right-0 z-10 w-[80%] origin-right bg-gray-50 py-5 duration-200 md:w-[50%]`}
+      className={`${isShow ? "translate-x-0" : " translate-x-[100%]"} absolute right-0 z-10 w-[80%] origin-right bg-gray-50 py-5 duration-200 md:w-[50%]`}
     >
       <div
         className={`absolute right-[100%] top-0 flex w-[20%] flex-row  justify-center rounded-l-xl  bg-blue-400 py-2 shadow lg:hidden`}
@@ -107,7 +107,7 @@ function CategoriesList({ currentCategory, user, isMediumSize }) {
   ];
 
   return (
-    <div className="categoriesScroll mx-10 flex w-[90%] flex-row flex-nowrap overflow-x-scroll  3xl:ml-[15%] 3xl:mr-0 3xl:w-auto">
+    <div className="categoriesScroll flex w-full flex-row flex-nowrap overflow-x-scroll  3xl:ml-[15%] 3xl:mr-0 3xl:w-auto">
       {isLoading && <Loader size={50} margin="mt-2" />}
 
       {!isLoading && (
@@ -186,7 +186,7 @@ function CodicesFiltered({ currentCategory, user, children }) {
   });
 
   return (
-    <div className=" relative flex w-full flex-col  items-center justify-center  pt-6 md:pt-0 3xl:ml-[15%] 3xl:w-auto">
+    <div className=" relative flex w-full flex-col  items-center justify-center   pt-6 md:pt-0 3xl:ml-[15%] 3xl:w-auto">
       {children}
       {isLoading && (
         <Loader position={"absolute centerDivAbsolute"} size={100} />
@@ -228,7 +228,7 @@ function CodicesFiltered({ currentCategory, user, children }) {
                 />
               ))}
               {!userReadLaters.length && (
-                <p className="w-[85%] py-16 text-center font-poppins text-gray-400 drop-shadow">
+                <p className="h-[380px] w-[85%] py-16 text-center font-poppins text-gray-400 drop-shadow">
                   Nenhum Códice salvo para ler depois...
                 </p>
               )}
