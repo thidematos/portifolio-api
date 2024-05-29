@@ -10,14 +10,12 @@ import Footer from "./../components/Footer";
 import { useState } from "react";
 //<Reports />
 function Portifolio({ isMobile }) {
-  const [navHeight, setNavHeight] = useState(0);
-
   return (
     <>
       <div className="relative flex min-h-screen w-screen flex-col items-center justify-start overflow-x-hidden bg-slate-50 pb-16">
         <WelcomePage>
-          <NavBar isMobile={isMobile} setNavHeight={setNavHeight}></NavBar>
-          <Hero isMobile={isMobile} navHeight={navHeight}></Hero>
+          <NavBar isMobile={isMobile}></NavBar>
+          <Hero isMobile={isMobile}></Hero>
         </WelcomePage>
         <Works />
         <Benefits isMobile={isMobile} />
@@ -37,7 +35,7 @@ function Portifolio({ isMobile }) {
 
 function WelcomePage({ children }) {
   return (
-    <div className="flex h-[100svh] w-screen flex-col items-center  md:h-auto md:justify-start lg:h-screen lg:justify-evenly">
+    <div className="flex h-screen w-screen flex-col items-center  md:h-auto md:justify-start lg:h-screen lg:justify-evenly">
       {children}
     </div>
   );

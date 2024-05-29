@@ -3,23 +3,15 @@ import ProjectRequestForm from "./ProjectRequestForm";
 import Modal from "../Utils/Modal";
 import { useState } from "react";
 
-function Hero({ isMobile, navHeight }) {
+function Hero({ isMobile }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   function handleProjectRequest() {
     setIsOpenModal(true);
   }
 
-  const heroHeight = window.innerHeight - navHeight;
-
   return (
-    <section
-      style={{
-        height: isMobile ? `${heroHeight}px` : "",
-        paddingTop: isMobile ? `${heroHeight + 5}px` : "",
-      }}
-      className="flex w-full flex-col items-center justify-evenly gap-10 pb-6  md:h-auto md:gap-12 lg:h-screen lg:gap-6 lg:pt-[7.5rem] xl:pt-[9rem] 3xl:gap-12 3xl:pt-[11rem]"
-    >
+    <section className="flex w-full flex-col items-center justify-evenly gap-10 pb-20 pt-[7rem] md:h-auto md:gap-12 lg:h-screen lg:gap-6 lg:pt-[7.5rem] xl:pt-[9rem] 3xl:gap-12 3xl:pt-[11rem]">
       <div className="flex w-full flex-col items-center justify-center gap-6 md:gap-8 lg:gap-6 3xl:gap-12">
         <ImpactText />
         <SubImpact isMobile={isMobile} />

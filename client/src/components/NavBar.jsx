@@ -4,26 +4,15 @@ import ProjectRequestForm from "./ProjectRequestForm";
 import AboutMe from "./AboutMe";
 import Logo from "../Utils/Logo";
 
-function NavBar({ isMobile, setNavHeight }) {
+function NavBar({ isMobile }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
-
-  const navRef = useRef(null);
-
-  useEffect(
-    () =>
-      setNavHeight(Math.round(navRef.current.getBoundingClientRect().height)),
-    [setNavHeight],
-  );
 
   function handleProjectRequest() {
     setIsOpenModal(true);
   }
 
   return (
-    <div
-      className="fixed top-0 z-[9996] flex w-screen flex-row items-center justify-center bg-[rgba(250,250,250,0.7)] backdrop-blur-[2px]"
-      ref={navRef}
-    >
+    <div className="fixed top-0 z-[9996] flex w-screen flex-row items-center justify-center bg-[rgba(250,250,250,0.7)] backdrop-blur-[2px]">
       <nav className="NavBar flex w-[90%] flex-row items-center justify-between border-b py-6 lg:w-[75%] xl:w-[65%] 3xl:w-[60%] ">
         <Logo width="w-[40%] md:w-[20%]" clickable={true} path="/" />
         {isMobile || <SectionList />}
