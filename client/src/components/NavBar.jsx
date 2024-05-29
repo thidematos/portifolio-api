@@ -27,6 +27,12 @@ function NavBar({ isMobile }) {
   );
 }
 
+/*
+  <Section>
+    <a href="#relatos">RELATOS</a>
+  </Section>
+*/
+
 function SectionList() {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -38,9 +44,6 @@ function SectionList() {
     <ul className="flex flex-row justify-around md:w-[50%] lg:w-[50%] 2xl:w-[55%] 3xl:w-[50%]">
       <Section>
         <a href="#projetos">PROJETOS</a>
-      </Section>
-      <Section>
-        <a href="#relatos">RELATOS</a>
       </Section>
       <Section>
         <a href="#beneficios">BENEFÍCIOS</a>

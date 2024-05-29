@@ -20,13 +20,9 @@ function LoginForm({ pathToAfterLogin }) {
 
     try {
       setIsLoading(true);
-      const data = await axios.post(
-        "http://127.0.0.1:3000/api/v1/users/login",
-        credentials,
-        {
-          withCredentials: true,
-        },
-      );
+      const data = await axios.post("/api/v1/users/login", credentials, {
+        withCredentials: true,
+      });
 
       if (!data.statusText === "OK") {
         throw new Error("Falha em autenticar o usuário.");
