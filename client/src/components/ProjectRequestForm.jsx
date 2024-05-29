@@ -17,7 +17,7 @@ function GetStarted({ onStart }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center rounded-xl p-6 md:p-4  xl:p-8">
+    <div className="relative my-4 flex h-full w-full flex-col items-center justify-center rounded-xl p-6 md:p-4  xl:p-8">
       <h1 className="font-poppins text-xl font-bold text-gray-800 md:text-2xl lg:text-xl xl:text-2xl 2xl:text-3xl 3xl:text-4xl">
         Vamos começar
       </h1>

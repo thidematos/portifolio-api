@@ -35,12 +35,12 @@ function Hero({ headerSize }) {
         <h2 className="w-[40%]   text-center drop-shadow">HISTÓRIA</h2>
         <h2 className="w-[40%]   text-center  drop-shadow">COTIDIANO</h2>
       </div>
-      <div className="centerDivAbsolute absolute flex w-[60%] flex-col items-start justify-center gap-4 pb-6 italic md:w-[50%] md:gap-10 lg:w-[18%] lg:gap-4 xl:w-[25%] 2xl:w-[15%] 3xl:w-[25%]">
-        <h1 className="w-[50%] bg-gray-50 p-4 text-center text-xl text-gray-800 drop-shadow lg:w-[55%] lg:text-xl xl:text-3xl 2xl:text-xl 3xl:text-5xl">
-          Sapere
+      <div className="centerDivAbsolute absolute flex w-[60%] flex-col items-start justify-center gap-4 pb-6 italic md:w-[50%] md:gap-10 lg:w-[30%] lg:gap-4 xl:w-[35%] 2xl:w-[20%] 3xl:w-[40%]">
+        <h1 className="w-[60%] bg-gray-50 p-4 text-center text-xl text-gray-800 drop-shadow lg:w-[45%] lg:text-xl xl:text-3xl 2xl:text-xl 3xl:py-6 3xl:text-5xl">
+          Códice
         </h1>
-        <h1 className="w-[50%] self-end bg-gray-50 p-4 text-center text-xl font-bold text-gray-800 drop-shadow-xl lg:w-[55%] lg:text-xl xl:text-3xl 2xl:text-xl 3xl:text-5xl">
-          Aude.
+        <h1 className="w-[60%] self-end bg-gray-50 p-4 text-center text-xl font-bold text-gray-800 drop-shadow-xl lg:w-[45%] lg:text-xl xl:text-3xl 2xl:text-xl 3xl:py-6 3xl:text-5xl">
+          Desvelado.
         </h1>
       </div>
       <div className="absolute bottom-[15%] flex w-full flex-col items-center justify-center 2xl:bottom-[16%]">
