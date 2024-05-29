@@ -14,8 +14,11 @@ function Hero({ isMobile, navHeight }) {
 
   return (
     <section
-      style={{ height: isMobile ? `${heroHeight}px` : "" }}
-      className="flex w-full flex-col items-center justify-evenly gap-10 py-12 md:h-auto md:gap-12 lg:h-screen lg:gap-6 lg:pt-[7.5rem] xl:pt-[9rem] 3xl:gap-12 3xl:pt-[11rem]"
+      style={{
+        height: isMobile ? `${heroHeight}px` : "",
+        paddingTop: isMobile ? `${heroHeight + 5}px` : "",
+      }}
+      className="flex w-full flex-col items-center justify-evenly gap-10 pb-6  md:h-auto md:gap-12 lg:h-screen lg:gap-6 lg:pt-[7.5rem] xl:pt-[9rem] 3xl:gap-12 3xl:pt-[11rem]"
     >
       <div className="flex w-full flex-col items-center justify-center gap-6 md:gap-8 lg:gap-6 3xl:gap-12">
         <ImpactText />
